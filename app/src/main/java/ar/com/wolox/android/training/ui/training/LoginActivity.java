@@ -2,7 +2,6 @@ package ar.com.wolox.android.training.ui.training;
 
 import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -26,9 +25,8 @@ import ar.com.wolox.android.R;
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final String TAG = "LOGIN_ACTV";
-    private static final String URL_TYC = "https://github.com/wolox-training/fs-android";
+    public static final String URL_TYC = "https://www.wolox.com.ar/";
 
-    private Context ctx;
     private TextInputEditText mEmailTxt;
     private TextInputEditText mPassTxt;
 
@@ -37,7 +35,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        ctx = this;
         Button mBtnLogin = findViewById(R.id.btn_login);
         mBtnLogin.setOnClickListener(this);
         Button mBtnSingup = findViewById(R.id.btn_singup);
@@ -71,13 +68,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         if (validateForm()) {
             Log.e(TAG, "isValid!!!");
-        } else {
-            Log.e(TAG, "errorInForm!!!!");
+            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            startActivity(intent);
+            finish();
         }
     }
 
     private void toSingUp() {
         Log.e(TAG, "toSingUp() *****************");
+        Intent intent = new Intent(LoginActivity.this, SingUpActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     private void toTYCdetails() {
@@ -113,7 +114,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private boolean isValidPass(CharSequence target) {
-        //return !TextUtils.isEmpty(target);
 
         TextInputLayout input = findViewById(R.id.pass_wrapper);
         if (TextUtils.isEmpty(target)) {

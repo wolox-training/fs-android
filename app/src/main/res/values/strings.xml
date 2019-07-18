@@ -16,7 +16,8 @@
 
     <!-- Options -->
     <string name="btn_option_ok">OK</string>
-    <string name="btn_option_accept">Aceptar</string>
+    <string name="btn_option_accept">Accept</string>
+    <string name="btn_option_cancel">Cancel</string>
     <string name="btn_option_no">NO</string>
     <string name="btn_option_yes">SI</string>
 
@@ -31,6 +32,10 @@
     <string name="login_btn_sing_up">Sing Up</string>
     <string name="login_t_y_c_txt">By joining you agree our </string>
     <string name="login_t_y_c_link"><u>Terms &amp; Conditions</u></string>
+
+    <!-- MainActivity -->
+    <string name="main_back_msg_title">Really Exit?</string>
+    <string name="main_back_msg">Are you sure you want to exit?</string>
 
     <!-- Errors-->
     <string name="error_empty_field">The Field is Required</string>
