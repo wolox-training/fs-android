@@ -106,6 +106,9 @@ buildscript {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
 
+    // Dependencies
+    implementation 'com.android.support:design:26.0.1'
+
     // Kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 

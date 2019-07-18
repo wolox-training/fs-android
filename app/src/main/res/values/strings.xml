@@ -13,4 +13,27 @@
     <string name="fragment_example_username">Username</string>
     <string name="fragment_example_login">Login</string>
 
+
+    <!-- Options -->
+    <string name="btn_option_ok">OK</string>
+    <string name="btn_option_accept">Aceptar</string>
+    <string name="btn_option_no">NO</string>
+    <string name="btn_option_yes">SI</string>
+
+    <!-- LoginActivity -->
+    <string name="img_logo_background">Logo Background</string>
+    <string name="img_logo_gradient">Logo Gradient</string>
+    <string name="img_logo_main">Logo Main</string>
+
+    <string name="login_user_txt">Username</string>
+    <string name="login_pass_txt">Password</string>
+    <string name="login_btn_login">Log In</string>
+    <string name="login_btn_sing_up">Sing Up</string>
+    <string name="login_t_y_c_txt">By joining you agree our </string>
+    <string name="login_t_y_c_link"><u>Terms &amp; Conditions</u></string>
+
+    <!-- Errors-->
+    <string name="error_empty_field">The Field is Required</string>
+    <string name="error_invalid_email">Invalid Email</string>
+
 </resources>

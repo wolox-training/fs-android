@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/main_container"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <FrameLayout
+            android:id="@+id/frame_layout_logo"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/login_cover"
+                android:scaleType="fitXY"
+                android:contentDescription="@string/img_logo_background" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/gradient_logo"
+                android:alpha="0.5"
+                android:contentDescription="@string/img_logo_gradient"/>
+
+        </FrameLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <LinearLayout
+            android:id="@+id/data_container"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="3"
+            android:focusable="true"
+            android:focusableInTouchMode="true">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/user_wrapper"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/login_margin_side"
+                android:layout_marginRight="@dimen/login_margin_side"
+                android:paddingTop="@dimen/login_wrapper_margin_top" >
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/user_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/login_user_txt"
+                    android:inputType="textEmailAddress"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/pass_wrapper"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:passwordToggleEnabled="true"
+                android:layout_marginLeft="@dimen/login_margin_side"
+                android:layout_marginRight="@dimen/login_margin_side"
+                android:paddingTop="@dimen/login_wrapper_margin_top"
+                android:layout_marginBottom="@dimen/login_wrapper_margin_bottom">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/pass_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/login_pass_txt"
+                    android:inputType="textPassword"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                android:id="@+id/btn_login"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/login_margin_side"
+                android:layout_marginRight="@dimen/login_margin_side"
+                android:layout_marginTop="@dimen/login_button_margin_top"
+                android:layout_marginBottom="@dimen/login_button_margin_bottom"
+                android:background="@color/colorLightGrey"
+                android:text="@string/login_btn_login"
+                android:textColor="@color/colorBlack"/>
+
+            <Button
+                android:id="@+id/btn_singup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/login_margin_side"
+                android:layout_marginRight="@dimen/login_margin_side"
+                android:layout_marginTop="@dimen/login_button_margin_top"
+                android:layout_marginBottom="@dimen/login_button_margin_bottom"
+                android:background="@color/colorPrimary"
+                android:text="@string/login_btn_sing_up"
+                android:textColor="@color/colorWhite"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="bottom |center"
+            android:layout_marginLeft="@dimen/login_tyc_margin"
+            android:layout_marginRight="@dimen/login_tyc_margin"
+            android:paddingBottom="@dimen/login_tyc_margin_bottom">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/login_tyc_text_size"
+                android:text="@string/login_t_y_c_txt"
+                android:layout_marginRight="5dp"/>
+
+            <TextView
+                android:id="@+id/tyc_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/login_tyc_text_size"
+                android:text="@string/login_t_y_c_link"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/logo_container"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:src="@drawable/wolox_logo_large"
+            android:scaleType="center"
+            android:contentDescription="@string/img_logo_main"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="4" />
+
+    </LinearLayout>
+
+</RelativeLayout>
