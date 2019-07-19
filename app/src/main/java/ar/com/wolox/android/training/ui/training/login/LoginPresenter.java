@@ -13,5 +13,4 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
     @Inject
     public LoginPresenter(UserSession userSession) {}
 
-    public void onSaveUser() {}
 }

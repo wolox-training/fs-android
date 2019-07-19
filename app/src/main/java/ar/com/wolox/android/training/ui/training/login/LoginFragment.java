@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Handler;
 import android.text.TextUtils;
-import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
@@ -19,11 +18,10 @@ import ar.com.wolox.wolmo.core.fragment.WolmoFragment;
 import pl.droidsonroids.gif.GifImageView;
 
 /**
- * LoginFragment
+ * LoginFragment: initial screen with animation and login settings
  */
 public class LoginFragment extends WolmoFragment<LoginPresenter> implements View.OnClickListener {
 
-    private final String tag = "LOGIN_FRGM";
     private final long delay = 5000L;
     private final String urlTyc = "https://www.wolox.com.ar/";
 
@@ -44,6 +42,7 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements View
 
         view = getView();
         if (view != null) {
+            //Views
             mContentView = view.findViewById(R.id.container_view);
             mContentView.setVisibility(View.GONE);
             mLogoGif = view.findViewById(R.id.splash_animation);
@@ -51,6 +50,7 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements View
             mEmailTxt = view.findViewById(R.id.user_text);
             mPassTxt = view.findViewById(R.id.pass_text);
 
+            // Buttons
             Button mBtnLogin = view.findViewById(R.id.btn_login);
             mBtnLogin.setOnClickListener(this);
             Button mBtnSingup = view.findViewById(R.id.btn_singup);
@@ -63,13 +63,15 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements View
     }
 
     private void initMainScreen() {
-
+        // Hide animation and show main screen
         mContentView.setVisibility(View.VISIBLE);
         mLogoGif.setVisibility(View.GONE);
     }
 
     @Override
     public void onClick(View viewOnClick) {
+        // Memory optimization: instead of create one click listener from each button,
+        // we created a global oneClick method for the activity
         switch (viewOnClick.getId()) {
             case R.id.btn_login:
                 toMain();
@@ -86,57 +88,57 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements View
     }
 
     private void toMain() {
-        Log.e(tag, "toMain() *****************");
 
-        if (validateForm()) {
-            Log.e(tag, "isValid!!!");
-        }
+        //validateForm();
     }
 
     private void toSingUp() {
-        Log.e(tag, "toSingUp() *****************");
+
     }
 
     private void toTYCdetails() {
-        Log.e(tag, "toTYCdetails() *****************");
 
         Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(urlTyc));
         startActivity(i);
     }
 
-    private boolean isValidEmail(CharSequence target) {
+    private boolean isValidEmail() {
+
+        CharSequence target = mEmailTxt.getText();
 
         if (view != null) {
 
             TextInputLayout input = view.findViewById(R.id.user_wrapper);
             if (TextUtils.isEmpty(target)) {
-                //input.setEnabled(true);
                 input.setError(getString(R.string.error_empty_field));
+                mEmailTxt.setBackgroundResource(R.drawable.back_txt_red_border);
                 return false;
             } else if (!Patterns.EMAIL_ADDRESS.matcher(target).matches()) {
-                //input.setEnabled(true);
                 input.setError(getString(R.string.error_invalid_email));
+                mEmailTxt.setBackgroundResource(R.drawable.back_txt_red_border);
                 return false;
             } else {
-                //input.setEnabled(false);
                 input.setError(null);
+                mEmailTxt.setBackgroundResource(R.drawable.back_txt_white_border);
                 return true;
             }
         } else return false;
     }
 
-    private boolean isValidPass(CharSequence target) {
+    private boolean isValidPass() {
+
+        CharSequence target = mPassTxt.getText();
 
         if (view != null) {
 
             TextInputLayout input = view.findViewById(R.id.pass_wrapper);
             if (TextUtils.isEmpty(target)) {
-                //input.setEnabled(true);
                 input.setError(getString(R.string.error_empty_field));
+                mPassTxt.setBackgroundResource(R.drawable.back_txt_red_border);
                 return false;
             } else {
-                //input.setEnabled(false);
                 input.setError(null);
+                mPassTxt.setBackgroundResource(R.drawable.back_txt_white_border);
                 return true;
             }
         } else return false;
@@ -144,11 +146,11 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements View
     }
 
     private boolean validateForm() {
-        boolean isValid;
+        // Shows all errors in screen instead of one by one
 
-        isValid = isValidEmail(mEmailTxt.getText());
-        isValid = isValid && isValidPass(mPassTxt.getText());
+        boolean validEmail = isValidEmail();
+        boolean validPass = isValidPass();
 
-        return isValid;
+        return validEmail && validPass;
     }
 }
