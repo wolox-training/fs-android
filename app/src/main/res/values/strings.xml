@@ -41,4 +41,8 @@
     <string name="error_empty_field">The Field is Required</string>
     <string name="error_invalid_email">Invalid Email</string>
 
+    <!-- Tmp Messages -->
+    <string name="valid_login_form">to main screen…</string>
+    <string name="login_to_singup">to SingUp screen…</string>
+
 </resources>

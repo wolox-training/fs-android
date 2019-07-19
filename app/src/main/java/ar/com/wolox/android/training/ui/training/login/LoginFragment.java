@@ -1,14 +1,14 @@
 package ar.com.wolox.android.training.ui.training.login;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Handler;
-import android.text.TextUtils;
-import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -20,12 +20,13 @@ import pl.droidsonroids.gif.GifImageView;
 /**
  * LoginFragment: initial screen with animation and login settings
  */
-public class LoginFragment extends WolmoFragment<LoginPresenter> implements View.OnClickListener {
+public class LoginFragment extends WolmoFragment<LoginPresenter> implements View.OnClickListener, ILoginView {
 
     private final long delay = 5000L;
     private final String urlTyc = "https://www.wolox.com.ar/";
 
     private View view;
+    private Context ctx;
 
     private RelativeLayout mContentView;
     private GifImageView mLogoGif;
@@ -39,6 +40,8 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements View
 
     @Override
     public void init() {
+
+        ctx = getContext();
 
         view = getView();
         if (view != null) {
@@ -74,83 +77,78 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements View
         // we created a global oneClick method for the activity
         switch (viewOnClick.getId()) {
             case R.id.btn_login:
-                toMain();
+                getPresenter().onLoginButtonClicked(mEmailTxt.getText(), mPassTxt.getText());
                 break;
             case R.id.btn_singup:
-                toSingUp();
+                toSingUpScreen();
                 break;
             case R.id.tyc_txt:
-                toTYCdetails();
+                toTermsAndConditionsWebView();
                 break;
             default:
                 break;
         }
     }
 
-    private void toMain() {
-
-        //validateForm();
+    private void toSingUpScreen() {
+        // TODO: Temporal method until singup screen exists... after that, delete and move to singup screen
+        Toast.makeText(ctx, getString(R.string.login_to_singup), Toast.LENGTH_SHORT).show();
     }
 
-    private void toSingUp() {
-
-    }
-
-    private void toTYCdetails() {
+    private void toTermsAndConditionsWebView() {
 
         Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(urlTyc));
         startActivity(i);
     }
 
-    private boolean isValidEmail() {
-
-        CharSequence target = mEmailTxt.getText();
-
+    @Override
+    public void onEmptyEmailError() {
         if (view != null) {
-
             TextInputLayout input = view.findViewById(R.id.user_wrapper);
-            if (TextUtils.isEmpty(target)) {
-                input.setError(getString(R.string.error_empty_field));
-                mEmailTxt.setBackgroundResource(R.drawable.back_txt_red_border);
-                return false;
-            } else if (!Patterns.EMAIL_ADDRESS.matcher(target).matches()) {
-                input.setError(getString(R.string.error_invalid_email));
-                mEmailTxt.setBackgroundResource(R.drawable.back_txt_red_border);
-                return false;
-            } else {
-                input.setError(null);
-                mEmailTxt.setBackgroundResource(R.drawable.back_txt_white_border);
-                return true;
-            }
-        } else return false;
+            input.setError(getString(R.string.error_empty_field));
+            mEmailTxt.setBackgroundResource(R.drawable.back_txt_red_border);
+        }
     }
 
-    private boolean isValidPass() {
-
-        CharSequence target = mPassTxt.getText();
-
+    @Override
+    public void onInvalidEmailError() {
         if (view != null) {
-
-            TextInputLayout input = view.findViewById(R.id.pass_wrapper);
-            if (TextUtils.isEmpty(target)) {
-                input.setError(getString(R.string.error_empty_field));
-                mPassTxt.setBackgroundResource(R.drawable.back_txt_red_border);
-                return false;
-            } else {
-                input.setError(null);
-                mPassTxt.setBackgroundResource(R.drawable.back_txt_white_border);
-                return true;
-            }
-        } else return false;
-
+            TextInputLayout input = view.findViewById(R.id.user_wrapper);
+            input.setError(getString(R.string.error_invalid_email));
+            mEmailTxt.setBackgroundResource(R.drawable.back_txt_red_border);
+        }
     }
 
-    private boolean validateForm() {
-        // Shows all errors in screen instead of one by one
+    @Override
+    public void onValidEmail() {
+        if (view != null) {
+            TextInputLayout input = view.findViewById(R.id.user_wrapper);
+            input.setError(null);
+            mEmailTxt.setBackgroundResource(R.drawable.back_txt_white_border);
+        }
+    }
 
-        boolean validEmail = isValidEmail();
-        boolean validPass = isValidPass();
+    @Override
+    public void onEmptyPassError() {
+        if (view != null) {
+            TextInputLayout input = view.findViewById(R.id.pass_wrapper);
+            input.setError(getString(R.string.error_empty_field));
+            mPassTxt.setBackgroundResource(R.drawable.back_txt_red_border);
+        }
+    }
 
-        return validEmail && validPass;
+    @Override
+    public void onValidPass() {
+        if (view != null) {
+            TextInputLayout input = view.findViewById(R.id.pass_wrapper);
+            input.setError(null);
+            mPassTxt.setBackgroundResource(R.drawable.back_txt_white_border);
+        }
+    }
+
+    @Override
+    public void onValidForm() {
+        // TODO: Temporal method until main screen exists... after that, delete and move to main screen
+        Toast.makeText(ctx, getString(R.string.valid_login_form), Toast.LENGTH_SHORT).show();
     }
 }
