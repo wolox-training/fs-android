@@ -1,6 +1,5 @@
 package ar.com.wolox.android.training.ui.training;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -23,10 +22,4 @@ public class SingUpActivity extends AppCompatActivity {
         Log.e(TAG, "onCreate()!!");
     }
 
-    @Override
-    public void onBackPressed() {
-        Intent intent = new Intent(SingUpActivity.this, LoginActivity.class);
-        startActivity(intent);
-        finish();
-    }
 }
