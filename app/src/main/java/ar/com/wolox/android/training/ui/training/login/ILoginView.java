@@ -13,4 +13,6 @@ public interface ILoginView {
     void onValidPass();
 
     void onValidForm();
+
+    void toSingUpScreen();
 }

@@ -5,7 +5,8 @@ import android.util.Patterns;
 
 import javax.inject.Inject;
 
-import ar.com.wolox.android.training.utils.UserSession;
+import ar.com.wolox.android.training.model.User;
+import ar.com.wolox.android.training.utils.CredentialsSession;
 import ar.com.wolox.wolmo.core.presenter.BasePresenter;
 
 /**
@@ -13,8 +14,12 @@ import ar.com.wolox.wolmo.core.presenter.BasePresenter;
  */
 public class LoginPresenter extends BasePresenter<ILoginView> {
 
+    private CredentialsSession userCredentials;
+
     @Inject
-    public LoginPresenter(UserSession userSession) {}
+    public LoginPresenter(CredentialsSession credentialsSession) {
+        userCredentials = credentialsSession;
+    }
 
     /**
      *
@@ -40,8 +45,24 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
             getView().onValidPass();
 
             if (validForm) {
+                userCredentials.setUsername(user.toString());
+                userCredentials.setPassword(password.toString());
+
                 getView().onValidForm();
             }
         }
+    }
+
+    public User loadCredentials() {
+        User user = new User();
+
+        user.user = userCredentials.getUsername();
+        user.pass = userCredentials.getPassword();
+        return user;
+    }
+
+    public void onSingUpButtonClicked() {
+        userCredentials.clearCredentials();
+        getView().toSingUpScreen();
     }
 }

@@ -14,6 +14,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
 import ar.com.wolox.android.R;
+import ar.com.wolox.android.training.model.User;
 import ar.com.wolox.wolmo.core.fragment.WolmoFragment;
 import pl.droidsonroids.gif.GifImageView;
 
@@ -69,6 +70,10 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements View
         // Hide animation and show main screen
         mContentView.setVisibility(View.VISIBLE);
         mLogoGif.setVisibility(View.GONE);
+
+        User user = getPresenter().loadCredentials();
+        mEmailTxt.setText(user.user);
+        mPassTxt.setText(user.pass);
     }
 
     @Override
@@ -80,7 +85,7 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements View
                 getPresenter().onLoginButtonClicked(mEmailTxt.getText(), mPassTxt.getText());
                 break;
             case R.id.btn_singup:
-                toSingUpScreen();
+                getPresenter().onSingUpButtonClicked();
                 break;
             case R.id.tyc_txt:
                 toTermsAndConditionsWebView();
@@ -88,11 +93,6 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements View
             default:
                 break;
         }
-    }
-
-    private void toSingUpScreen() {
-        // TODO: Temporal method until singup screen exists... after that, delete and move to singup screen
-        Toast.makeText(ctx, getString(R.string.login_to_singup), Toast.LENGTH_SHORT).show();
     }
 
     private void toTermsAndConditionsWebView() {
@@ -150,5 +150,11 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements View
     public void onValidForm() {
         // TODO: Temporal method until main screen exists... after that, delete and move to main screen
         Toast.makeText(ctx, getString(R.string.valid_login_form), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void toSingUpScreen() {
+        // TODO: Temporal method until singup screen exists... after that, delete and move to singup screen
+        Toast.makeText(ctx, getString(R.string.login_to_singup), Toast.LENGTH_SHORT).show();
     }
 }
