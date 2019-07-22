@@ -6,9 +6,10 @@ import android.net.Uri;
 import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -28,7 +29,7 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements View
     private View view;
     private Context ctx;
 
-    private RelativeLayout mContentView;
+    private ConstraintLayout mContentView;
     private GifImageView mLogoGif;
     private TextInputEditText mEmailTxt;
     private TextInputEditText mPassTxt;
