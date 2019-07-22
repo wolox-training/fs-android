@@ -11,8 +11,8 @@ import ar.com.wolox.wolmo.core.util.SharedPreferencesManager;
 @ApplicationScope
 public class CredentialsSession {
 
-    private final String userKey = "USERNAME";
-    private final String passKey = "PASSWORD";
+    private static final String USER_KEY = "USERNAME";
+    private static final String PASS_KEY = "PASSWORD";
 
     private String user;
     private String pass;
@@ -21,8 +21,8 @@ public class CredentialsSession {
     @Inject
     public CredentialsSession(SharedPreferencesManager sharedPreferencesManager) {
         manager = sharedPreferencesManager;
-        user = sharedPreferencesManager.get(userKey, "");
-        pass = sharedPreferencesManager.get(passKey, "");
+        user = sharedPreferencesManager.get(USER_KEY, "");
+        pass = sharedPreferencesManager.get(PASS_KEY, "");
     }
 
     public String getUsername() {
@@ -31,7 +31,7 @@ public class CredentialsSession {
 
     public void setUsername(final String userId) {
         if (manager != null) {
-            manager.store(userKey, userId);
+            manager.store(USER_KEY, userId);
         }
     }
 
@@ -41,12 +41,12 @@ public class CredentialsSession {
 
     public void setPassword(final String passId) {
         if (manager != null) {
-            manager.store(passKey, passId);
+            manager.store(PASS_KEY, passId);
         }
     }
 
     public void clearCredentials() {
-        manager.clearKey(userKey);
-        manager.clearKey(passKey);
+        manager.clearKey(USER_KEY);
+        manager.clearKey(PASS_KEY);
     }
 }

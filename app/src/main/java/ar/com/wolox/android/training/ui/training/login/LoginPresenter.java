@@ -21,6 +21,15 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
         userCredentials = credentialsSession;
     }
 
+    public void initCredentials() {
+
+        // Get credentials from shared preferences. If there's no key, the constructor create an empty user
+        User user = new User(userCredentials.getUsername(), userCredentials.getPassword());
+        if (user.isValid()) {
+            getView().updateCredentials(user);
+        }
+    }
+
     /**
      *
      * @param user userId from login screen, must have valid format and cannot be empty
@@ -51,14 +60,6 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
                 getView().onValidForm();
             }
         }
-    }
-
-    public User loadCredentials() {
-        User user = new User();
-
-        user.user = userCredentials.getUsername();
-        user.pass = userCredentials.getPassword();
-        return user;
     }
 
     public void onSingUpButtonClicked() {
