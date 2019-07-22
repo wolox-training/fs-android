@@ -5,12 +5,12 @@ package ar.com.wolox.android.training.ui.training.login;
  */
 public interface ILoginView {
 
-    void onEmptyEmailError();
-    void onInvalidEmailError();
-    void onEmptyPassError();
+    void showEmptyEmailError();
+    void showInvalidEmailError();
+    void showEmptyPassError();
 
-    void onValidEmail();
-    void onValidPass();
+    void showValidEmail();
+    void showValidPass();
 
     void onValidForm();
 }

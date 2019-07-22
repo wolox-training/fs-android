@@ -103,7 +103,7 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements View
     }
 
     @Override
-    public void onEmptyEmailError() {
+    public void showEmptyEmailError() {
         if (view != null) {
             TextInputLayout input = view.findViewById(R.id.user_wrapper);
             input.setError(getString(R.string.error_empty_field));
@@ -112,7 +112,7 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements View
     }
 
     @Override
-    public void onInvalidEmailError() {
+    public void showInvalidEmailError() {
         if (view != null) {
             TextInputLayout input = view.findViewById(R.id.user_wrapper);
             input.setError(getString(R.string.error_invalid_email));
@@ -121,7 +121,7 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements View
     }
 
     @Override
-    public void onValidEmail() {
+    public void showValidEmail() {
         if (view != null) {
             TextInputLayout input = view.findViewById(R.id.user_wrapper);
             input.setError(null);
@@ -130,7 +130,7 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements View
     }
 
     @Override
-    public void onEmptyPassError() {
+    public void showEmptyPassError() {
         if (view != null) {
             TextInputLayout input = view.findViewById(R.id.pass_wrapper);
             input.setError(getString(R.string.error_empty_field));
@@ -139,7 +139,7 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements View
     }
 
     @Override
-    public void onValidPass() {
+    public void showValidPass() {
         if (view != null) {
             TextInputLayout input = view.findViewById(R.id.pass_wrapper);
             input.setError(null);

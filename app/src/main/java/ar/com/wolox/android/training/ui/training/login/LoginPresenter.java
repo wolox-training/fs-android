@@ -25,19 +25,19 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
         boolean validForm = true;
 
         if (TextUtils.isEmpty(user)) {
-            getView().onEmptyEmailError();
+            getView().showEmptyEmailError();
             validForm = false;
         } else if (!Patterns.EMAIL_ADDRESS.matcher(user).matches()) {
-            getView().onInvalidEmailError();
+            getView().showInvalidEmailError();
             validForm = false;
         } else {
-            getView().onValidEmail();
+            getView().showValidEmail();
         }
 
         if (TextUtils.isEmpty(password)) {
-            getView().onEmptyPassError();
+            getView().showEmptyPassError();
         } else {
-            getView().onValidPass();
+            getView().showValidPass();
 
             if (validForm) {
                 getView().onValidForm();
