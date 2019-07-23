@@ -1,6 +1,7 @@
 package ar.com.wolox.android.training.ui.training.login;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
 import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Patterns;
@@ -28,7 +29,8 @@ import retrofit2.Response;
 public class LoginPresenter extends BasePresenter<ILoginView> {
 
     private static final long DELAY = 5000L;
-    private static final int ERROR_CODE = 400;
+    private static final int ERROR_DEFAULT_CODE = 400;
+    private static final int ERROR_NETWORK_CODE = 500;
 
     private CredentialsSession userCredentials;
     private RetrofitServices retrofitServices;
@@ -108,37 +110,52 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
         headerMap.put("Content-Type", mapKey);
         headerMap.put("Accept", mapKey);
 
-        Call response = retrofitServices.getService(IRest.class).getUserRequest(headerMap, username, password);
-        response.enqueue(new Callback() {
-            @Override
-            public void onResponse(Call call, Response response) {
-                if (response.isSuccessful()) {
-                    try {
-                        if (response.body() != null) {
-                            JSONArray jsonArray = new JSONArray(response.body().toString());
-                            if (jsonArray.length() < 1) {
-                                getView().showCredentialsError(ERROR_CODE, ctx.getString(R.string.error_wrong_credentials));
-                            } else if (jsonArray.length() > 1) {
-                                getView().showCredentialsError(ERROR_CODE, ctx.getString(R.string.error_multiple_response));
+        if (!isNetworkAvailable(ctx)) {
+            getView().showError(ERROR_NETWORK_CODE, ctx.getString(R.string.error_network_unavailable));
+        } else {
+            Call response = retrofitServices.getService(IRest.class).getUserRequest(headerMap, username, password);
+            response.enqueue(new Callback() {
+                @Override
+                public void onResponse(Call call, Response response) {
+                    if (response.isSuccessful()) {
+                        try {
+                            if (response.body() != null) {
+                                JSONArray jsonArray = new JSONArray(response.body().toString());
+                                if (jsonArray.length() < 1) {
+                                    getView().showError(ERROR_DEFAULT_CODE, ctx.getString(R.string.error_wrong_credentials));
+                                } else if (jsonArray.length() > 1) {
+                                    getView().showError(ERROR_DEFAULT_CODE, ctx.getString(R.string.error_multiple_response));
+                                } else {
+                                    getView().showMainScreen();
+                                }
                             } else {
-                                getView().showMainScreen();
+                                getView().showError(ERROR_DEFAULT_CODE, ctx.getString(R.string.error_wrong_credentials));
                             }
-                        } else {
-                            getView().showCredentialsError(ERROR_CODE, ctx.getString(R.string.error_wrong_credentials));
+
+                        } catch (Exception e) {
+                            getView().showError(ERROR_DEFAULT_CODE, e.getMessage());
                         }
-
-                    } catch (Exception e) {
-                        getView().showCredentialsError(ERROR_CODE, e.getMessage());
+                    } else {
+                        getView().showError(response.code(), response.message());
                     }
-                } else {
-                    getView().showCredentialsError(response.code(), response.message());
                 }
-            }
 
-            @Override
-            public void onFailure(Call call, Throwable t) {
-                getView().showCredentialsError(ERROR_CODE, t.getMessage());
-            }
-        });
+                @Override
+                public void onFailure(Call call, Throwable t) {
+                    getView().showError(ERROR_DEFAULT_CODE, t.getMessage());
+                }
+            });
+        }
+    }
+
+    public boolean isNetworkAvailable(final Context ctx) {
+        try {
+            ConnectivityManager cnxManager = (ConnectivityManager) ctx.getSystemService(Context.CONNECTIVITY_SERVICE);
+            return cnxManager.getActiveNetworkInfo() != null &&
+                    cnxManager.getActiveNetworkInfo().isAvailable() &&
+                    cnxManager.getActiveNetworkInfo().isConnected();
+        } catch (Exception e) {
+            return false;
+        }
     }
 }

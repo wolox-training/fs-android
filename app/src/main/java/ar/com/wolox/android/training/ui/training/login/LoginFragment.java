@@ -173,7 +173,7 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements View
     }
 
     @Override
-    public void showCredentialsError(int code, String msg) {
+    public void showError(int code, String msg) {
         String message = "Error: " + code + " - " + msg;
         Toast.makeText(ctx, message, Toast.LENGTH_LONG).show();
     }

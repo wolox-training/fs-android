@@ -18,7 +18,7 @@ public interface ILoginView {
 
     void updateCredentials(User user);
 
-    void showCredentialsError(int errorCode, String message);
+    void showError(int errorCode, String message);
     void showSingUpScreen();
     void showTermsAndConditionWebView();
     void cleanCredentials();
