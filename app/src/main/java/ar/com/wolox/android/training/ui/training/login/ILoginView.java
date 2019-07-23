@@ -18,13 +18,19 @@ public interface ILoginView {
 
     void updateCredentials(User user);
 
-    void showError(int errorCode, String message);
+    void showInvalidCredentialsError();
+    void showMultiplesCredentialsError();
+    void showNetworkUnavailableError();
+    void showServiceError(String message);
+
     void showSingUpScreen();
     void showTermsAndConditionWebView();
     void cleanCredentials();
 
     void showMainScreen();
 
-    void showProgressDialog(String message);
+    void showProgressDialog();
     void hideProgressDialog();
+
+    boolean isNetworkAvailable();
 }

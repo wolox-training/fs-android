@@ -5,32 +5,41 @@ package ar.com.wolox.android.training.model;
  */
 public class User {
 
-    private String user;
-    private String pass;
+    private String email;
+    private String password;
+    private String username;
 
     /**
-     * @param user username to login
-     * @param pass password to login
+     * @param email email to login
+     * @param password password to login
      */
-    public User(String user, String pass) {
+    public User(String email, String password) {
 
-        this.user = user;
-        this.pass = pass;
+        this.email = email;
+        this.password = password;
     }
 
-    public String getUser() {
-        return user;
+    public String getEmail() {
+        return email;
     }
 
-    public void setUser(String user) {
-        this.user = user;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public String getPass() {
-        return pass;
+    public String getPassword() {
+        return password;
     }
 
-    public void setPass(String pass) {
-        this.pass = pass;
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }

@@ -3,6 +3,7 @@ package ar.com.wolox.android.training.ui.training.login;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.view.View;
 import android.widget.Button;
@@ -12,6 +13,8 @@ import android.widget.Toast;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+
+import java.util.Objects;
 
 import ar.com.wolox.android.R;
 import ar.com.wolox.android.training.model.User;
@@ -27,7 +30,6 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements View
 
     private static final String URL_TYC = "https://www.wolox.com.ar/";
 
-    private Context ctx;
     private View view;
 
     private ConstraintLayout mContentView;
@@ -45,7 +47,6 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements View
     @Override
     public void init() {
 
-        ctx = getContext();
         view = getView();
         if (view != null) {
             //Views
@@ -71,10 +72,6 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements View
         pDialog.setCanceledOnTouchOutside(false);
 
         getPresenter().onInit();
-
-        //TODO: Dummy simulation
-        //mEmailTxt.setText("melvin.lambert15@example.com");
-        //mPassTxt.setText("qwerty");
     }
 
     @Override
@@ -83,7 +80,7 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements View
         // we created a global oneClick method for the activity
         switch (viewOnClick.getId()) {
             case R.id.btn_login:
-                getPresenter().onLoginButtonClicked(mEmailTxt.getText(), mPassTxt.getText(), ctx);
+                getPresenter().onLoginButtonClicked(mEmailTxt.getText(), mPassTxt.getText());
                 break;
             case R.id.btn_singup:
                 getPresenter().onSingUpButtonClicked();
@@ -145,7 +142,7 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements View
             mEmailTxt.setText("");
             mPassTxt.setText("");
 
-            Intent intent = new Intent(ctx, SingUpActivity.class);
+            Intent intent = new Intent(getContext(), SingUpActivity.class);
             startActivity(intent);
     }
 
@@ -163,8 +160,8 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements View
 
     @Override
     public void updateCredentials(User user) {
-        mEmailTxt.setText(user.getUser());
-        mPassTxt.setText(user.getPass());
+        mEmailTxt.setText(user.getEmail());
+        mPassTxt.setText(user.getPassword());
     }
 
     @Override
@@ -176,19 +173,14 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements View
 
     @Override
     public void showMainScreen() {
-        Intent intent = new Intent(ctx, MainActivity.class);
+        Intent intent = new Intent(getContext(), MainActivity.class);
         startActivity(intent);
     }
 
     @Override
-    public void showError(int code, String msg) {
-        Toast.makeText(ctx, msg, Toast.LENGTH_LONG).show();
-    }
-
-    @Override
-    public void showProgressDialog(String msg) {
+    public void showProgressDialog() {
         if (pDialog != null) {
-            pDialog.setMessage(msg);
+            pDialog.setMessage(getString(R.string.login_service_request));
             pDialog.show();
         }
     }
@@ -198,5 +190,38 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements View
         if (pDialog != null) {
             pDialog.dismiss();
         }
+    }
+
+    @Override
+    public boolean isNetworkAvailable() {
+        try {
+            ConnectivityManager cnxManager = (ConnectivityManager) Objects.requireNonNull(getContext())
+                    .getSystemService(Context.CONNECTIVITY_SERVICE);
+            return cnxManager.getActiveNetworkInfo() != null &&
+                    cnxManager.getActiveNetworkInfo().isAvailable() &&
+                    cnxManager.getActiveNetworkInfo().isConnected();
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    @Override
+    public void showInvalidCredentialsError() {
+        Toast.makeText(getContext(), getString(R.string.error_wrong_credentials), Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void showMultiplesCredentialsError() {
+        Toast.makeText(getContext(), getString(R.string.error_multiple_response), Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void showNetworkUnavailableError() {
+        Toast.makeText(getContext(), getString(R.string.error_network_unavailable), Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void showServiceError(String message) {
+        Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
     }
 }
