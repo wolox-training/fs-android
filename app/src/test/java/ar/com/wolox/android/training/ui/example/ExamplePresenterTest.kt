@@ -25,8 +25,6 @@ class ExamplePresenterTest {
     @Test
     fun bla() {
         val username = mUserSession.username
-
-        assertEquals(username, "hola")
     }
 
     @Test
