@@ -31,7 +31,7 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
         this.retrofitServices = retrofitServices;
     }
 
-    public void onInit() {
+    void onInit() {
 
         // Get credentials from shared preferences, creates an user object (if exists) and update credentials
         if (userCredentials.getUsername() != null && userCredentials.getPassword() != null) {
@@ -45,7 +45,7 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
      * @param user userId from login screen, must have valid format and cannot be empty
      * @param password passId from login screen, cannot be empty
      */
-    public void onLoginButtonClicked(final CharSequence user, final CharSequence password) {
+    void onLoginButtonClicked(final CharSequence user, final CharSequence password) {
         boolean validForm = true;
 
         if (TextUtils.isEmpty(user)) {
@@ -72,19 +72,19 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
         }
     }
 
-    public void onSingUpButtonClicked() {
+    void onSingUpButtonClicked() {
         userCredentials.clearCredentials();
         getView().cleanCredentials();
         getView().showSingUpScreen();
     }
 
-    public void onTermsAndConditionClicked() {
+    void onTermsAndConditionClicked() {
         getView().showTermsAndConditionWebView();
     }
 
     private void sendLoginRequest(final String username, final String password) {
 
-        Call response = retrofitServices.getService(IUserService.class).getUserRequest(username, password);
+        Call<List<User>> response = retrofitServices.getService(IUserService.class).getUserRequest(username, password);
         response.enqueue(new Callback<List<User>>() {
             @Override
             public void onResponse(@NotNull Call<List<User>> call, @NotNull Response<List<User>> response) {
@@ -112,7 +112,7 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
             }
 
             @Override
-            public void onFailure(Call call, Throwable t) {
+            public void onFailure(@NotNull Call call, @NotNull Throwable t) {
                 getView().showServiceError(t.getMessage());
             }
         });
