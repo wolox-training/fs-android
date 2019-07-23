@@ -14,17 +14,8 @@ public class User {
      */
     public User(String user, String pass) {
 
-        if (user != null) {
-            this.user = user;
-        } else {
-            this.user = "";
-        }
-
-        if (pass != null) {
-            this.pass = pass;
-        } else {
-            this.pass = "";
-        }
+        this.user = user;
+        this.pass = pass;
     }
 
     public String getUser() {
@@ -41,9 +32,5 @@ public class User {
 
     public void setPass(String pass) {
         this.pass = pass;
-    }
-
-    public boolean isValid() {
-        return !user.isEmpty() && !pass.isEmpty();
     }
 }

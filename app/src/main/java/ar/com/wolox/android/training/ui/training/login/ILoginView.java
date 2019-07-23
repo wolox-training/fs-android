@@ -7,16 +7,18 @@ import ar.com.wolox.android.training.model.User;
  */
 public interface ILoginView {
 
-    void onEmptyEmailError();
-    void onInvalidEmailError();
-    void onEmptyPassError();
+    void showEmptyEmailError();
+    void showInvalidEmailError();
+    void showEmptyPassError();
 
-    void onValidEmail();
-    void onValidPass();
-
-    void onValidForm();
-
-    void toSingUpScreen();
+    void showValidEmail();
+    void showValidPass();
 
     void updateCredentials(User user);
+
+    void showSingUpScreen();
+    void showTermsAndConditionWebView();
+    void cleanCredentials();
+
+    void showMainScreen();
 }

@@ -21,8 +21,8 @@ public class CredentialsSession {
     @Inject
     public CredentialsSession(SharedPreferencesManager sharedPreferencesManager) {
         manager = sharedPreferencesManager;
-        user = sharedPreferencesManager.get(USER_KEY, "");
-        pass = sharedPreferencesManager.get(PASS_KEY, "");
+        user = sharedPreferencesManager.get(USER_KEY, null);
+        pass = sharedPreferencesManager.get(PASS_KEY, null);
     }
 
     public String getUsername() {

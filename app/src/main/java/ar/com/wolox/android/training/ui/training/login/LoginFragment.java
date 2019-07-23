@@ -6,10 +6,10 @@ import android.net.Uri;
 import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -29,7 +29,7 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements View
     private View view;
     private Context ctx;
 
-    private RelativeLayout mContentView;
+    private ConstraintLayout mContentView;
     private GifImageView mLogoGif;
     private TextInputEditText mEmailTxt;
     private TextInputEditText mPassTxt;
@@ -63,8 +63,7 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements View
             mTvTyc.setOnClickListener(this);
         }
 
-        getPresenter().initCredentials();
-
+        getPresenter().onInit();
         new Handler().postDelayed(this::initMainScreen, DELAY);
     }
 
@@ -86,21 +85,15 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements View
                 getPresenter().onSingUpButtonClicked();
                 break;
             case R.id.tyc_txt:
-                toTermsAndConditionsWebView();
+                getPresenter().onTermsAndConditionClicked();
                 break;
             default:
                 break;
         }
     }
 
-    private void toTermsAndConditionsWebView() {
-
-        Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(URL_TYC));
-        startActivity(i);
-    }
-
     @Override
-    public void onEmptyEmailError() {
+    public void showEmptyEmailError() {
         if (view != null) {
             TextInputLayout input = view.findViewById(R.id.user_wrapper);
             input.setError(getString(R.string.error_empty_field));
@@ -109,7 +102,7 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements View
     }
 
     @Override
-    public void onInvalidEmailError() {
+    public void showInvalidEmailError() {
         if (view != null) {
             TextInputLayout input = view.findViewById(R.id.user_wrapper);
             input.setError(getString(R.string.error_invalid_email));
@@ -118,7 +111,7 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements View
     }
 
     @Override
-    public void onValidEmail() {
+    public void showValidEmail() {
         if (view != null) {
             TextInputLayout input = view.findViewById(R.id.user_wrapper);
             input.setError(null);
@@ -127,7 +120,7 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements View
     }
 
     @Override
-    public void onEmptyPassError() {
+    public void showEmptyPassError() {
         if (view != null) {
             TextInputLayout input = view.findViewById(R.id.pass_wrapper);
             input.setError(getString(R.string.error_empty_field));
@@ -136,7 +129,7 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements View
     }
 
     @Override
-    public void onValidPass() {
+    public void showValidPass() {
         if (view != null) {
             TextInputLayout input = view.findViewById(R.id.pass_wrapper);
             input.setError(null);
@@ -145,15 +138,27 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements View
     }
 
     @Override
-    public void onValidForm() {
-        // TODO: Temporal method until main screen exists... after that, delete and move to main screen
-        Toast.makeText(ctx, getString(R.string.valid_login_form), Toast.LENGTH_SHORT).show();
+    public void showSingUpScreen() {
+        // TODO: Temporal method until singup screen exists... after that, delete and move to singup screen
+        Toast.makeText(ctx, getString(R.string.login_to_singup), Toast.LENGTH_SHORT).show();
     }
 
     @Override
-    public void toSingUpScreen() {
-        // TODO: Temporal method until singup screen exists... after that, delete and move to singup screen
-        Toast.makeText(ctx, getString(R.string.login_to_singup), Toast.LENGTH_SHORT).show();
+    public void showTermsAndConditionWebView() {
+        Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(URL_TYC));
+        startActivity(i);
+    }
+
+    @Override
+    public void cleanCredentials() {
+        mEmailTxt.setText("");
+        mPassTxt.setText("");
+    }
+
+    @Override
+    public void showMainScreen() {
+        // TODO: Temporal method until main screen exists... after that, delete and move to main screen
+        Toast.makeText(ctx, getString(R.string.valid_login_form), Toast.LENGTH_SHORT).show();
     }
 
     @Override
