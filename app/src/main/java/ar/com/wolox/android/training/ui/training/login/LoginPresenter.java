@@ -21,6 +21,15 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
         userCredentials = credentialsSession;
     }
 
+    public void onInit() {
+
+        // Get credentials from shared preferences, creates an user object (if exists) and update credentials
+        if (userCredentials.getUsername() != null && userCredentials.getPassword() != null) {
+            User user = new User(userCredentials.getUsername(), userCredentials.getPassword());
+            getView().updateCredentials(user);
+        }
+    }
+
     /**
      *
      * @param user userId from login screen, must have valid format and cannot be empty
@@ -30,39 +39,35 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
         boolean validForm = true;
 
         if (TextUtils.isEmpty(user)) {
-            getView().onEmptyEmailError();
+            getView().showEmptyEmailError();
             validForm = false;
         } else if (!Patterns.EMAIL_ADDRESS.matcher(user).matches()) {
-            getView().onInvalidEmailError();
+            getView().showInvalidEmailError();
             validForm = false;
         } else {
-            getView().onValidEmail();
+            getView().showValidEmail();
         }
 
         if (TextUtils.isEmpty(password)) {
-            getView().onEmptyPassError();
+            getView().showEmptyPassError();
         } else {
-            getView().onValidPass();
+            getView().showValidPass();
 
             if (validForm) {
                 userCredentials.setUsername(user.toString());
                 userCredentials.setPassword(password.toString());
-
-                getView().onValidForm();
+                getView().showMainScreen();
             }
         }
     }
 
-    public User loadCredentials() {
-        User user = new User();
-
-        user.user = userCredentials.getUsername();
-        user.pass = userCredentials.getPassword();
-        return user;
-    }
-
     public void onSingUpButtonClicked() {
         userCredentials.clearCredentials();
-        getView().toSingUpScreen();
+        getView().cleanCredentials();
+        getView().showSingUpScreen();
+    }
+
+    public void onTermsAndConditionClicked() {
+        getView().showTermsAndConditionWebView();
     }
 }
