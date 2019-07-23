@@ -5,7 +5,6 @@ import android.util.Patterns;
 
 import javax.inject.Inject;
 
-import ar.com.wolox.android.training.utils.UserSession;
 import ar.com.wolox.wolmo.core.presenter.BasePresenter;
 
 /**
@@ -14,7 +13,7 @@ import ar.com.wolox.wolmo.core.presenter.BasePresenter;
 public class LoginPresenter extends BasePresenter<ILoginView> {
 
     @Inject
-    public LoginPresenter(UserSession userSession) {}
+    public LoginPresenter() {}
 
     /**
      *
@@ -43,5 +42,14 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
                 getView().onValidForm();
             }
         }
+    }
+
+    public void onSingUpButtonClicked() {
+        getView().cleanCredentials();
+        getView().showSingUpScreen();
+    }
+
+    public void onTermsAndConditionClicked() {
+        getView().showTermsAndConditionWebView();
     }
 }

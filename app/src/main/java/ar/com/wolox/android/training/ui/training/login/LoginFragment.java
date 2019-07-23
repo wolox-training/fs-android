@@ -81,25 +81,14 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements View
                 getPresenter().onLoginButtonClicked(mEmailTxt.getText(), mPassTxt.getText());
                 break;
             case R.id.btn_singup:
-                toSingUpScreen();
+                getPresenter().onSingUpButtonClicked();
                 break;
             case R.id.tyc_txt:
-                toTermsAndConditionsWebView();
+                getPresenter().onTermsAndConditionClicked();
                 break;
             default:
                 break;
         }
-    }
-
-    private void toSingUpScreen() {
-        // TODO: Temporal method until singup screen exists... after that, delete and move to singup screen
-        Toast.makeText(ctx, getString(R.string.login_to_singup), Toast.LENGTH_SHORT).show();
-    }
-
-    private void toTermsAndConditionsWebView() {
-
-        Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(urlTyc));
-        startActivity(i);
     }
 
     @Override
@@ -145,6 +134,24 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements View
             input.setError(null);
             mPassTxt.setBackgroundResource(R.drawable.back_txt_white_border);
         }
+    }
+
+    @Override
+    public void showSingUpScreen() {
+        // TODO: Temporal method until singup screen exists... after that, delete and move to singup screen
+        Toast.makeText(ctx, getString(R.string.login_to_singup), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showTermsAndConditionWebView() {
+        Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(urlTyc));
+        startActivity(i);
+    }
+
+    @Override
+    public void cleanCredentials() {
+        mEmailTxt.setText("");
+        mPassTxt.setText("");
     }
 
     @Override

@@ -12,5 +12,9 @@ public interface ILoginView {
     void showValidEmail();
     void showValidPass();
 
+    void showSingUpScreen();
+    void showTermsAndConditionWebView();
+    void cleanCredentials();
+
     void onValidForm();
 }
