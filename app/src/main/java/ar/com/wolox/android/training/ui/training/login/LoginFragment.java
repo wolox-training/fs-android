@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -90,7 +91,7 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements View
         // we created a global oneClick method for the activity
         switch (viewOnClick.getId()) {
             case R.id.btn_login:
-                getPresenter().onLoginButtonClicked(mEmailTxt.getText(), mPassTxt.getText());
+                getPresenter().onLoginButtonClicked(mEmailTxt.getText(), mPassTxt.getText(), ctx);
                 break;
             case R.id.btn_singup:
                 getPresenter().onSingUpButtonClicked();
@@ -155,17 +156,23 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements View
     }
 
     @Override
-    public void onValidForm() {
-        Intent intent = new Intent(getContext(), MainActivity.class);
-        startActivity(intent);
-    }
-
-    @Override
     public void toSingUpScreen() {
         mEmailTxt.setText("");
         mPassTxt.setText("");
 
-        Intent intent = new Intent(getContext(), SingUpActivity.class);
+        Intent intent = new Intent(ctx, SingUpActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    public void toMainScreen() {
+        Intent intent = new Intent(ctx, MainActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public void showCredentialsError(int code, String msg) {
+        String message = "Error: " + code + " - " + msg;
+        Toast.makeText(ctx, message, Toast.LENGTH_LONG).show();
     }
 }

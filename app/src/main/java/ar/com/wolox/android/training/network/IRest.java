@@ -18,6 +18,8 @@ public interface IRest {
     Call<JsonElement> getUsersListRequest(@HeaderMap Map<String, String> headers);
 
     @GET("/users")
-    Call<JsonElement> getUserRequest(@HeaderMap Map<String, String> headers, @Query("email") String query);
+    Call<JsonElement> getUserRequest(@HeaderMap Map<String, String> headers,
+                                     @Query("email") String emailStr,
+                                     @Query("password") String passStr);
 
 }

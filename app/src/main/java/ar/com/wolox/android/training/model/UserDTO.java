@@ -5,6 +5,7 @@ package ar.com.wolox.android.training.model;
  */
 public class UserDTO {
 
+    //TODO: Model of Rest data, useless for now (Dummy)
     public String username = "";
     public String password = "";
     public String name = "";

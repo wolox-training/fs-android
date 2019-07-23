@@ -12,7 +12,8 @@ public interface ILoginView {
     void onValidEmail();
     void onValidPass();
 
-    void onValidForm();
-
     void toSingUpScreen();
+
+    void toMainScreen();
+    void showCredentialsError(int errorCode, String message);
 }
