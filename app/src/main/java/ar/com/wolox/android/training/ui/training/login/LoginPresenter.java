@@ -39,7 +39,7 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
             getView().showValidPass();
 
             if (validForm) {
-                getView().onValidForm();
+                getView().showMainScreen();
             }
         }
     }

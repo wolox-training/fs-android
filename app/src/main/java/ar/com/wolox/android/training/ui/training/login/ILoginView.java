@@ -16,5 +16,5 @@ public interface ILoginView {
     void showTermsAndConditionWebView();
     void cleanCredentials();
 
-    void onValidForm();
+    void showMainScreen();
 }

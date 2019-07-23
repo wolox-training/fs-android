@@ -23,8 +23,8 @@ import pl.droidsonroids.gif.GifImageView;
  */
 public class LoginFragment extends WolmoFragment<LoginPresenter> implements View.OnClickListener, ILoginView {
 
-    private final long delay = 5000L;
-    private final String urlTyc = "https://www.wolox.com.ar/";
+    private static final long DELAY = 5000L;
+    private static final String URL_TYC = "https://www.wolox.com.ar/";
 
     private View view;
     private Context ctx;
@@ -63,7 +63,7 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements View
             mTvTyc.setOnClickListener(this);
         }
 
-        new Handler().postDelayed(this::initMainScreen, delay);
+        new Handler().postDelayed(this::initMainScreen, DELAY);
     }
 
     private void initMainScreen() {
@@ -144,7 +144,7 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements View
 
     @Override
     public void showTermsAndConditionWebView() {
-        Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(urlTyc));
+        Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(URL_TYC));
         startActivity(i);
     }
 
@@ -155,7 +155,7 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements View
     }
 
     @Override
-    public void onValidForm() {
+    public void showMainScreen() {
         // TODO: Temporal method until main screen exists... after that, delete and move to main screen
         Toast.makeText(ctx, getString(R.string.valid_login_form), Toast.LENGTH_SHORT).show();
     }
