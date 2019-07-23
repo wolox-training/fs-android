@@ -6,10 +6,10 @@ import android.net.Uri;
 import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -25,13 +25,13 @@ import pl.droidsonroids.gif.GifImageView;
  */
 public class LoginFragment extends WolmoFragment<LoginPresenter> implements View.OnClickListener, ILoginView {
 
-    private final long delay = 5000L;
-    private final String urlTyc = "https://www.wolox.com.ar/";
+    private static final long DELAY = 5000L;
+    private static final String URL_TYC = "https://www.wolox.com.ar/";
 
-    private View view;
     private Context ctx;
+    private View view;
 
-    private RelativeLayout mContentView;
+    private ConstraintLayout mContentView;
     private GifImageView mLogoGif;
     private TextInputEditText mEmailTxt;
     private TextInputEditText mPassTxt;
@@ -45,7 +45,6 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements View
     public void init() {
 
         ctx = getContext();
-
         view = getView();
         if (view != null) {
             //Views
@@ -65,17 +64,14 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements View
             mTvTyc.setOnClickListener(this);
         }
 
-        new Handler().postDelayed(this::initMainScreen, delay);
+        getPresenter().onInit();
+        new Handler().postDelayed(this::initMainScreen, DELAY);
     }
 
     private void initMainScreen() {
         // Hide animation and show main screen
         mContentView.setVisibility(View.VISIBLE);
         mLogoGif.setVisibility(View.GONE);
-
-        User user = getPresenter().loadCredentials();
-        mEmailTxt.setText(user.user);
-        mPassTxt.setText(user.pass);
 
         //TODO: Dummy simulation
         //mEmailTxt.setText("melvin.lambert15@example.com");
@@ -94,21 +90,15 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements View
                 getPresenter().onSingUpButtonClicked();
                 break;
             case R.id.tyc_txt:
-                toTermsAndConditionsWebView();
+                getPresenter().onTermsAndConditionClicked();
                 break;
             default:
                 break;
         }
     }
 
-    private void toTermsAndConditionsWebView() {
-
-        Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(urlTyc));
-        startActivity(i);
-    }
-
     @Override
-    public void onEmptyEmailError() {
+    public void showEmptyEmailError() {
         if (view != null) {
             TextInputLayout input = view.findViewById(R.id.user_wrapper);
             input.setError(getString(R.string.error_empty_field));
@@ -117,7 +107,7 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements View
     }
 
     @Override
-    public void onInvalidEmailError() {
+    public void showInvalidEmailError() {
         if (view != null) {
             TextInputLayout input = view.findViewById(R.id.user_wrapper);
             input.setError(getString(R.string.error_invalid_email));
@@ -126,7 +116,7 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements View
     }
 
     @Override
-    public void onValidEmail() {
+    public void showValidEmail() {
         if (view != null) {
             TextInputLayout input = view.findViewById(R.id.user_wrapper);
             input.setError(null);
@@ -135,7 +125,7 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements View
     }
 
     @Override
-    public void onEmptyPassError() {
+    public void showEmptyPassError() {
         if (view != null) {
             TextInputLayout input = view.findViewById(R.id.pass_wrapper);
             input.setError(getString(R.string.error_empty_field));
@@ -144,7 +134,7 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements View
     }
 
     @Override
-    public void onValidPass() {
+    public void showValidPass() {
         if (view != null) {
             TextInputLayout input = view.findViewById(R.id.pass_wrapper);
             input.setError(null);
@@ -152,18 +142,35 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements View
         }
     }
 
-    @Override
-    public void toSingUpScreen() {
-        mEmailTxt.setText("");
-        mPassTxt.setText("");
+    public void showSingUpScreen() {
+            mEmailTxt.setText("");
+            mPassTxt.setText("");
 
-        Intent intent = new Intent(ctx, SingUpActivity.class);
-        startActivity(intent);
+            Intent intent = new Intent(getContext(), SingUpActivity.class);
+            startActivity(intent);
     }
 
     @Override
-    public void toMainScreen() {
-        Intent intent = new Intent(ctx, MainActivity.class);
+    public void showTermsAndConditionWebView() {
+        Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(URL_TYC));
+        startActivity(i);
+    }
+
+    @Override
+    public void cleanCredentials() {
+        mEmailTxt.setText("");
+        mPassTxt.setText("");
+    }
+
+    @Override
+    public void updateCredentials(User user) {
+        mEmailTxt.setText(user.getUser());
+        mPassTxt.setText(user.getPass());
+    }
+
+    @Override
+    public void showMainScreen() {
+        Intent intent = new Intent(getContext(), MainActivity.class);
         startActivity(intent);
     }
 
