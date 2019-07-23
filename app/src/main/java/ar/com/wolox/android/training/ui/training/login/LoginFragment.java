@@ -3,7 +3,6 @@ package ar.com.wolox.android.training.ui.training.login;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -25,7 +24,6 @@ import pl.droidsonroids.gif.GifImageView;
  */
 public class LoginFragment extends WolmoFragment<LoginPresenter> implements View.OnClickListener, ILoginView {
 
-    private static final long DELAY = 5000L;
     private static final String URL_TYC = "https://www.wolox.com.ar/";
 
     private Context ctx;
@@ -65,13 +63,6 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements View
         }
 
         getPresenter().onInit();
-        new Handler().postDelayed(this::initMainScreen, DELAY);
-    }
-
-    private void initMainScreen() {
-        // Hide animation and show main screen
-        mContentView.setVisibility(View.VISIBLE);
-        mLogoGif.setVisibility(View.GONE);
 
         //TODO: Dummy simulation
         //mEmailTxt.setText("melvin.lambert15@example.com");
@@ -166,6 +157,13 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements View
     public void updateCredentials(User user) {
         mEmailTxt.setText(user.getUser());
         mPassTxt.setText(user.getPass());
+    }
+
+    @Override
+    public void hideAnimations() {
+        // Hide animation and show main screen
+        mContentView.setVisibility(View.VISIBLE);
+        mLogoGif.setVisibility(View.GONE);
     }
 
     @Override

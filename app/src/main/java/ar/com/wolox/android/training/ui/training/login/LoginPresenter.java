@@ -1,6 +1,7 @@
 package ar.com.wolox.android.training.ui.training.login;
 
 import android.content.Context;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Patterns;
 
@@ -26,6 +27,7 @@ import retrofit2.Response;
  */
 public class LoginPresenter extends BasePresenter<ILoginView> {
 
+    private static final long DELAY = 5000L;
     private static final int ERROR_CODE = 400;
 
     private CredentialsSession userCredentials;
@@ -39,12 +41,21 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
         this.retrofitServices = retrofitServices;
     }
 
+    /**
+     * onInit(): replace onViewAttached method because its calls after fragment init
+     */
     public void onInit() {
 
         // Get credentials from shared preferences, creates an user object (if exists) and update credentials
         if (userCredentials.getUsername() != null && userCredentials.getPassword() != null) {
             User user = new User(userCredentials.getUsername(), userCredentials.getPassword());
             getView().updateCredentials(user);
+            getView().hideAnimations();
+            getView().showMainScreen();
+        } else {
+            new Handler().postDelayed(() -> {
+                getView().hideAnimations();
+            }, DELAY);
         }
     }
 

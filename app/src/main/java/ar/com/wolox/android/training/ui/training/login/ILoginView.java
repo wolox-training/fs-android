@@ -14,6 +14,8 @@ public interface ILoginView {
     void showValidEmail();
     void showValidPass();
 
+    void hideAnimations();
+
     void updateCredentials(User user);
 
     void showCredentialsError(int errorCode, String message);
