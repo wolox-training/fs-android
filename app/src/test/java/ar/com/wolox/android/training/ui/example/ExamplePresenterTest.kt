@@ -1,7 +1,6 @@
 package ar.com.wolox.android.training.ui.example
 
 import ar.com.wolox.android.training.utils.UserSession
-import junit.framework.Assert.assertEquals
 
 import org.junit.Before
 import org.junit.Test
@@ -18,13 +17,7 @@ class ExamplePresenterTest {
     fun createInstances() {
         mExampleView = mock(IExampleView::class.java)
         mUserSession = mock(UserSession::class.java)
-        Mockito.doReturn("holaa").`when`(mUserSession).username
         mExamplePresenter = ExamplePresenter(mUserSession)
-    }
-
-    @Test
-    fun bla() {
-        val username = mUserSession.username
     }
 
     @Test
