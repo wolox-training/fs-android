@@ -146,7 +146,7 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements View
             mEmailTxt.setText("");
             mPassTxt.setText("");
 
-            Intent intent = new Intent(getContext(), SingUpActivity.class);
+            Intent intent = new Intent(ctx, SingUpActivity.class);
             startActivity(intent);
     }
 
@@ -170,7 +170,7 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements View
 
     @Override
     public void showMainScreen() {
-        Intent intent = new Intent(getContext(), MainActivity.class);
+        Intent intent = new Intent(ctx, MainActivity.class);
         startActivity(intent);
     }
 
