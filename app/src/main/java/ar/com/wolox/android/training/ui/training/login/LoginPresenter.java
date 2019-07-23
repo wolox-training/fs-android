@@ -15,7 +15,7 @@ import javax.inject.Inject;
 
 import ar.com.wolox.android.R;
 import ar.com.wolox.android.training.model.User;
-import ar.com.wolox.android.training.network.IRest;
+import ar.com.wolox.android.training.network.IUserService;
 import ar.com.wolox.android.training.utils.CredentialsSession;
 import ar.com.wolox.wolmo.core.presenter.BasePresenter;
 import ar.com.wolox.wolmo.networking.retrofit.RetrofitServices;
@@ -116,7 +116,7 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
             getView().hideProgressDialog();
             getView().showError(ERROR_NETWORK_CODE, ctx.getString(R.string.error_network_unavailable));
         } else {
-            Call response = retrofitServices.getService(IRest.class).getUserRequest(headerMap, username, password);
+            Call response = retrofitServices.getService(IUserService.class).getUserRequest(headerMap, username, password);
             response.enqueue(new Callback() {
                 @Override
                 public void onResponse(Call call, Response response) {

@@ -1,13 +1,12 @@
 package ar.com.wolox.android.training.ui.example
 
-import org.mockito.Mockito.mock
-import org.mockito.Mockito.times
-import org.mockito.Mockito.verify
-
 import ar.com.wolox.android.training.utils.UserSession
+import junit.framework.Assert.assertEquals
 
 import org.junit.Before
 import org.junit.Test
+import org.mockito.Mockito
+import org.mockito.Mockito.mock
 
 class ExamplePresenterTest {
 
@@ -19,20 +18,28 @@ class ExamplePresenterTest {
     fun createInstances() {
         mExampleView = mock(IExampleView::class.java)
         mUserSession = mock(UserSession::class.java)
+        Mockito.doReturn("holaa").`when`(mUserSession).username
         mExamplePresenter = ExamplePresenter(mUserSession)
+    }
+
+    @Test
+    fun bla() {
+        val username = mUserSession.username
+
+        assertEquals(username, "hola")
     }
 
     @Test
     fun usernameIsStored() {
         mExamplePresenter.attachView(mExampleView)
         mExamplePresenter.storeUsername("Test")
-        verify<UserSession>(mUserSession, times(1)).username = "Test"
+        Mockito.verify<UserSession>(mUserSession, Mockito.times(1)).username = "Test"
     }
 
     @Test
     fun storeUsernameUpdatesView() {
         mExamplePresenter.attachView(mExampleView)
         mExamplePresenter.storeUsername("Test")
-        verify<IExampleView>(mExampleView, times(1)).onUsernameSaved()
+        Mockito.verify<IExampleView>(mExampleView, Mockito.times(1)).onUsernameSaved()
     }
 }

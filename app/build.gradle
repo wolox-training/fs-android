@@ -141,4 +141,5 @@ dependencies {
     testImplementation "org.mockito:mockito-inline:$mockito_inline_version" // Mockito inline adds support for mocking final classes and methods
     testImplementation "org.assertj:assertj-core:$assertj_version"
     testImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$leak_canary_version"
+    testImplementation 'com.android.support.test:runner:1.0.2'
 }

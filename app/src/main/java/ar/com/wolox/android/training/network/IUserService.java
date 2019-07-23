@@ -10,9 +10,9 @@ import retrofit2.http.HeaderMap;
 import retrofit2.http.Query;
 
 /**
- * IRest services
+ * IUserService services
  */
-public interface IRest {
+public interface IUserService {
 
     @GET("/users")
     Call<JsonElement> getUsersListRequest(@HeaderMap Map<String, String> headers);
