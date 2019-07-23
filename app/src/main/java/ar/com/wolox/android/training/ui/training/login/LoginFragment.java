@@ -1,6 +1,5 @@
 package ar.com.wolox.android.training.ui.training.login;
 
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Handler;
@@ -28,7 +27,6 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements View
     private static final String URL_TYC = "https://www.wolox.com.ar/";
 
     private View view;
-    private Context ctx;
 
     private ConstraintLayout mContentView;
     private GifImageView mLogoGif;
@@ -42,8 +40,6 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements View
 
     @Override
     public void init() {
-
-        ctx = getContext();
 
         view = getView();
         if (view != null) {
