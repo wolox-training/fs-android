@@ -78,11 +78,8 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements View
         mPassTxt.setText(user.pass);
 
         //TODO: Dummy simulation
-        //mEmailTxt.setText("test@test.com");
-        //mPassTxt.setText("1234567A");
-
-        mEmailTxt.setText("melvin.lambert15@example.com");
-        mPassTxt.setText("qwerty");
+        //mEmailTxt.setText("melvin.lambert15@example.com");
+        //mPassTxt.setText("qwerty");
     }
 
     @Override
