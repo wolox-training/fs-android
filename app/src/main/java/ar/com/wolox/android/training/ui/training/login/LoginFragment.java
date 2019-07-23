@@ -1,5 +1,6 @@
 package ar.com.wolox.android.training.ui.training.login;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -34,6 +35,8 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements View
     private TextInputEditText mEmailTxt;
     private TextInputEditText mPassTxt;
 
+    private ProgressDialog pDialog;
+
     @Override
     public int layout() {
         return R.layout.fragment_login;
@@ -61,6 +64,11 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements View
             TextView mTvTyc = view.findViewById(R.id.tyc_txt);
             mTvTyc.setOnClickListener(this);
         }
+
+        pDialog = new ProgressDialog(getContext());
+        pDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        pDialog.setCancelable(false);
+        pDialog.setCanceledOnTouchOutside(false);
 
         getPresenter().onInit();
 
@@ -176,5 +184,20 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements View
     public void showError(int code, String msg) {
         String message = "Error: " + code + " - " + msg;
         Toast.makeText(ctx, message, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void showProgressDialog(String msg) {
+        if (pDialog != null) {
+            pDialog.setMessage(msg);
+            pDialog.show();
+        }
+    }
+
+    @Override
+    public void hideProgressDialog() {
+        if (pDialog != null) {
+            pDialog.dismiss();
+        }
     }
 }

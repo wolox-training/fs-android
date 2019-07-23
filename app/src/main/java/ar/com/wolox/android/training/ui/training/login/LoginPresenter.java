@@ -106,17 +106,21 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
 
     private void sendLoginRequest(final String username, final String password, final Context ctx) {
 
+        getView().showProgressDialog(ctx.getString(R.string.login_service_request));
+
         Map<String, String> headerMap = new HashMap<>();
         headerMap.put("Content-Type", mapKey);
         headerMap.put("Accept", mapKey);
 
         if (!isNetworkAvailable(ctx)) {
+            getView().hideProgressDialog();
             getView().showError(ERROR_NETWORK_CODE, ctx.getString(R.string.error_network_unavailable));
         } else {
             Call response = retrofitServices.getService(IRest.class).getUserRequest(headerMap, username, password);
             response.enqueue(new Callback() {
                 @Override
                 public void onResponse(Call call, Response response) {
+                    getView().hideProgressDialog();
                     if (response.isSuccessful()) {
                         try {
                             if (response.body() != null) {
@@ -142,13 +146,14 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
 
                 @Override
                 public void onFailure(Call call, Throwable t) {
+                    getView().hideProgressDialog();
                     getView().showError(ERROR_DEFAULT_CODE, t.getMessage());
                 }
             });
         }
     }
 
-    public boolean isNetworkAvailable(final Context ctx) {
+    private boolean isNetworkAvailable(final Context ctx) {
         try {
             ConnectivityManager cnxManager = (ConnectivityManager) ctx.getSystemService(Context.CONNECTIVITY_SERVICE);
             return cnxManager.getActiveNetworkInfo() != null &&

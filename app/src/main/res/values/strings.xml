@@ -32,6 +32,8 @@
     <string name="login_btn_sing_up">Sing Up</string>
     <string name="login_t_y_c_txt">By joining you agree our </string>
     <string name="login_t_y_c_link"><u>Terms &amp; Conditions</u></string>
+    
+    <string name="login_service_request">Connecting to server, please wait…</string>
 
     <!-- MainActivity -->
     <string name="main_back_msg_title">Really Exit?</string>

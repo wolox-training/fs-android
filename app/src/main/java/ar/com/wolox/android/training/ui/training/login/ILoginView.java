@@ -24,4 +24,7 @@ public interface ILoginView {
     void cleanCredentials();
 
     void showMainScreen();
+
+    void showProgressDialog(String message);
+    void hideProgressDialog();
 }
