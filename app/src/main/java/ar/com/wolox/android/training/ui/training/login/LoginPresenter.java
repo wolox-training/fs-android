@@ -1,19 +1,15 @@
 package ar.com.wolox.android.training.ui.training.login;
 
-import android.content.Context;
 import android.text.TextUtils;
 import android.util.Patterns;
 
-import org.json.JSONArray;
-
-import java.util.HashMap;
-import java.util.Map;
+import org.jetbrains.annotations.NotNull;
+import java.util.List;
 
 import javax.inject.Inject;
 
-import ar.com.wolox.android.R;
 import ar.com.wolox.android.training.model.User;
-import ar.com.wolox.android.training.network.IRest;
+import ar.com.wolox.android.training.network.IUserService;
 import ar.com.wolox.android.training.utils.CredentialsSession;
 import ar.com.wolox.wolmo.core.presenter.BasePresenter;
 import ar.com.wolox.wolmo.networking.retrofit.RetrofitServices;
@@ -26,12 +22,8 @@ import retrofit2.Response;
  */
 public class LoginPresenter extends BasePresenter<ILoginView> {
 
-    private static final int ERROR_CODE = 400;
-
     private CredentialsSession userCredentials;
     private RetrofitServices retrofitServices;
-
-    private final String mapKey = "application/json";
 
     @Inject
     public LoginPresenter(CredentialsSession credentialsSession, RetrofitServices retrofitServices) {
@@ -52,9 +44,8 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
      *
      * @param user userId from login screen, must have valid format and cannot be empty
      * @param password passId from login screen, cannot be empty
-     * @param ctx context to get string resources and show messages
      */
-    public void onLoginButtonClicked(final CharSequence user, final CharSequence password, final Context ctx) {
+    public void onLoginButtonClicked(final CharSequence user, final CharSequence password) {
         boolean validForm = true;
 
         if (TextUtils.isEmpty(user)) {
@@ -76,7 +67,7 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
                 userCredentials.setUsername(user.toString());
                 userCredentials.setPassword(password.toString());
 
-                sendLoginRequest(user.toString(), password.toString(), ctx);
+                sendLoginRequest(user.toString(), password.toString());
             }
         }
     }
@@ -91,42 +82,38 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
         getView().showTermsAndConditionWebView();
     }
 
-    private void sendLoginRequest(final String username, final String password, final Context ctx) {
+    private void sendLoginRequest(final String username, final String password) {
 
-        Map<String, String> headerMap = new HashMap<>();
-        headerMap.put("Content-Type", mapKey);
-        headerMap.put("Accept", mapKey);
-
-        Call response = retrofitServices.getService(IRest.class).getUserRequest(headerMap, username, password);
-        response.enqueue(new Callback() {
+        Call response = retrofitServices.getService(IUserService.class).getUserRequest(username, password);
+        response.enqueue(new Callback<List<User>>() {
             @Override
-            public void onResponse(Call call, Response response) {
+            public void onResponse(@NotNull Call<List<User>> call, @NotNull Response<List<User>> response) {
                 if (response.isSuccessful()) {
                     try {
                         if (response.body() != null) {
-                            JSONArray jsonArray = new JSONArray(response.body().toString());
-                            if (jsonArray.length() < 1) {
-                                getView().showCredentialsError(ERROR_CODE, ctx.getString(R.string.error_wrong_credentials));
-                            } else if (jsonArray.length() > 1) {
-                                getView().showCredentialsError(ERROR_CODE, ctx.getString(R.string.error_multiple_response));
+                            List<User> users = response.body();
+                            if (users.size() < 1) {
+                                getView().showInvalidCredentialsError();
+                            } else if (users.size() > 1) {
+                                getView().showMultiplesCredentialsError();
                             } else {
                                 getView().showMainScreen();
                             }
                         } else {
-                            getView().showCredentialsError(ERROR_CODE, ctx.getString(R.string.error_wrong_credentials));
+                            getView().showInvalidCredentialsError();
                         }
 
                     } catch (Exception e) {
-                        getView().showCredentialsError(ERROR_CODE, e.getMessage());
+                        getView().showServiceError(e.getMessage());
                     }
                 } else {
-                    getView().showCredentialsError(response.code(), response.message());
+                    getView().showServiceError(response.message());
                 }
             }
 
             @Override
             public void onFailure(Call call, Throwable t) {
-                getView().showCredentialsError(ERROR_CODE, t.getMessage());
+                getView().showServiceError(t.getMessage());
             }
         });
     }

@@ -1,6 +1,5 @@
 package ar.com.wolox.android.training.ui.training.login;
 
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Handler;
@@ -28,7 +27,6 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements View
     private static final long DELAY = 5000L;
     private static final String URL_TYC = "https://www.wolox.com.ar/";
 
-    private Context ctx;
     private View view;
 
     private ConstraintLayout mContentView;
@@ -44,7 +42,6 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements View
     @Override
     public void init() {
 
-        ctx = getContext();
         view = getView();
         if (view != null) {
             //Views
@@ -72,10 +69,6 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements View
         // Hide animation and show main screen
         mContentView.setVisibility(View.VISIBLE);
         mLogoGif.setVisibility(View.GONE);
-
-        //TODO: Dummy simulation
-        //mEmailTxt.setText("melvin.lambert15@example.com");
-        //mPassTxt.setText("qwerty");
     }
 
     @Override
@@ -84,7 +77,7 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements View
         // we created a global oneClick method for the activity
         switch (viewOnClick.getId()) {
             case R.id.btn_login:
-                getPresenter().onLoginButtonClicked(mEmailTxt.getText(), mPassTxt.getText(), ctx);
+                getPresenter().onLoginButtonClicked(mEmailTxt.getText(), mPassTxt.getText());
                 break;
             case R.id.btn_singup:
                 getPresenter().onSingUpButtonClicked();
@@ -146,7 +139,7 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements View
             mEmailTxt.setText("");
             mPassTxt.setText("");
 
-            Intent intent = new Intent(ctx, SingUpActivity.class);
+            Intent intent = new Intent(getContext(), SingUpActivity.class);
             startActivity(intent);
     }
 
@@ -164,19 +157,28 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements View
 
     @Override
     public void updateCredentials(User user) {
-        mEmailTxt.setText(user.getUser());
-        mPassTxt.setText(user.getPass());
+        mEmailTxt.setText(user.getEmail());
+        mPassTxt.setText(user.getPassword());
     }
 
     @Override
     public void showMainScreen() {
-        Intent intent = new Intent(ctx, MainActivity.class);
+        Intent intent = new Intent(getContext(), MainActivity.class);
         startActivity(intent);
     }
 
     @Override
-    public void showCredentialsError(int code, String msg) {
-        String message = "Error: " + code + " - " + msg;
-        Toast.makeText(ctx, message, Toast.LENGTH_LONG).show();
+    public void showInvalidCredentialsError() {
+        Toast.makeText(getContext(), getString(R.string.error_wrong_credentials), Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void showMultiplesCredentialsError() {
+        Toast.makeText(getContext(), getString(R.string.error_multiple_response), Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void showServiceError(String message) {
+        Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
     }
 }
