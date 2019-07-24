@@ -9,8 +9,8 @@ public class User {
     private String pass;
 
     /**
-     * @param user username to login
-     * @param pass password to login
+     * @param user username to login (can be null)
+     * @param pass password to login (can be null)
      */
     public User(String user, String pass) {
 
