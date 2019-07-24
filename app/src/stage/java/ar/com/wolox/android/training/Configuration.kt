@@ -2,6 +2,6 @@ package ar.com.wolox.android.training
 
 internal class Configuration : BaseConfiguration() {
     companion object {
-        const val API_ENDPOINT = "http://stage.api.wolox.com.ar"
+        const val API_ENDPOINT = "https://android-training.herokuapp.com/"
     }
 }
