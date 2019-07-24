@@ -3,11 +3,19 @@ package ar.com.wolox.android.training.ui.training.login;
 import android.text.TextUtils;
 import android.util.Patterns;
 
+import org.jetbrains.annotations.NotNull;
+import java.util.List;
+
 import javax.inject.Inject;
 
 import ar.com.wolox.android.training.model.User;
+import ar.com.wolox.android.training.network.IUserService;
 import ar.com.wolox.android.training.utils.CredentialsSession;
 import ar.com.wolox.wolmo.core.presenter.BasePresenter;
+import ar.com.wolox.wolmo.networking.retrofit.RetrofitServices;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * LoginPresenter
@@ -15,13 +23,15 @@ import ar.com.wolox.wolmo.core.presenter.BasePresenter;
 public class LoginPresenter extends BasePresenter<ILoginView> {
 
     private CredentialsSession userCredentials;
+    private RetrofitServices retrofitServices;
 
     @Inject
-    public LoginPresenter(CredentialsSession credentialsSession) {
-        userCredentials = credentialsSession;
+    public LoginPresenter(CredentialsSession credentialsSession, RetrofitServices retrofitServices) {
+        this.userCredentials = credentialsSession;
+        this.retrofitServices = retrofitServices;
     }
 
-    public void onInit() {
+    void onInit() {
 
         // Get credentials from shared preferences, creates an user object (if exists) and update credentials
         if (userCredentials.getUsername() != null && userCredentials.getPassword() != null) {
@@ -35,7 +45,7 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
      * @param user userId from login screen, must have valid format and cannot be empty
      * @param password passId from login screen, cannot be empty
      */
-    public void onLoginButtonClicked(final CharSequence user, final CharSequence password) {
+    void onLoginButtonClicked(final CharSequence user, final CharSequence password) {
         boolean validForm = true;
 
         if (TextUtils.isEmpty(user)) {
@@ -56,18 +66,55 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
             if (validForm) {
                 userCredentials.setUsername(user.toString());
                 userCredentials.setPassword(password.toString());
-                getView().showMainScreen();
+
+                sendLoginRequest(user.toString(), password.toString());
             }
         }
     }
 
-    public void onSingUpButtonClicked() {
+    void onSingUpButtonClicked() {
         userCredentials.clearCredentials();
         getView().cleanCredentials();
         getView().showSingUpScreen();
     }
 
-    public void onTermsAndConditionClicked() {
+    void onTermsAndConditionClicked() {
         getView().showTermsAndConditionWebView();
+    }
+
+    private void sendLoginRequest(final String username, final String password) {
+
+        Call<List<User>> response = retrofitServices.getService(IUserService.class).getUserRequest(username, password);
+        response.enqueue(new Callback<List<User>>() {
+            @Override
+            public void onResponse(@NotNull Call<List<User>> call, @NotNull Response<List<User>> response) {
+                if (response.isSuccessful()) {
+                    try {
+                        if (response.body() != null) {
+                            List<User> users = response.body();
+                            if (users.size() < 1) {
+                                getView().showInvalidCredentialsError();
+                            } else if (users.size() > 1) {
+                                getView().showMultiplesCredentialsError();
+                            } else {
+                                getView().showMainScreen();
+                            }
+                        } else {
+                            getView().showInvalidCredentialsError();
+                        }
+
+                    } catch (Exception e) {
+                        getView().showServiceError(e.getMessage());
+                    }
+                } else {
+                    getView().showServiceError(response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull Throwable t) {
+                getView().showServiceError(t.getMessage());
+            }
+        });
     }
 }
