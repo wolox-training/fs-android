@@ -1,9 +1,5 @@
 package ar.com.wolox.android.training.ui.example;
 
-import android.content.Context;
-
-import androidx.test.InstrumentationRegistry;
-
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,20 +15,20 @@ public class LoginPresenterTest{
 
     private ILoginView iLoginView;
     private LoginPresenter loginPresenter;
-    private Context ctx;
 
     @Before
     void createInterface() {
         iLoginView = mock(ILoginView.class);
         loginPresenter = mock(LoginPresenter.class);
-        ctx = InstrumentationRegistry.getInstrumentation().getContext();
+        //ctx = InstrumentationRegistry.getInstrumentation().getContext();
     }
 
     @Test
     void uniTest(){
         CharSequence user = "test";
         CharSequence pass = "1234";
-        loginPresenter.onLoginButtonClicked(user, pass, ctx);
+        //loginPresenter.onLoginButtonClicked(user, pass);
+        String presenter = loginPresenter.toString();
         ILoginView result = verify(iLoginView, times(1));
         Assert.assertNotNull(result);
     }
