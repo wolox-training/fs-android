@@ -1,13 +1,11 @@
 package ar.com.wolox.android.training.ui.training.login;
 
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import com.google.android.material.textfield.TextInputEditText;
@@ -15,6 +13,8 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import ar.com.wolox.android.R;
 import ar.com.wolox.android.training.model.User;
+import ar.com.wolox.android.training.ui.training.main.MainActivity;
+import ar.com.wolox.android.training.ui.training.singup.SingUpActivity;
 import ar.com.wolox.wolmo.core.fragment.WolmoFragment;
 import pl.droidsonroids.gif.GifImageView;
 
@@ -27,7 +27,6 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements View
     private static final String URL_TYC = "https://www.wolox.com.ar/";
 
     private View view;
-    private Context ctx;
 
     private ConstraintLayout mContentView;
     private GifImageView mLogoGif;
@@ -41,8 +40,6 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements View
 
     @Override
     public void init() {
-
-        ctx = getContext();
 
         view = getView();
         if (view != null) {
@@ -71,6 +68,10 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements View
         // Hide animation and show main screen
         mContentView.setVisibility(View.VISIBLE);
         mLogoGif.setVisibility(View.GONE);
+
+        //TODO: Dummy simulation
+        //mEmailTxt.setText("test@test.com");
+        //mPassTxt.setText("1234567A");
     }
 
     @Override
@@ -137,10 +138,12 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements View
         }
     }
 
-    @Override
     public void showSingUpScreen() {
-        // TODO: Temporal method until singup screen exists... after that, delete and move to singup screen
-        Toast.makeText(ctx, getString(R.string.login_to_singup), Toast.LENGTH_SHORT).show();
+            mEmailTxt.setText("");
+            mPassTxt.setText("");
+
+            Intent intent = new Intent(getContext(), SingUpActivity.class);
+            startActivity(intent);
     }
 
     @Override
@@ -157,8 +160,8 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements View
 
     @Override
     public void showMainScreen() {
-        // TODO: Temporal method until main screen exists... after that, delete and move to main screen
-        Toast.makeText(ctx, getString(R.string.valid_login_form), Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(getContext(), MainActivity.class);
+        startActivity(intent);
     }
 
     @Override

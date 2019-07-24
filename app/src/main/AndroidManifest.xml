@@ -23,6 +23,12 @@
 
         </activity>
 
+        <activity android:name=".training.ui.training.main.MainActivity"
+            android:screenOrientation="portrait" />
+
+        <activity android:name=".training.ui.training.singup.SingUpActivity"
+            android:screenOrientation="portrait" />
+
         <activity
             android:name=".training.ui.viewpager.ViewPagerActivity"
             android:screenOrientation="portrait" />
