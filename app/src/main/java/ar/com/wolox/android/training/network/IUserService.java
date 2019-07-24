@@ -1,12 +1,10 @@
 package ar.com.wolox.android.training.network;
 
-import com.google.gson.JsonElement;
+import java.util.List;
 
-import java.util.Map;
-
+import ar.com.wolox.android.training.model.User;
 import retrofit2.Call;
 import retrofit2.http.GET;
-import retrofit2.http.HeaderMap;
 import retrofit2.http.Query;
 
 /**
@@ -15,11 +13,7 @@ import retrofit2.http.Query;
 public interface IUserService {
 
     @GET("/users")
-    Call<JsonElement> getUsersListRequest(@HeaderMap Map<String, String> headers);
-
-    @GET("/users")
-    Call<JsonElement> getUserRequest(@HeaderMap Map<String, String> headers,
-                                     @Query("email") String emailStr,
-                                     @Query("password") String passStr);
+    Call<List<User>> getUserRequest(@Query("email") String emailStr,
+                                    @Query("password") String passStr);
 
 }
