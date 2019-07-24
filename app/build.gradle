@@ -106,11 +106,6 @@ buildscript {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
 
-    // Dependencies
-    implementation 'com.android.support:design:26.0.1'
-    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.17'
-    implementation 'com.android.support.constraint:constraint-layout:1.1.2'
-
     // Kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 

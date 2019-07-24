@@ -8,12 +8,12 @@
     <application
         android:name=".training.BootstrapApplication"
         android:allowBackup="true"
-        android:icon="@drawable/wolox_logo"
+        android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
 
         <activity
-            android:name=".training.ui.training.login.LoginActivity"
+            android:name=".training.ui.example.ExampleActivity"
             android:screenOrientation="portrait">
 
             <intent-filter>
