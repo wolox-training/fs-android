@@ -1,5 +1,6 @@
 package ar.com.wolox.android.training.ui.training.login;
 
+import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Patterns;
 
@@ -22,6 +23,8 @@ import retrofit2.Response;
  */
 public class LoginPresenter extends BasePresenter<ILoginView> {
 
+    private static final long DELAY = 5000L;
+
     private CredentialsSession userCredentials;
     private RetrofitServices retrofitServices;
 
@@ -31,12 +34,18 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
         this.retrofitServices = retrofitServices;
     }
 
+    /**
+     * onInit(): replace onViewAttached method because its calls after fragment init
+     */
     void onInit() {
-
         // Get credentials from shared preferences, creates an user object (if exists) and update credentials
         if (userCredentials.getUsername() != null && userCredentials.getPassword() != null) {
             User user = new User(userCredentials.getUsername(), userCredentials.getPassword());
             getView().updateCredentials(user);
+            getView().hideAnimations();
+            getView().showMainScreen();
+        } else {
+            new Handler().postDelayed(() -> getView().hideAnimations(), DELAY);
         }
     }
 
@@ -84,37 +93,46 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
 
     private void sendLoginRequest(final String username, final String password) {
 
-        Call<List<User>> response = retrofitServices.getService(IUserService.class).getUserRequest(username, password);
-        response.enqueue(new Callback<List<User>>() {
-            @Override
-            public void onResponse(@NotNull Call<List<User>> call, @NotNull Response<List<User>> response) {
-                if (response.isSuccessful()) {
-                    try {
-                        if (response.body() != null) {
-                            List<User> users = response.body();
-                            if (users.size() < 1) {
-                                getView().showInvalidCredentialsError();
-                            } else if (users.size() > 1) {
-                                getView().showMultiplesCredentialsError();
+        getView().showProgressDialog();
+        if (!getView().isNetworkAvailable()) {
+            getView().hideProgressDialog();
+            getView().showNetworkUnavailableError();
+        } else {
+
+            Call<List<User>> response = retrofitServices.getService(IUserService.class).getUserRequest(username, password);
+            response.enqueue(new Callback<List<User>>() {
+                @Override
+                public void onResponse(@NotNull Call<List<User>> call, @NotNull Response<List<User>> response) {
+                    getView().hideProgressDialog();
+                    if (response.isSuccessful()) {
+                        try {
+                            if (response.body() != null) {
+                                List<User> users = response.body();
+                                if (users.size() < 1) {
+                                    getView().showInvalidCredentialsError();
+                                } else if (users.size() > 1) {
+                                    getView().showMultiplesCredentialsError();
+                                } else {
+                                    getView().showMainScreen();
+                                }
                             } else {
-                                getView().showMainScreen();
+                                getView().showInvalidCredentialsError();
                             }
-                        } else {
-                            getView().showInvalidCredentialsError();
+
+                        } catch (Exception e) {
+                            getView().showServiceError(e.getMessage());
                         }
-
-                    } catch (Exception e) {
-                        getView().showServiceError(e.getMessage());
+                    } else {
+                        getView().showServiceError(response.message());
                     }
-                } else {
-                    getView().showServiceError(response.message());
                 }
-            }
 
-            @Override
-            public void onFailure(@NotNull Call call, @NotNull Throwable t) {
-                getView().showServiceError(t.getMessage());
-            }
-        });
+                @Override
+                public void onFailure(@NotNull Call call, @NotNull Throwable t) {
+                    getView().hideProgressDialog();
+                    getView().showServiceError(t.getMessage());
+                }
+            });
+        }
     }
 }

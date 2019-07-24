@@ -1,14 +1,18 @@
 package ar.com.wolox.android.training.ui.training.login;
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
 import android.net.Uri;
-import android.os.Handler;
 import android.view.View;
 import android.widget.Toast;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+
+import java.util.Objects;
 
 import ar.com.wolox.android.R;
 import ar.com.wolox.android.training.model.User;
@@ -22,7 +26,6 @@ import pl.droidsonroids.gif.GifImageView;
  */
 public class LoginFragment extends WolmoFragment<LoginPresenter> implements View.OnClickListener, ILoginView {
 
-    private static final long DELAY = 5000L;
     private static final String URL_TYC = "https://www.wolox.com.ar/";
 
     private View view;
@@ -31,6 +34,8 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements View
     private GifImageView mLogoGif;
     private TextInputEditText mEmailTxt;
     private TextInputEditText mPassTxt;
+
+    private ProgressDialog mProgressDialog;
 
     @Override
     public int layout() {
@@ -56,14 +61,12 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements View
             view.findViewById(R.id.tyc_txt).setOnClickListener(this);
         }
 
-        getPresenter().onInit();
-        new Handler().postDelayed(this::initMainScreen, DELAY);
-    }
+        mProgressDialog = new ProgressDialog(getContext());
+        mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        mProgressDialog.setCancelable(false);
+        mProgressDialog.setCanceledOnTouchOutside(false);
 
-    private void initMainScreen() {
-        // Hide animation and show main screen
-        mContentView.setVisibility(View.VISIBLE);
-        mLogoGif.setVisibility(View.GONE);
+        getPresenter().onInit();
     }
 
     @Override
@@ -131,11 +134,8 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements View
     }
 
     public void showSingUpScreen() {
-            mEmailTxt.setText("");
-            mPassTxt.setText("");
-
-            Intent intent = new Intent(getContext(), SingUpActivity.class);
-            startActivity(intent);
+        Intent intent = new Intent(getContext(), SingUpActivity.class);
+        startActivity(intent);
     }
 
     @Override
@@ -157,9 +157,40 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements View
     }
 
     @Override
+    public void hideAnimations() {
+        // Hide animation and show main screen
+        mContentView.setVisibility(View.VISIBLE);
+        mLogoGif.setVisibility(View.GONE);
+    }
+
+    @Override
     public void showMainScreen() {
         Intent intent = new Intent(getContext(), MainActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    public void showProgressDialog() {
+        mProgressDialog.setMessage(getString(R.string.login_service_request));
+        mProgressDialog.show();
+    }
+
+    @Override
+    public void hideProgressDialog() {
+        mProgressDialog.dismiss();
+    }
+
+    @Override
+    public boolean isNetworkAvailable() {
+        try {
+            ConnectivityManager cnxManager = (ConnectivityManager) Objects.requireNonNull(getContext())
+                    .getSystemService(Context.CONNECTIVITY_SERVICE);
+            return cnxManager.getActiveNetworkInfo() != null &&
+                    cnxManager.getActiveNetworkInfo().isAvailable() &&
+                    cnxManager.getActiveNetworkInfo().isConnected();
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     @Override
@@ -170,6 +201,11 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements View
     @Override
     public void showMultiplesCredentialsError() {
         Toast.makeText(getContext(), getString(R.string.error_multiple_response), Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void showNetworkUnavailableError() {
+        Toast.makeText(getContext(), getString(R.string.error_network_unavailable), Toast.LENGTH_LONG).show();
     }
 
     @Override

@@ -14,10 +14,13 @@ public interface ILoginView {
     void showValidEmail();
     void showValidPass();
 
+    void hideAnimations();
+
     void updateCredentials(User user);
 
     void showInvalidCredentialsError();
     void showMultiplesCredentialsError();
+    void showNetworkUnavailableError();
     void showServiceError(String message);
 
     void showSingUpScreen();
@@ -25,4 +28,9 @@ public interface ILoginView {
     void cleanCredentials();
 
     void showMainScreen();
+
+    void showProgressDialog();
+    void hideProgressDialog();
+
+    boolean isNetworkAvailable();
 }

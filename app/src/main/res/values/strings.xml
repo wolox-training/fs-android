@@ -32,6 +32,8 @@
     <string name="login_btn_sing_up">Sing Up</string>
     <string name="login_t_y_c_txt">By joining you agree our </string>
     <string name="login_t_y_c_link"><u>Terms &amp; Conditions</u></string>
+    
+    <string name="login_service_request">Connecting to server, please wait…</string>
 
     <!-- MainActivity -->
     <string name="main_back_msg_title">Really Exit?</string>
@@ -42,6 +44,7 @@
     <string name="error_invalid_email">Invalid Email</string>
     <string name="error_wrong_credentials">Invalid email or password</string>
     <string name="error_multiple_response">There is more than one match in database</string>
+    <string name="error_network_unavailable">Network is unavailable, please try later…</string>
 
     <!-- Tmp Messages -->
     <string name="valid_login_form">to main screen…</string>
