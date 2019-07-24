@@ -4,7 +4,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Handler;
 import android.view.View;
-import android.widget.Toast;
+import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import com.google.android.material.textfield.TextInputEditText;
@@ -51,9 +52,12 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements View
             mPassTxt = view.findViewById(R.id.pass_text);
 
             // Buttons
-            view.findViewById(R.id.btn_login).setOnClickListener(this);
-            view.findViewById(R.id.btn_singup).setOnClickListener(this);
-            view.findViewById(R.id.tyc_txt).setOnClickListener(this);
+            Button mBtnLogin = view.findViewById(R.id.btn_login);
+            mBtnLogin.setOnClickListener(this);
+            Button mBtnSingup = view.findViewById(R.id.btn_singup);
+            mBtnSingup.setOnClickListener(this);
+            TextView mTvTyc = view.findViewById(R.id.tyc_txt);
+            mTvTyc.setOnClickListener(this);
         }
 
         getPresenter().onInit();
@@ -64,6 +68,10 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements View
         // Hide animation and show main screen
         mContentView.setVisibility(View.VISIBLE);
         mLogoGif.setVisibility(View.GONE);
+
+        //TODO: Dummy simulation
+        //mEmailTxt.setText("test@test.com");
+        //mPassTxt.setText("1234567A");
     }
 
     @Override
@@ -151,29 +159,14 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements View
     }
 
     @Override
-    public void updateCredentials(User user) {
-        mEmailTxt.setText(user.getEmail());
-        mPassTxt.setText(user.getPassword());
-    }
-
-    @Override
     public void showMainScreen() {
         Intent intent = new Intent(getContext(), MainActivity.class);
         startActivity(intent);
     }
 
     @Override
-    public void showInvalidCredentialsError() {
-        Toast.makeText(getContext(), getString(R.string.error_wrong_credentials), Toast.LENGTH_LONG).show();
-    }
-
-    @Override
-    public void showMultiplesCredentialsError() {
-        Toast.makeText(getContext(), getString(R.string.error_multiple_response), Toast.LENGTH_LONG).show();
-    }
-
-    @Override
-    public void showServiceError(String message) {
-        Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
+    public void updateCredentials(User user) {
+        mEmailTxt.setText(user.getUser());
+        mPassTxt.setText(user.getPass());
     }
 }

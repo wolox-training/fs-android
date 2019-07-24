@@ -40,8 +40,6 @@
     <!-- Errors-->
     <string name="error_empty_field">The Field is Required</string>
     <string name="error_invalid_email">Invalid Email</string>
-    <string name="error_wrong_credentials">Invalid email or password</string>
-    <string name="error_multiple_response">There is more than one match in database</string>
 
     <!-- Tmp Messages -->
     <string name="valid_login_form">to main screen…</string>
