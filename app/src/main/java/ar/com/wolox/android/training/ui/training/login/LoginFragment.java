@@ -35,7 +35,7 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements View
     private TextInputEditText mEmailTxt;
     private TextInputEditText mPassTxt;
 
-    private ProgressDialog pDialog;
+    private ProgressDialog mProgressDialog;
 
     @Override
     public int layout() {
@@ -61,10 +61,10 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements View
             view.findViewById(R.id.tyc_txt).setOnClickListener(this);
         }
 
-        pDialog = new ProgressDialog(getContext());
-        pDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        pDialog.setCancelable(false);
-        pDialog.setCanceledOnTouchOutside(false);
+        mProgressDialog = new ProgressDialog(getContext());
+        mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        mProgressDialog.setCancelable(false);
+        mProgressDialog.setCanceledOnTouchOutside(false);
 
         getPresenter().onInit();
     }
@@ -137,8 +137,8 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements View
 
     @Override
     public void showSingUpScreen() {
-            Intent intent = new Intent(getContext(), SingUpActivity.class);
-            startActivity(intent);
+        Intent intent = new Intent(getContext(), SingUpActivity.class);
+        startActivity(intent);
     }
 
     @Override
@@ -174,17 +174,13 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements View
 
     @Override
     public void showProgressDialog() {
-        if (pDialog != null) {
-            pDialog.setMessage(getString(R.string.login_service_request));
-            pDialog.show();
-        }
+        mProgressDialog.setMessage(getString(R.string.login_service_request));
+        mProgressDialog.show();
     }
 
     @Override
     public void hideProgressDialog() {
-        if (pDialog != null) {
-            pDialog.dismiss();
-        }
+        mProgressDialog.dismiss();
     }
 
     @Override
