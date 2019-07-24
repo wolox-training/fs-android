@@ -10,11 +10,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
+
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
 import ar.com.wolox.android.R;
-import ar.com.wolox.android.training.model.User;
 import ar.com.wolox.wolmo.core.fragment.WolmoFragment;
 import pl.droidsonroids.gif.GifImageView;
 
@@ -63,7 +63,6 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements View
             mTvTyc.setOnClickListener(this);
         }
 
-        getPresenter().onInit();
         new Handler().postDelayed(this::initMainScreen, DELAY);
     }
 
@@ -159,11 +158,5 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements View
     public void showMainScreen() {
         // TODO: Temporal method until main screen exists... after that, delete and move to main screen
         Toast.makeText(ctx, getString(R.string.valid_login_form), Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void updateCredentials(User user) {
-        mEmailTxt.setText(user.getUser());
-        mPassTxt.setText(user.getPass());
     }
 }

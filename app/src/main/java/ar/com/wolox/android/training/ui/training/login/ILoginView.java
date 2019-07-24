@@ -1,7 +1,5 @@
 package ar.com.wolox.android.training.ui.training.login;
 
-import ar.com.wolox.android.training.model.User;
-
 /**
  * ILoginView
  */
@@ -13,8 +11,6 @@ public interface ILoginView {
 
     void showValidEmail();
     void showValidPass();
-
-    void updateCredentials(User user);
 
     void showSingUpScreen();
     void showTermsAndConditionWebView();
