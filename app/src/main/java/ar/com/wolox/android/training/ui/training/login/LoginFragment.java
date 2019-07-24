@@ -3,8 +3,6 @@ package ar.com.wolox.android.training.ui.training.login;
 import android.content.Intent;
 import android.net.Uri;
 import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -51,12 +49,9 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements View
             mPassTxt = view.findViewById(R.id.pass_text);
 
             // Buttons
-            Button mBtnLogin = view.findViewById(R.id.btn_login);
-            mBtnLogin.setOnClickListener(this);
-            Button mBtnSingup = view.findViewById(R.id.btn_singup);
-            mBtnSingup.setOnClickListener(this);
-            TextView mTvTyc = view.findViewById(R.id.tyc_txt);
-            mTvTyc.setOnClickListener(this);
+            view.findViewById(R.id.btn_login).setOnClickListener(this);
+            view.findViewById(R.id.btn_singup).setOnClickListener(this);
+            view.findViewById(R.id.tyc_txt).setOnClickListener(this);
         }
 
         getPresenter().onInit();
