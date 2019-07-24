@@ -1,11 +1,11 @@
 package ar.com.wolox.android.training.ui.training.login;
 
 import android.os.Handler;
-import android.text.TextUtils;
-import android.util.Patterns;
 
 import org.jetbrains.annotations.NotNull;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.inject.Inject;
 
@@ -54,31 +54,39 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
      * @param user userId from login screen, must have valid format and cannot be empty
      * @param password passId from login screen, cannot be empty
      */
-    void onLoginButtonClicked(final CharSequence user, final CharSequence password) {
+    public void onLoginButtonClicked(final String user, final String password) {
         boolean validForm = true;
 
-        if (TextUtils.isEmpty(user)) {
+        if (user.isEmpty()) {
+            validForm = false;
             getView().showEmptyEmailError();
+        } else if (!isValidEmail(user)) {
             validForm = false;
-        } else if (!Patterns.EMAIL_ADDRESS.matcher(user).matches()) {
             getView().showInvalidEmailError();
-            validForm = false;
         } else {
             getView().showValidEmail();
         }
 
-        if (TextUtils.isEmpty(password)) {
+        if (password.isEmpty()) {
             getView().showEmptyPassError();
         } else {
             getView().showValidPass();
 
             if (validForm) {
-                userCredentials.setUsername(user.toString());
-                userCredentials.setPassword(password.toString());
-
-                sendLoginRequest(user.toString(), password.toString());
+                userCredentials.setUsername(user);
+                userCredentials.setPassword(password);
+                sendLoginRequest(user, password);
             }
         }
+    }
+
+    private boolean isValidEmail(String str) {
+        // This method replace Patterns.EMAIL_ADDRESS.matcher(target).matches()); because throws
+        // an exception in unit test (NullPointerException)
+        String expression = "^[\\w.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
+        Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(str);
+        return matcher.matches();
     }
 
     void onSingUpButtonClicked() {

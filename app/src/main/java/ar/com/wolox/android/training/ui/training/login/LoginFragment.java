@@ -75,7 +75,9 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements View
         // we created a global oneClick method for the activity
         switch (viewOnClick.getId()) {
             case R.id.btn_login:
-                getPresenter().onLoginButtonClicked(mEmailTxt.getText(), mPassTxt.getText());
+                getPresenter().onLoginButtonClicked(
+                        Objects.requireNonNull(mEmailTxt.getText()).toString(),
+                        Objects.requireNonNull(mPassTxt.getText()).toString());
                 break;
             case R.id.btn_singup:
                 getPresenter().onSingUpButtonClicked();
@@ -133,10 +135,8 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements View
         }
     }
 
+    @Override
     public void showSingUpScreen() {
-            mEmailTxt.setText("");
-            mPassTxt.setText("");
-
             Intent intent = new Intent(getContext(), SingUpActivity.class);
             startActivity(intent);
     }
