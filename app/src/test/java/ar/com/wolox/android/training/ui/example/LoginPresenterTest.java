@@ -4,12 +4,14 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import ar.com.wolox.android.training.model.User;
+import ar.com.wolox.android.training.ui.adapters.ILoginAdapterListener;
 import ar.com.wolox.android.training.ui.adapters.LoginAdapter;
 import ar.com.wolox.android.training.ui.training.login.ILoginView;
 import ar.com.wolox.android.training.ui.training.login.LoginPresenter;
 import ar.com.wolox.android.training.utils.CredentialsSession;
-import ar.com.wolox.wolmo.networking.retrofit.RetrofitServices;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
@@ -18,9 +20,15 @@ import static org.mockito.Mockito.verify;
 
 public class LoginPresenterTest {
 
+    private static final String EMAIL_INVALID = "testInvalidEmail.com";
+    private static final String NON_EXISTENT_EMAIL = "test@test.com";
+    private static final String EMAIL = "melvin.lambert15@example.com";
+    private static final String PASSWORD = "qwerty";
+
+    private static final String ERROR_SERVICE = "DefaultServiceError";
+
     private ILoginView iLoginView;
     private CredentialsSession credentials;
-    private RetrofitServices retrofitServices;
 
     private LoginPresenter presenter;
     private LoginAdapter adapter;
@@ -29,10 +37,9 @@ public class LoginPresenterTest {
     public void createInstances() {
         iLoginView = mock(ILoginView.class);
         credentials = mock(CredentialsSession.class);
-        retrofitServices = mock(RetrofitServices.class);
         adapter = mock(LoginAdapter.class);
 
-        presenter = new LoginPresenter(credentials, retrofitServices, adapter);
+        presenter = new LoginPresenter(credentials, adapter);
     }
 
     @Test
@@ -42,14 +49,14 @@ public class LoginPresenterTest {
 
     @Test
     public void testAlreadyUserStoredInSharedPreferences() {
-        doReturn("test@test.com").when(credentials).getUsername();
-        Assert.assertEquals(credentials.getUsername(), "test@test.com");
+        doReturn(EMAIL).when(credentials).getUsername();
+        Assert.assertEquals(credentials.getUsername(), EMAIL);
     }
 
     @Test
     public void testDataAlreadyStoredInSharedPreferences() {
-        doReturn("test@test.com").when(credentials).getUsername();
-        doReturn("1234").when(credentials).getPassword();
+        doReturn(EMAIL).when(credentials).getUsername();
+        doReturn(PASSWORD).when(credentials).getPassword();
         Assert.assertTrue(credentials.getUsername() != null && credentials.getPassword() != null);
     }
 
@@ -70,21 +77,21 @@ public class LoginPresenterTest {
     @Test
     public void testShowInvalidEmailFormat() {
         presenter.attachView(iLoginView);
-        presenter.onLoginButtonClicked("test", "1234");
+        presenter.onLoginButtonClicked(EMAIL_INVALID, PASSWORD);
         verify(iLoginView, times(1)).showInvalidEmailError();
     }
 
     @Test
     public void testValidEmail() {
         presenter.attachView(iLoginView);
-        presenter.onLoginButtonClicked("test@hotmail.com", "1234");
+        presenter.onLoginButtonClicked(NON_EXISTENT_EMAIL, PASSWORD);
         verify(iLoginView, times(1)).showValidEmail();
     }
 
     @Test
     public void testValidPassword() {
         presenter.attachView(iLoginView);
-        presenter.onLoginButtonClicked("test@hotmail.com", "1234");
+        presenter.onLoginButtonClicked(EMAIL, PASSWORD);
         verify(iLoginView, times(1)).showValidPass();
     }
 
@@ -92,20 +99,73 @@ public class LoginPresenterTest {
     public void testShowUnavailableNetworkError() {
         doReturn(false).when(iLoginView).isNetworkAvailable();
         presenter.attachView(iLoginView);
-        presenter.onLoginButtonClicked("test@hotmail.com", "1234");
+        presenter.onLoginButtonClicked(EMAIL, PASSWORD);
         verify(iLoginView, times(1)).showNetworkUnavailableError();
     }
 
     @Test
-    public void testSuccessResponseOnService() {
-//        doAnswer(e -> {
-//            adapter.onFailure();
-//            return true;
-//        }).when(iLoginView).isNetworkAvailable();
-//
-//        presenter.attachView(iLoginView);
-//        presenter.onLoginButtonClicked("test@hotmail.com", "1234");
-//        verify(iLoginView, times(1)).showServiceError("");
+    public void testFailureResponseServiceError() {
+        doReturn(true).when(iLoginView).isNetworkAvailable();
+        doAnswer(e -> {
+            ((ILoginAdapterListener)e.getArgument(2)).onFailure(ERROR_SERVICE);
+            return null;
+        }).when(adapter).getUser(any(String.class), any(String.class), any());
 
+        presenter.attachView(iLoginView);
+        presenter.onLoginButtonClicked(EMAIL, PASSWORD);
+        verify(iLoginView, times(1)).showServiceError(ERROR_SERVICE);
+    }
+
+    @Test
+    public void testServiceResponseWithError() {
+        doReturn(true).when(iLoginView).isNetworkAvailable();
+        doAnswer(e -> {
+            ((ILoginAdapterListener)e.getArgument(2)).onResponseWithError(ERROR_SERVICE);
+            return true;
+        }).when(adapter).getUser(any(String.class), any(String.class), any());
+
+        presenter.attachView(iLoginView);
+        presenter.onLoginButtonClicked(EMAIL, PASSWORD);
+        verify(iLoginView, times(1)).showServiceError(ERROR_SERVICE);
+    }
+
+    @Test
+    public void testServiceResponseWithInvalidCredentials() {
+        doReturn(true).when(iLoginView).isNetworkAvailable();
+        doAnswer(e -> {
+            ((ILoginAdapterListener)e.getArgument(2)).onResponseWithCredentialsError();
+            return true;
+        }).when(adapter).getUser(any(String.class), any(String.class), any());
+
+        presenter.attachView(iLoginView);
+        presenter.onLoginButtonClicked(EMAIL, PASSWORD);
+        verify(iLoginView, times(1)).showInvalidCredentialsError();
+    }
+
+    @Test
+    public void testServiceResponseWithMultipleMatch() {
+        doReturn(true).when(iLoginView).isNetworkAvailable();
+        doAnswer(e -> {
+            ((ILoginAdapterListener)e.getArgument(2)).onResponseWithMultipleMatch();
+            return true;
+        }).when(adapter).getUser(any(String.class), any(String.class), any());
+
+        presenter.attachView(iLoginView);
+        presenter.onLoginButtonClicked(EMAIL, PASSWORD);
+        verify(iLoginView, times(1)).showMultiplesCredentialsError();
+    }
+
+    @Test
+    public void testServiceSuccessResponse() {
+        doReturn(true).when(iLoginView).isNetworkAvailable();
+        doAnswer(e -> {
+            User user = new User(EMAIL, PASSWORD);
+            ((ILoginAdapterListener)e.getArgument(2)).onSuccessResponse(user);
+            return true;
+        }).when(adapter).getUser(any(String.class), any(String.class), any());
+
+        presenter.attachView(iLoginView);
+        presenter.onLoginButtonClicked(EMAIL, PASSWORD);
+        verify(iLoginView, times(1)).showMainScreen();
     }
 }
