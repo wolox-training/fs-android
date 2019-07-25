@@ -1,12 +1,12 @@
-package ar.com.wolox.android.training.ui.training.main;
+package ar.com.wolox.android.training.ui.training.main.old;
 
 import ar.com.wolox.android.R;
 import ar.com.wolox.wolmo.core.activity.WolmoActivity;
 
 /**
- * MainActivity
+ * MainActivityOLD
  */
-public class MainActivity extends WolmoActivity {
+public class MainActivityOLD extends WolmoActivity {
     @Override
     protected int layout() {
         return R.layout.activity_base;
@@ -14,6 +14,6 @@ public class MainActivity extends WolmoActivity {
 
     @Override
     protected void init() {
-        replaceFragment(R.id.vActivityBaseContent, new MainFragment());
+        replaceFragment(R.id.vActivityBaseContent, new MainFragmentOLD());
     }
 }

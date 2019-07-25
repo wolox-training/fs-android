@@ -1,12 +1,12 @@
-package ar.com.wolox.android.training.ui.training.main;
+package ar.com.wolox.android.training.ui.training.main.old;
 
 import ar.com.wolox.android.R;
 import ar.com.wolox.wolmo.core.fragment.WolmoFragment;
 
 /**
- * MainFragment
+ * MainFragmentOLD
  */
-public class MainFragment extends WolmoFragment<MainPresenter> implements IMainView {
+public class MainFragmentOLD extends WolmoFragment<MainPresenterOLD> implements IMainViewOLD {
     @Override
     public int layout() {
         return R.layout.fragment_main;
