@@ -118,7 +118,12 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
                 public void onResponse(@NotNull Call<List<User>> call, @NotNull Response<List<User>> response) {
 
                     getView().hideProgressDialog();
-                    loginAdapter.getUser(response, new ILoginAdapterListener() {
+                    loginAdapter.getUser(null, response, new ILoginAdapterListener() {
+                        @Override
+                        public void onFailure(String msg) {
+
+                        }
+
                         @Override
                         public void onResponseWithError(String msg) {
                             getView().showServiceError(msg);
@@ -144,7 +149,32 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
                 @Override
                 public void onFailure(@NotNull Call call, @NotNull Throwable t) {
                     getView().hideProgressDialog();
-                    getView().showServiceError(t.getMessage());
+                    loginAdapter.getUser(t, null, new ILoginAdapterListener() {
+                        @Override
+                        public void onFailure(String msg) {
+                            getView().showServiceError(msg);
+                        }
+
+                        @Override
+                        public void onResponseWithError(String message) {
+
+                        }
+
+                        @Override
+                        public void onResponseWithCredentialsError() {
+
+                        }
+
+                        @Override
+                        public void onResponseWithMultipleMatch() {
+
+                        }
+
+                        @Override
+                        public void onSuccessResponse(User user) {
+
+                        }
+                    });
                 }
             });
         }

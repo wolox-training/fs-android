@@ -18,30 +18,35 @@ public class LoginAdapter {
     }
 
     /**
+     * @param failure Throwable on failure API service
      * @param response API Rest response
      * @param listener Adapter listener with possibles responses
      */
-    public void getUser(Response<List<User>> response, ILoginAdapterListener listener) {
-        if (response.isSuccessful()) {
-            try {
-                if (response.body() != null) {
-                    List<User> users = response.body();
-                    if (users.size() < 1) {
-                        listener.onResponseWithCredentialsError();
-                    } else if (users.size() > 1) {
-                        listener.onResponseWithMultipleMatch();
+    public void getUser(Throwable failure, Response<List<User>> response, ILoginAdapterListener listener) {
+        if (failure == null) {
+            if (response.isSuccessful()) {
+                try {
+                    if (response.body() != null) {
+                        List<User> users = response.body();
+                        if (users.size() < 1) {
+                            listener.onResponseWithCredentialsError();
+                        } else if (users.size() > 1) {
+                            listener.onResponseWithMultipleMatch();
+                        } else {
+                            listener.onSuccessResponse(users.get(0));
+                        }
                     } else {
-                        listener.onSuccessResponse(users.get(0));
+                        listener.onResponseWithCredentialsError();
                     }
-                } else {
-                    listener.onResponseWithCredentialsError();
-                }
 
-            } catch (Exception e) {
-                listener.onResponseWithError(e.getMessage());
+                } catch (Exception e) {
+                    listener.onResponseWithError(e.getMessage());
+                }
+            } else {
+                listener.onResponseWithError(response.message());
             }
         } else {
-            listener.onResponseWithError(response.message());
+            listener.onFailure(failure.getMessage());
         }
     }
 }

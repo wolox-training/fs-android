@@ -7,6 +7,7 @@ import ar.com.wolox.android.training.model.User;
  */
 public interface ILoginAdapterListener {
 
+    void onFailure(String message);
     void onResponseWithError(String message);
     void onResponseWithCredentialsError();
     void onResponseWithMultipleMatch();
