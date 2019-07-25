@@ -1,4 +1,4 @@
-package ar.com.wolox.android.training.ui.adapters;
+package ar.com.wolox.android.training.ui.training.login;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -30,7 +30,7 @@ public class LoginAdapter {
      * @param password password from login
      * @param listener listener to handle service responses
      */
-    public void getUser(final String email, final String password, final ILoginAdapterListener listener) {
+    void getUser(final String email, final String password, final ILoginAdapterListener listener) {
         Call<List<User>> response = retrofitServices.getService(IUserService.class).getUserRequest(email, password);
         response.enqueue(new Callback<List<User>>() {
             @Override

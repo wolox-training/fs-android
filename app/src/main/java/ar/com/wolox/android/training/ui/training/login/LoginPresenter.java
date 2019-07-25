@@ -8,8 +8,6 @@ import java.util.regex.Pattern;
 import javax.inject.Inject;
 
 import ar.com.wolox.android.training.model.User;
-import ar.com.wolox.android.training.ui.adapters.ILoginAdapterListener;
-import ar.com.wolox.android.training.ui.adapters.LoginAdapter;
 import ar.com.wolox.android.training.utils.CredentialsSession;
 import ar.com.wolox.wolmo.core.presenter.BasePresenter;
 
@@ -49,7 +47,7 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
      * @param user userId from login screen, must have valid format and cannot be empty
      * @param password passId from login screen, cannot be empty
      */
-    public void onLoginButtonClicked(final String user, final String password) {
+    void onLoginButtonClicked(final String user, final String password) {
         boolean validForm = true;
 
         if (user.isEmpty()) {

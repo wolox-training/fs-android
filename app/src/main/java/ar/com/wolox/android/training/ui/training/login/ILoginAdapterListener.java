@@ -1,4 +1,4 @@
-package ar.com.wolox.android.training.ui.adapters;
+package ar.com.wolox.android.training.ui.training.login;
 
 import ar.com.wolox.android.training.model.User;
 
