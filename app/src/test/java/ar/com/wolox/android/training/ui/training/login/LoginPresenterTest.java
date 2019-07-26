@@ -1,6 +1,5 @@
 package ar.com.wolox.android.training.ui.training.login;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
