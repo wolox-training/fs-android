@@ -45,7 +45,7 @@
     <dimen name="font_big">22sp</dimen>
     <dimen name="font_huge">24sp</dimen>
 
-    <!-- LoginActivity Activity -->
+    <!-- LoginActivity -->
     <dimen name="login_img_padding">85dp</dimen>
     <dimen name="login_margin_side">25dp</dimen>
     <dimen name="login_wrapper_margin_bottom">5dp</dimen>
@@ -56,5 +56,9 @@
     <dimen name="login_tyc_margin_bottom">18dp</dimen>
     <dimen name="login_tyc_text_size">13sp</dimen>
     <dimen name="login_input_layout_margin_top">15dp</dimen>
+
+    <!-- MainActivity -->
+    <dimen name="main_logo_padding">10dp</dimen>
+    <dimen name="main_logo_text_margin">10dp</dimen>
 
 </resources>

@@ -8,7 +8,6 @@ import ar.com.wolox.android.training.ui.training.main.MainActivity
 import ar.com.wolox.android.training.ui.training.main.MainFragment
 import ar.com.wolox.android.training.ui.training.singup.SingUpActivity
 import ar.com.wolox.android.training.ui.training.singup.SingUpFragment
-
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -38,4 +37,5 @@ abstract class AppModule {
 
     @ContributesAndroidInjector
     internal abstract fun singUpFragment(): SingUpFragment
+
 }
