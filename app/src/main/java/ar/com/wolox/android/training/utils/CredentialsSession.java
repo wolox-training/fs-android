@@ -26,26 +26,36 @@ public class CredentialsSession {
     }
 
     public String getUsername() {
-        return user;
-    }
-
-    public void setUsername(final String userId) {
-        if (manager != null) {
-            manager.store(USER_KEY, userId);
+        if (user == null) {
+            return manager.get(USER_KEY, null);
+        } else {
+            return user;
         }
     }
 
+    public void setUsername(final String userId) {
+        user = userId;
+        manager.store(USER_KEY, userId);
+    }
+
     public String getPassword() {
-        return pass;
+        if (pass == null) {
+            return manager.get(PASS_KEY, null);
+        } else {
+            return pass;
+        }
     }
 
     public void setPassword(final String passId) {
+        pass = passId;
         if (manager != null) {
             manager.store(PASS_KEY, passId);
         }
     }
 
     public void clearCredentials() {
+        user = "";
+        pass = "";
         manager.clearKey(USER_KEY);
         manager.clearKey(PASS_KEY);
     }

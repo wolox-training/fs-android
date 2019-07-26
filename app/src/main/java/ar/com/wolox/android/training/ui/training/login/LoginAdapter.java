@@ -40,21 +40,21 @@ public class LoginAdapter {
                         if (response.body() != null) {
                             List<User> users = response.body();
                             if (users.size() < 1) {
-                                listener.onResponseWithCredentialsError();
+                                listener.onCredentialsError();
                             } else if (users.size() > 1) {
-                                listener.onResponseWithMultipleMatch();
+                                listener.onMultipleMatchError();
                             } else {
-                                listener.onSuccessResponse(users.get(0));
+                                listener.onSuccess(users.get(0));
                             }
                         } else {
-                            listener.onResponseWithCredentialsError();
+                            listener.onCredentialsError();
                         }
 
                     } catch (Exception e) {
-                        listener.onResponseWithError(e.getMessage());
+                        listener.onError(e.getMessage());
                     }
                 } else {
-                    listener.onResponseWithError(response.message());
+                    listener.onError(response.message());
                 }
             }
 

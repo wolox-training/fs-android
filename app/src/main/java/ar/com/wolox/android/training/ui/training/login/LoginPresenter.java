@@ -66,8 +66,6 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
             getView().showValidPass();
 
             if (validForm) {
-                userCredentials.setUsername(user);
-                userCredentials.setPassword(password);
                 sendLoginRequest(user, password);
             }
         }
@@ -107,26 +105,28 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
                 }
 
                 @Override
-                public void onResponseWithError(String msg) {
+                public void onError(String msg) {
                     getView().hideProgressDialog();
                     getView().showServiceError(msg);
                 }
 
                 @Override
-                public void onResponseWithCredentialsError() {
+                public void onCredentialsError() {
                     getView().hideProgressDialog();
                     getView().showInvalidCredentialsError();
                 }
 
                 @Override
-                public void onResponseWithMultipleMatch() {
+                public void onMultipleMatchError() {
                     getView().hideProgressDialog();
                     getView().showMultiplesCredentialsError();
                 }
 
                 @Override
-                public void onSuccessResponse(User user) {
+                public void onSuccess(User user) {
                     getView().hideProgressDialog();
+                    userCredentials.setUsername(user.getEmail());
+                    userCredentials.setPassword(user.getPassword());
                     getView().showMainScreen();
                 }
             });
