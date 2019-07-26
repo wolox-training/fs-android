@@ -107,25 +107,25 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
                 }
 
                 @Override
-                public void onResponseWithError(String msg) {
+                public void onError(String msg) {
                     getView().hideProgressDialog();
                     getView().showServiceError(msg);
                 }
 
                 @Override
-                public void onResponseWithCredentialsError() {
+                public void onCredentialsError() {
                     getView().hideProgressDialog();
                     getView().showInvalidCredentialsError();
                 }
 
                 @Override
-                public void onResponseWithMultipleMatch() {
+                public void onMultipleMatchError() {
                     getView().hideProgressDialog();
                     getView().showMultiplesCredentialsError();
                 }
 
                 @Override
-                public void onSuccessResponse(User user) {
+                public void onSuccess(User user) {
                     getView().hideProgressDialog();
                     getView().showMainScreen();
                 }
