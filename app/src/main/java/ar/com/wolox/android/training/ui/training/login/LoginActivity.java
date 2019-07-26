@@ -1,5 +1,10 @@
 package ar.com.wolox.android.training.ui.training.login;
 
+import android.graphics.drawable.Drawable;
+import android.os.Build;
+import android.view.Window;
+import android.view.WindowManager;
+
 import ar.com.wolox.android.R;
 import ar.com.wolox.wolmo.core.activity.WolmoActivity;
 
@@ -14,6 +19,16 @@ public class LoginActivity extends WolmoActivity {
 
     @Override
     protected void init() {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = this.getWindow();
+            Drawable background = this.getResources().getDrawable(R.drawable.gradient_toolbar);
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(this.getResources().getColor(android.R.color.transparent));
+            window.setNavigationBarColor(this.getResources().getColor(android.R.color.transparent));
+            window.setBackgroundDrawable(background);
+        }
+
         replaceFragment(R.id.vActivityBaseContent, new LoginFragment());
     }
 }
