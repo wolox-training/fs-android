@@ -1,13 +1,11 @@
 package ar.com.wolox.android.training.ui.example
 
-import org.mockito.Mockito.mock
-import org.mockito.Mockito.times
-import org.mockito.Mockito.verify
-
 import ar.com.wolox.android.training.utils.UserSession
 
 import org.junit.Before
 import org.junit.Test
+import org.mockito.Mockito
+import org.mockito.Mockito.mock
 
 class ExamplePresenterTest {
 
@@ -26,13 +24,13 @@ class ExamplePresenterTest {
     fun usernameIsStored() {
         mExamplePresenter.attachView(mExampleView)
         mExamplePresenter.storeUsername("Test")
-        verify<UserSession>(mUserSession, times(1)).username = "Test"
+        Mockito.verify<UserSession>(mUserSession, Mockito.times(1)).username = "Test"
     }
 
     @Test
     fun storeUsernameUpdatesView() {
         mExamplePresenter.attachView(mExampleView)
         mExamplePresenter.storeUsername("Test")
-        verify<IExampleView>(mExampleView, times(1)).onUsernameSaved()
+        Mockito.verify<IExampleView>(mExampleView, Mockito.times(1)).onUsernameSaved()
     }
 }
