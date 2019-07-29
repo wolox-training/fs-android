@@ -1,52 +1,50 @@
 package ar.com.wolox.android.training.ui.training.main
 
-import androidx.viewpager.widget.ViewPager
+import androidx.core.util.Pair
+import androidx.fragment.app.Fragment
 import ar.com.wolox.android.R
+import ar.com.wolox.android.training.ui.training.main.tabs.news.NewsFragment
+import ar.com.wolox.android.training.ui.training.main.tabs.profile.ProfileFragment
+import ar.com.wolox.wolmo.core.adapter.viewpager.SimpleFragmentPagerAdapter
 import ar.com.wolox.wolmo.core.fragment.WolmoFragment
+import ar.com.wolox.wolmo.core.presenter.BasePresenter
 import com.google.android.material.tabs.TabLayout
+import kotlinx.android.synthetic.main.fragment_viewpager.*
+import javax.inject.Inject
 
-class MainFragment : WolmoFragment<MainPresenter>(), IMainView {
+class MainFragment : WolmoFragment<BasePresenter<Any>>() {
+
+    @Inject internal lateinit var page1Fragment: NewsFragment
+    @Inject internal lateinit var page2Fragment: ProfileFragment
+    private lateinit var fragmentPagerAdapter: SimpleFragmentPagerAdapter
 
     var tabLayout: TabLayout? = null
-    var viewPager: ViewPager? = null
 
     override fun layout(): Int = R.layout.fragment_main
 
     override fun init() {
+        fragmentPagerAdapter = SimpleFragmentPagerAdapter(childFragmentManager)
+        fragmentPagerAdapter.addFragments(
+                Pair<Fragment, String>(page1Fragment, getString(R.string.main_first_page)),
+                Pair<Fragment, String>(page2Fragment, getString(R.string.main_second_page)))
+        vViewPager.adapter = fragmentPagerAdapter
 
         tabLayout = view?.findViewById(R.id.tab_layout)
-        viewPager = view?.findViewById(R.id.pager)
-
-        tabLayout!!.addTab(tabLayout!!.newTab().setText(getString(R.string.main_tab_news)).setIcon(R.drawable.ic_news_list_on))
-        tabLayout!!.addTab(tabLayout!!.newTab().setText(getString(R.string.main_tab_profile)).setIcon(R.drawable.ic_profile_off))
-
-        tabLayout!!.tabGravity = TabLayout.GRAVITY_FILL
-
-        val adapter = activity?.supportFragmentManager?.let { MainAdapter(it, tabLayout!!.tabCount) }
-        viewPager!!.adapter = adapter
-
-        viewPager!!.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabLayout))
-
+        vViewPager.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabLayout))
         tabLayout!!.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
-                when (tab.position) {
-                    0 -> {
-                        tab.setIcon(R.drawable.ic_news_list_on)
-                    }
-                    1 -> {
-                        tab.setIcon(R.drawable.ic_profile_on)
-                    }
+                if (tab.position == 0) {
+                    tab.setIcon(R.drawable.ic_news_list_on)
+                } else {
+                    tab.setIcon(R.drawable.ic_profile_on)
                 }
-                viewPager!!.currentItem = tab.position
+                vViewPager!!.currentItem = tab.position
             }
             override fun onTabUnselected(tab: TabLayout.Tab) {
-                when (tab.position) {
-                    0 -> {
-                        tab.setIcon(R.drawable.ic_news_list_off)
-                    }
-                    1 -> {
-                        tab.setIcon(R.drawable.ic_profile_off)
-                    }
+                if (tab.position == 0) {
+                    tab.setIcon(R.drawable.ic_news_list_off)
+                } else {
+                    tab.setIcon(R.drawable.ic_profile_off)
                 }
             }
             override fun onTabReselected(tab: TabLayout.Tab) {

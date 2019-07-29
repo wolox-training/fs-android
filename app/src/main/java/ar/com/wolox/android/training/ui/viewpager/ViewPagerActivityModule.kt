@@ -1,10 +1,8 @@
 package ar.com.wolox.android.training.ui.viewpager
 
 import ar.com.wolox.android.training.ui.viewpager.fragment.ViewPagerFragment
-
 import ar.com.wolox.android.training.ui.viewpager.random.RandomFragment
 import ar.com.wolox.android.training.ui.viewpager.request.RequestFragment
-
 import dagger.Binds
 import dagger.Module
 import dagger.android.AndroidInjector
