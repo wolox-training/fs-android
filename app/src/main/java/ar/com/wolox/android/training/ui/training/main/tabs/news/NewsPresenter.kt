@@ -8,7 +8,7 @@ class NewsPresenter @Inject constructor() : BasePresenter<INewsView>() {
 
     fun refreshRecyclerView() {
 
-        //TODO: Refresh simulation, delete after backend implementation is over
+        // TODO: Refresh simulation, delete after backend implementation is over
         Handler().postDelayed({
             view.updateRecyclerView()
         }, 5000L)
