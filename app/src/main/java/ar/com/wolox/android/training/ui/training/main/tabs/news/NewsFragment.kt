@@ -1,17 +1,20 @@
 package ar.com.wolox.android.training.ui.training.main.tabs.news
 
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ar.com.wolox.android.R
 import ar.com.wolox.android.training.model.NewsItem
+import ar.com.wolox.android.training.utils.onClickListener
 import ar.com.wolox.wolmo.core.fragment.WolmoFragment
 import ar.com.wolox.wolmo.core.presenter.BasePresenter
 import com.facebook.drawee.backends.pipeline.Fresco
+import kotlinx.android.synthetic.main.fragment_news.*
 import javax.inject.Inject
 
-class NewsFragment @Inject constructor() : WolmoFragment<BasePresenter<Any>>() {
+private const val ICON = "http://pngimg.com/uploads/android_logo/android_logo_PNG3.png"
 
-    private var ICON = "http://pngimg.com/uploads/android_logo/android_logo_PNG3.png"
+class NewsFragment @Inject constructor() : WolmoFragment<BasePresenter<Any>>() {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var viewAdapter: RecyclerView.Adapter<*>
@@ -28,16 +31,16 @@ class NewsFragment @Inject constructor() : WolmoFragment<BasePresenter<Any>>() {
         viewAdapter = NewsAdapter(mNewsExample) { partItem: NewsItem -> partItemClicked(partItem) }
 
         recyclerView = view?.findViewById<RecyclerView>(R.id.recyclerView)?.apply {
-            // use this setting to improve performance if you know that changes
-            // in content do not change the layout size of the RecyclerView
             setHasFixedSize(true)
-
-            // use a linear layout manager
             layoutManager = viewManager
-
-            // specify an viewAdapter (see also next example)
             adapter = viewAdapter
         }!!
+    }
+
+    override fun setListeners() {
+        vFab.onClickListener {
+            Toast.makeText(context, getString(R.string.news_fab), Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun partItemClicked(item: NewsItem) {

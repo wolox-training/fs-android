@@ -55,4 +55,7 @@
     <string name="valid_login_form">to main screen…</string>
     <string name="login_to_singup">to SingUp screen…</string>
 
+    <!-- NewsActivity -->
+    <string name="news_fab">Floating Action Button Clicked!!</string>
+
 </resources>
