@@ -16,7 +16,6 @@ private const val ICON = "http://pngimg.com/uploads/android_logo/android_logo_PN
 
 class NewsFragment @Inject constructor() : WolmoFragment<BasePresenter<Any>>() {
 
-    private lateinit var recyclerView: RecyclerView
     private lateinit var viewAdapter: RecyclerView.Adapter<*>
     private lateinit var viewManager: RecyclerView.LayoutManager
 
@@ -29,8 +28,7 @@ class NewsFragment @Inject constructor() : WolmoFragment<BasePresenter<Any>>() {
 
         viewManager = LinearLayoutManager(context)
         viewAdapter = NewsAdapter(mNewsExample) { partItem: NewsItem -> partItemClicked(partItem) }
-
-        recyclerView = view?.findViewById<RecyclerView>(R.id.recyclerView)?.apply {
+        vRecyclerView.apply {
             setHasFixedSize(true)
             layoutManager = viewManager
             adapter = viewAdapter

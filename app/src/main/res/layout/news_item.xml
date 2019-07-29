@@ -7,30 +7,30 @@
     android:layout_height="wrap_content">
 
     <TextView
-        android:id="@+id/user_name"
+        android:id="@+id/vUsername"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:text="User Example"
-        app:layout_constraintBottom_toTopOf="@+id/message"
-        app:layout_constraintStart_toEndOf="@+id/user_icon"
+        app:layout_constraintBottom_toTopOf="@+id/vMessage"
+        app:layout_constraintStart_toEndOf="@+id/vUserIcon"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/message"
+        android:id="@+id/vMessage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:text="Message Example"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/like_btn"
+        app:layout_constraintEnd_toStartOf="@+id/vLikeBtn"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/user_icon"
-        app:layout_constraintTop_toBottomOf="@+id/user_name" />
+        app:layout_constraintStart_toEndOf="@+id/vUserIcon"
+        app:layout_constraintTop_toBottomOf="@+id/vUsername" />
 
     <com.facebook.drawee.view.SimpleDraweeView
-        android:id="@+id/user_icon"
+        android:id="@+id/vUserIcon"
         android:layout_width="@dimen/news_item_img_size"
         android:layout_height="@dimen/news_item_img_size"
         android:layout_margin="@dimen/news_item_img_margin"
@@ -40,7 +40,7 @@
         app:layout_constraintVertical_bias="1.0" />
 
     <ImageView
-        android:id="@+id/like_btn"
+        android:id="@+id/vLikeBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -48,4 +48,16 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         fresco:srcCompat="@drawable/ic_like_off" />
+
+    <TextView
+        android:id="@+id/vDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="152dp"
+        android:text="Date Example"
+        app:layout_constraintBottom_toTopOf="@+id/vLikeBtn"
+        app:layout_constraintEnd_toEndOf="@+id/vLikeBtn"
+        app:layout_constraintStart_toEndOf="@+id/vUsername"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.565" />
 </androidx.constraintlayout.widget.ConstraintLayout>
