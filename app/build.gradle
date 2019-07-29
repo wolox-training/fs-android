@@ -110,6 +110,11 @@ dependencies {
     implementation 'com.android.support:design:26.0.1'
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.17'
     implementation 'com.android.support.constraint:constraint-layout:1.1.2'
+    implementation 'com.facebook.fresco:fresco:2.0.0'
+    implementation 'com.facebook.fresco:animated-gif:2.0.0'
+    implementation 'com.facebook.fresco:animated-webp:2.0.0'
+    implementation 'com.facebook.fresco:webpsupport:2.0.0'
+    implementation 'com.android.support:support-core-utils:24.2.1'
 
     // Kotlinmockit
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"

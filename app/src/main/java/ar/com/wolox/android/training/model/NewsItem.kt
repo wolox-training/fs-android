@@ -1,3 +1,5 @@
 package ar.com.wolox.android.training.model
 
-class NewsItem(val user: String, val message: String)
+class NewsItem(val user: String, val message: String, val icon: String) {
+    var like: Boolean = false
+}
