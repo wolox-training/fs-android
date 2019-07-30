@@ -11,10 +11,12 @@ class MainActivity : WolmoActivity() {
 
     override fun init() {
 
-        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-        window.statusBarColor = ContextCompat.getColor(this, android.R.color.transparent)
-        window.navigationBarColor = ContextCompat.getColor(this, android.R.color.transparent)
-        window.setBackgroundDrawable(getDrawable(R.drawable.gradient_toolbar))
+        this.window.run {
+            addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+            statusBarColor = ContextCompat.getColor(context, android.R.color.transparent)
+            navigationBarColor = ContextCompat.getColor(context, android.R.color.transparent)
+            setBackgroundDrawable(getDrawable(R.drawable.gradient_toolbar))
+        }
 
         replaceFragment(R.id.vActivityBaseContent, MainFragment())
     }
