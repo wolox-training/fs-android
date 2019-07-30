@@ -13,6 +13,10 @@ class NewsPresenter @Inject constructor() : BasePresenter<INewsView>() {
     var emptyList: Boolean = true
     var newsList: List<NewsItem> = mutableListOf()
 
+    override fun onViewAttached() {
+        refreshRecyclerView()
+    }
+
     fun refreshRecyclerView() {
         view.enableRefresh()
 

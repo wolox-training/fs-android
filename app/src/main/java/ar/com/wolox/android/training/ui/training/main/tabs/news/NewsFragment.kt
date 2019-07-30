@@ -24,17 +24,9 @@ class NewsFragment @Inject constructor() : WolmoFragment<NewsPresenter>(), INews
         Fresco.initialize(context)
 
         vRefreshListLayout.setColorSchemeColors(Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW)
-        vRefreshListLayout.setOnRefreshListener {
-            presenter.refreshRecyclerView()
-        }
-
         vRefreshEmptyList.setColorSchemeColors(Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW)
-        vRefreshEmptyList.setOnRefreshListener {
-            presenter.refreshRecyclerView()
-        }
 
         viewManager = LinearLayoutManager(context)
-        presenter.refreshRecyclerView()
     }
 
     override fun updateNews(newsItems: List<NewsItem>) {
@@ -69,6 +61,14 @@ class NewsFragment @Inject constructor() : WolmoFragment<NewsPresenter>(), INews
         vFab.onClickListener {
             // TODO: Call the presenter and delete the code below
             Toast.makeText(context, getString(R.string.news_fab), Toast.LENGTH_SHORT).show()
+        }
+
+        vRefreshListLayout.setOnRefreshListener {
+            presenter.refreshRecyclerView()
+        }
+
+        vRefreshEmptyList.setOnRefreshListener {
+            presenter.refreshRecyclerView()
         }
     }
 
