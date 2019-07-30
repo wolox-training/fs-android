@@ -127,6 +127,7 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
                     getView().hideProgressDialog();
                     userCredentials.setUsername(user.getEmail());
                     userCredentials.setPassword(user.getPassword());
+                    userCredentials.setId(user.getId());
                     getView().showMainScreen();
                 }
             });
