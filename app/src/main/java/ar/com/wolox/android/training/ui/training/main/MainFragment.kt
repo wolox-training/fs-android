@@ -10,7 +10,6 @@ import ar.com.wolox.wolmo.core.fragment.WolmoFragment
 import ar.com.wolox.wolmo.core.presenter.BasePresenter
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.fragment_main.*
-import kotlinx.android.synthetic.main.fragment_viewpager.*
 import kotlinx.android.synthetic.main.fragment_viewpager.vViewPager
 import javax.inject.Inject
 

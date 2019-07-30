@@ -42,12 +42,7 @@ class NewsAdapter(private val dataSet: List<NewsItem>, private val clickListener
             val prettyTime = PrettyTime(Locale.getDefault())
             mDate?.text = prettyTime.format(news.date)
 
-            if (news.like) {
-                mLikeBtn?.setImageResource(R.drawable.ic_like_on)
-            } else {
-                mLikeBtn?.setImageResource(R.drawable.ic_like_off)
-            }
-
+            mLikeBtn?.setImageResource(if (news.like) R.drawable.ic_like_on else R.drawable.ic_like_off)
             mLikeBtn?.setOnClickListener { clickListener(news) }
         }
     }

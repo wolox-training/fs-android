@@ -1,10 +1,8 @@
 package ar.com.wolox.android.training.ui.training.main.tabs.news
 
 import android.graphics.Color
-import android.os.Build
 import android.view.View
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ar.com.wolox.android.R
@@ -22,7 +20,6 @@ class NewsFragment @Inject constructor() : WolmoFragment<NewsPresenter>(), INews
 
     override fun layout(): Int = R.layout.fragment_news
 
-    @RequiresApi(Build.VERSION_CODES.M)
     override fun init() {
         Fresco.initialize(context)
 
@@ -70,6 +67,7 @@ class NewsFragment @Inject constructor() : WolmoFragment<NewsPresenter>(), INews
 
     override fun setListeners() {
         vFab.onClickListener {
+            //TODO: Call the presenter and delete the code below
             Toast.makeText(context, getString(R.string.news_fab), Toast.LENGTH_SHORT).show()
         }
     }

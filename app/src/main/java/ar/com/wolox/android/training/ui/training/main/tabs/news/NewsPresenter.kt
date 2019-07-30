@@ -10,20 +10,24 @@ private const val ICON = "http://pngimg.com/uploads/android_logo/android_logo_PN
 class NewsPresenter @Inject constructor() : BasePresenter<INewsView>() {
 
     // TODO (Simulation)
-    var emptyList: Boolean = false
+    var emptyList: Boolean = true
+    var newsList: List<NewsItem> = mutableListOf()
 
     fun refreshRecyclerView() {
         view.enableRefresh()
 
         // TODO: Refresh simulation, delete after backend implementation is over
-        emptyList = !emptyList
         if (emptyList) {
+            emptyList = !emptyList
             view.disableRefresh()
             view.showEmptyList()
         } else {
             Handler().postDelayed({
                 view.disableRefresh()
-                view.updateRecyclerView(newsListGenerator())
+                if (newsList.isEmpty()) {
+                    newsList = newsListGenerator()
+                }
+                view.updateRecyclerView(newsList)
             }, 5000L)
         }
     }
