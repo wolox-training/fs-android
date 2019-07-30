@@ -2,6 +2,7 @@ package ar.com.wolox.android.training.ui.training.main.tabs.news
 
 import android.net.Uri
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
@@ -9,13 +10,24 @@ import androidx.recyclerview.widget.RecyclerView
 import ar.com.wolox.android.R
 import ar.com.wolox.android.training.model.NewsItem
 import com.facebook.drawee.view.SimpleDraweeView
+import kotlinx.android.synthetic.main.news_item.view.*
 import org.ocpsoft.prettytime.PrettyTime
 import java.util.Locale
 
 class NewsAdapter(private val dataSet: List<NewsItem>, private val clickListener: (NewsItem) -> Unit) : RecyclerView.Adapter<NewsAdapter.NewsViewHolder>() {
 
-    class NewsViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
-            RecyclerView.ViewHolder(inflater.inflate(R.layout.news_item, parent, false)) {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsViewHolder {
+        return NewsViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.news_item, parent, false))
+    }
+
+    override fun onBindViewHolder(holder: NewsViewHolder, position: Int) {
+        val news: NewsItem = dataSet[position]
+        holder.bind(news, clickListener)
+    }
+
+    override fun getItemCount(): Int = dataSet.size
+
+    class NewsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private var mUserView: TextView? = null
         private var mNewsView: TextView? = null
         private var mUserIcon: SimpleDraweeView? = null
@@ -23,11 +35,11 @@ class NewsAdapter(private val dataSet: List<NewsItem>, private val clickListener
         private var mDate: TextView? = null
 
         init {
-            mUserView = itemView.findViewById(R.id.vUsername)
-            mNewsView = itemView.findViewById(R.id.vMessage)
-            mUserIcon = itemView.findViewById(R.id.vUserIcon)
-            mLikeBtn = itemView.findViewById(R.id.vLikeBtn)
-            mDate = itemView.findViewById(R.id.vDate)
+            mUserView = itemView.vUsername
+            mNewsView = itemView.vMessage
+            mUserIcon = itemView.vUserIcon
+            mLikeBtn = itemView.vLikeBtn
+            mDate = itemView.vDate
         }
 
         fun bind(news: NewsItem, clickListener: (NewsItem) -> Unit) {
@@ -46,16 +58,4 @@ class NewsAdapter(private val dataSet: List<NewsItem>, private val clickListener
             mLikeBtn?.setOnClickListener { clickListener(news) }
         }
     }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsViewHolder {
-        val inflater = LayoutInflater.from(parent.context)
-        return NewsViewHolder(inflater, parent)
-    }
-
-    override fun onBindViewHolder(holder: NewsViewHolder, position: Int) {
-        val news: NewsItem = dataSet[position]
-        holder.bind(news, clickListener)
-    }
-
-    override fun getItemCount(): Int = dataSet.size
 }

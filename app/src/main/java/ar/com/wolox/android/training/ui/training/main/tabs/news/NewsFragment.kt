@@ -37,7 +37,7 @@ class NewsFragment @Inject constructor() : WolmoFragment<NewsPresenter>(), INews
         presenter.refreshRecyclerView()
     }
 
-    override fun updateRecyclerView(newsItems: List<NewsItem>) {
+    override fun updateNews(newsItems: List<NewsItem>) {
         vRefreshListLayout.visibility = View.VISIBLE
         vRefreshEmptyList.visibility = View.GONE
 

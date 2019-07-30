@@ -27,7 +27,7 @@ class NewsPresenter @Inject constructor() : BasePresenter<INewsView>() {
                 if (newsList.isEmpty()) {
                     newsList = newsListGenerator()
                 }
-                view.updateRecyclerView(newsList)
+                view.updateNews(newsList)
             }, 5000L)
         }
     }
