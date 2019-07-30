@@ -28,34 +28,34 @@ class NewsAdapter(private val dataSet: List<NewsItem>, private val clickListener
     override fun getItemCount(): Int = dataSet.size
 
     class NewsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private var mUserView: TextView? = null
-        private var mNewsView: TextView? = null
-        private var mUserIcon: SimpleDraweeView? = null
-        private var mLikeBtn: ImageView? = null
-        private var mDate: TextView? = null
+        private var vUsername: TextView? = null
+        private var vMessage: TextView? = null
+        private var vIcon: SimpleDraweeView? = null
+        private var vLike: ImageView? = null
+        private var vDate: TextView? = null
 
         init {
-            mUserView = itemView.vUsername
-            mNewsView = itemView.vMessage
-            mUserIcon = itemView.vUserIcon
-            mLikeBtn = itemView.vLikeBtn
-            mDate = itemView.vDate
+            vUsername = itemView.vUsername
+            vMessage = itemView.vMessage
+            vIcon = itemView.vUserIcon
+            vLike = itemView.vLikeBtn
+            vDate = itemView.vDate
         }
 
         fun bind(news: NewsItem, clickListener: (NewsItem) -> Unit) {
-            mUserView?.text = news.user
-            mNewsView?.text = news.message
+            vUsername?.text = news.user
+            vMessage?.text = news.message
 
             if (news.icon.isNotEmpty()) {
                 val uri = Uri.parse(news.icon)
-                mUserIcon?.setImageURI(uri)
+                vIcon?.setImageURI(uri)
             }
 
             val prettyTime = PrettyTime(Locale.getDefault())
-            mDate?.text = prettyTime.format(news.date)
+            vDate?.text = prettyTime.format(news.date)
 
-            mLikeBtn?.setImageResource(if (news.like) R.drawable.ic_like_on else R.drawable.ic_like_off)
-            mLikeBtn?.setOnClickListener { clickListener(news) }
+            vLike?.setImageResource(if (news.like) R.drawable.ic_like_on else R.drawable.ic_like_off)
+            vLike?.setOnClickListener { clickListener(news) }
         }
     }
 }
