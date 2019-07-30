@@ -1,8 +1,10 @@
 package ar.com.wolox.android.training.ui.training.main.tabs.news
 
 import android.graphics.Color
+import android.os.Build
 import android.view.View
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ar.com.wolox.android.R
@@ -15,11 +17,13 @@ import javax.inject.Inject
 
 class NewsFragment @Inject constructor() : WolmoFragment<NewsPresenter>(), INewsView {
 
-    private lateinit var viewAdapter: RecyclerView.Adapter<*>
+    private lateinit var viewAdapter: NewsAdapter
     private lateinit var viewManager: RecyclerView.LayoutManager
+    private lateinit var newsItemList: MutableList<NewsItem>
 
     override fun layout(): Int = R.layout.fragment_news
 
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun init() {
         Fresco.initialize(context)
 
@@ -33,6 +37,17 @@ class NewsFragment @Inject constructor() : WolmoFragment<NewsPresenter>(), INews
             presenter.refreshRecyclerView()
         }
 
+        vRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                val linearLayoutManager = recyclerView
+                        .layoutManager as LinearLayoutManager?
+                if (linearLayoutManager!!.itemCount <= linearLayoutManager.findLastVisibleItemPosition() + 2) {
+                    presenter.addDummyElements(linearLayoutManager.findLastVisibleItemPosition())
+                }
+            }
+        })
+
         viewManager = LinearLayoutManager(context)
         presenter.refreshRecyclerView()
     }
@@ -41,7 +56,10 @@ class NewsFragment @Inject constructor() : WolmoFragment<NewsPresenter>(), INews
         vRefreshListLayout.visibility = View.VISIBLE
         vRefreshEmptyList.visibility = View.GONE
 
-        viewAdapter = NewsAdapter(newsItems) { partItem: NewsItem -> partItemClicked(partItem) }
+        newsItemList = mutableListOf()
+        newsItemList.addAll(newsItems)
+
+        viewAdapter = NewsAdapter(newsItemList) { partItem: NewsItem -> partItemClicked(partItem) }
         vRecyclerView.apply {
             setHasFixedSize(true)
             layoutManager = viewManager
@@ -83,5 +101,14 @@ class NewsFragment @Inject constructor() : WolmoFragment<NewsPresenter>(), INews
     private fun partItemClicked(item: NewsItem) {
         item.userLike = !item.userLike
         viewAdapter.notifyDataSetChanged()
+    }
+
+    override fun addNewToList(items: List<NewsItem>) {
+        val auxList = mutableListOf<NewsItem>()
+        auxList.addAll(newsItemList)
+        auxList.addAll(newsItemList.size, items)
+        newsItemList = auxList
+
+        viewAdapter.addData(items)
     }
 }

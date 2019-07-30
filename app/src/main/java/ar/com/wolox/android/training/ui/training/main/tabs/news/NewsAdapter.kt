@@ -12,7 +12,7 @@ import com.facebook.drawee.view.SimpleDraweeView
 import org.ocpsoft.prettytime.PrettyTime
 import java.util.Locale
 
-class NewsAdapter(private val dataSet: List<NewsItem>, private val clickListener: (NewsItem) -> Unit) : RecyclerView.Adapter<NewsAdapter.NewsViewHolder>() {
+class NewsAdapter(private val dataSet: MutableList<NewsItem>, private val clickListener: (NewsItem) -> Unit) : RecyclerView.Adapter<NewsAdapter.NewsViewHolder>() {
 
     class NewsViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
             RecyclerView.ViewHolder(inflater.inflate(R.layout.news_item, parent, false)) {
@@ -45,6 +45,11 @@ class NewsAdapter(private val dataSet: List<NewsItem>, private val clickListener
             mLikeBtn?.setImageResource(if (news.userLike) R.drawable.ic_like_on else R.drawable.ic_like_off)
             mLikeBtn?.setOnClickListener { clickListener(news) }
         }
+    }
+
+    fun addData(listOfSigns: List<NewsItem>) {
+        this.dataSet.addAll(listOfSigns)
+        notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsViewHolder {
