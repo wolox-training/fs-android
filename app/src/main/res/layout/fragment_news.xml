@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="@dimen/news_fab_padding_side"
-        android:layout_marginBottom="@dimen/news_fab_padding_bottom"
+        android:layout_marginBottom="@dimen/news_margin_default"
         android:clickable="true"
         app:backgroundTint="@color/colorAccent"
         app:layout_constraintBottom_toBottomOf="parent"

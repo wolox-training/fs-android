@@ -51,6 +51,8 @@
     <string name="error_multiple_response">There is more than one match in database</string>
     <string name="error_network_unavailable">Network is unavailable, please try later…</string>
     <string name="error_empty_list">Empty List!! Please wait a few seconds and try to refresh…</string>
+    <string name="error_news_service">Network error, please wait a few seconds and try to refresh</string>
+    <string name="error_news_empty_data">No data from service, please wait a few seconds and try again</string>
 
     <!-- Tmp Messages -->
     <string name="valid_login_form">to main screen…</string>

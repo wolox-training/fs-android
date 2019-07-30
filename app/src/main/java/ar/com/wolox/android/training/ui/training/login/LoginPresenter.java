@@ -31,7 +31,7 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
      * onInit(): replace onViewAttached method because its calls after fragment init
      */
     void onInit() {
-        // Get credentials from shared preferences, creates an user object (if exists) and update credentials
+        // Get credentials from shared preferences, creates an title object (if exists) and update credentials
         if (userCredentials.getUsername() != null && userCredentials.getPassword() != null) {
             User user = new User(userCredentials.getUsername(), userCredentials.getPassword());
             getView().updateCredentials(user);

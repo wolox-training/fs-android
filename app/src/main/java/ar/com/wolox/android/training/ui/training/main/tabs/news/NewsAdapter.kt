@@ -31,18 +31,18 @@ class NewsAdapter(private val dataSet: List<NewsItem>, private val clickListener
         }
 
         fun bind(news: NewsItem, clickListener: (NewsItem) -> Unit) {
-            mUserView?.text = news.user
-            mNewsView?.text = news.message
+            mUserView?.text = news.title
+            mNewsView?.text = news.text
 
-            if (news.icon.isNotEmpty()) {
-                val uri = Uri.parse(news.icon)
+            if (news.picture.isNotEmpty()) {
+                val uri = Uri.parse(news.picture)
                 mUserIcon?.setImageURI(uri)
             }
 
             val prettyTime = PrettyTime(Locale.getDefault())
             mDate?.text = prettyTime.format(news.date)
 
-            mLikeBtn?.setImageResource(if (news.like) R.drawable.ic_like_on else R.drawable.ic_like_off)
+            mLikeBtn?.setImageResource(if (news.userLike) R.drawable.ic_like_on else R.drawable.ic_like_off)
             mLikeBtn?.setOnClickListener { clickListener(news) }
         }
     }

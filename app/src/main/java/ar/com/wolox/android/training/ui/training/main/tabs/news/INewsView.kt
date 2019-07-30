@@ -8,4 +8,7 @@ interface INewsView {
     fun showEmptyList()
     fun enableRefresh()
     fun disableRefresh()
+
+    fun showServiceError()
+    fun showEmptyDataError()
 }

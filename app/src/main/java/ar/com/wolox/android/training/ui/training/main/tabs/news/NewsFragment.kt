@@ -72,8 +72,16 @@ class NewsFragment @Inject constructor() : WolmoFragment<NewsPresenter>(), INews
         }
     }
 
+    override fun showServiceError() {
+        Toast.makeText(context, getString(R.string.error_news_service), Toast.LENGTH_LONG).show()
+    }
+
+    override fun showEmptyDataError() {
+        Toast.makeText(context, getString(R.string.error_news_empty_data), Toast.LENGTH_LONG).show()
+    }
+
     private fun partItemClicked(item: NewsItem) {
-        item.like = !item.like
+        item.userLike = !item.userLike
         viewAdapter.notifyDataSetChanged()
     }
 }

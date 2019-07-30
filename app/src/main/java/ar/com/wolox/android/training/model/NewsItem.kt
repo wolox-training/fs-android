@@ -2,7 +2,11 @@ package ar.com.wolox.android.training.model
 
 import java.util.Date
 
-class NewsItem(val user: String, val message: String, val icon: String) {
-    var like: Boolean = false
-    val date: Date = Date()
+class NewsItem(val title: String, val text: String) {
+    var picture: String = ""
+    var userLike: Boolean = false
+    var date: Date = Date()
+    var userUd: Int = -1
+    var likes: List<Int> = arrayListOf()
+    var createdAt: String = ""
 }
