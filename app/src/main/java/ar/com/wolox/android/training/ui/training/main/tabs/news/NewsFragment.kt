@@ -46,7 +46,7 @@ class NewsFragment @Inject constructor() : WolmoFragment<NewsPresenter>(), INews
             setHasFixedSize(true)
             layoutManager = viewManager
             adapter = viewAdapter
-        }!!
+        }
         viewAdapter.notifyDataSetChanged()
     }
 

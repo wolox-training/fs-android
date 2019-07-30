@@ -32,7 +32,7 @@ class MainFragment : WolmoFragment<BasePresenter<Any>>() {
         vTabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
                 tab.setIcon(if (tab.position == 0) R.drawable.ic_news_list_on else R.drawable.ic_profile_on)
-                vViewPager!!.currentItem = tab.position
+                vViewPager.currentItem = tab.position
             }
             override fun onTabUnselected(tab: TabLayout.Tab) {
                 tab.setIcon(if (tab.position == 0) R.drawable.ic_news_list_off else R.drawable.ic_profile_off)
