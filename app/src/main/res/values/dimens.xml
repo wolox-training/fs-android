@@ -70,5 +70,6 @@
     <dimen name="news_fab_padding_side">25dp</dimen>
     <dimen name="news_margin_default">8dp</dimen>
     <dimen name="news_padding_default">9dp</dimen>
+    <dimen name="news_separator">1dp</dimen>
     
 </resources>
