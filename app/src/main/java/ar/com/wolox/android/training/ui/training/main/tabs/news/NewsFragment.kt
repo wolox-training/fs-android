@@ -67,7 +67,7 @@ class NewsFragment @Inject constructor() : WolmoFragment<NewsPresenter>(), INews
 
     override fun setListeners() {
         vFab.onClickListener {
-            //TODO: Call the presenter and delete the code below
+            // TODO: Call the presenter and delete the code below
             Toast.makeText(context, getString(R.string.news_fab), Toast.LENGTH_SHORT).show()
         }
     }
