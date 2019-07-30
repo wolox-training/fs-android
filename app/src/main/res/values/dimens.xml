@@ -60,6 +60,8 @@
     <!-- MainActivity -->
     <dimen name="main_logo_padding">10dp</dimen>
     <dimen name="main_logo_text_margin">10dp</dimen>
+    <dimen name="main_padding_default">8dp</dimen>
+    <dimen name="main_padding_tab">50dp</dimen>
 
     <!-- NewsActivity -->
     <dimen name="news_list_margin">10dp</dimen>
