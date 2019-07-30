@@ -2,6 +2,7 @@ package ar.com.wolox.android.training.ui.training.main.tabs.news
 
 import android.graphics.Color
 import android.os.Build
+import android.view.View
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,8 +15,6 @@ import com.facebook.drawee.backends.pipeline.Fresco
 import kotlinx.android.synthetic.main.fragment_news.*
 import javax.inject.Inject
 
-private const val ICON = "http://pngimg.com/uploads/android_logo/android_logo_PNG3.png"
-
 class NewsFragment @Inject constructor() : WolmoFragment<NewsPresenter>(), INewsView {
 
     private lateinit var viewAdapter: RecyclerView.Adapter<*>
@@ -25,28 +24,48 @@ class NewsFragment @Inject constructor() : WolmoFragment<NewsPresenter>(), INews
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun init() {
-        val mNewsExample = newsListGenerator()
-
         Fresco.initialize(context)
 
-        vRefreshLayout.setColorSchemeColors(Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW)
-        vRefreshLayout.setOnRefreshListener {
-            vRefreshLayout.isRefreshing = true
+        vRefreshListLayout.setColorSchemeColors(Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW)
+        vRefreshListLayout.setOnRefreshListener {
+            presenter.refreshRecyclerView()
+        }
+
+        vRefreshEmptyList.setColorSchemeColors(Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW)
+        vRefreshEmptyList.setOnRefreshListener {
             presenter.refreshRecyclerView()
         }
 
         viewManager = LinearLayoutManager(context)
-        viewAdapter = NewsAdapter(mNewsExample) { partItem: NewsItem -> partItemClicked(partItem) }
+        presenter.refreshRecyclerView()
+    }
+
+    override fun updateRecyclerView(newsItems: List<NewsItem>) {
+        vRefreshListLayout.visibility = View.VISIBLE
+        vRefreshEmptyList.visibility = View.GONE
+
+        viewAdapter = NewsAdapter(newsItems) { partItem: NewsItem -> partItemClicked(partItem) }
         vRecyclerView.apply {
             setHasFixedSize(true)
             layoutManager = viewManager
             adapter = viewAdapter
         }!!
+        viewAdapter.notifyDataSetChanged()
     }
 
-    override fun updateRecyclerView() {
-        vRefreshLayout.isRefreshing = false
-        viewAdapter.notifyDataSetChanged()
+    override fun showEmptyList() {
+        vRefreshListLayout.visibility = View.GONE
+        vRefreshEmptyList.visibility = View.VISIBLE
+    }
+
+    override fun enableRefresh() {
+        vRefreshListLayout.isRefreshing = true
+        vRefreshEmptyList.isRefreshing = true
+    }
+
+    override fun disableRefresh() {
+        vRefreshListLayout.isRefreshing = false
+        vRefreshEmptyList.isRefreshing = false
     }
 
     override fun setListeners() {
@@ -58,21 +77,5 @@ class NewsFragment @Inject constructor() : WolmoFragment<NewsPresenter>(), INews
     private fun partItemClicked(item: NewsItem) {
         item.like = !item.like
         viewAdapter.notifyDataSetChanged()
-    }
-
-    private fun newsListGenerator(): List<NewsItem> {
-        // TODO: Sample List Init(), delete after dataset is created
-        val newsList = mutableListOf<NewsItem>()
-        var count = 0
-
-        while (count < 15) {
-            val username = "User$count"
-            val message = "Message " + (count + 1)
-            val item = NewsItem(username, message, ICON)
-            newsList.add(item)
-
-            count++
-        }
-        return newsList
     }
 }

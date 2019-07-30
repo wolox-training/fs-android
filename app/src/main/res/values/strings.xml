@@ -50,6 +50,7 @@
     <string name="error_wrong_credentials">Invalid email or password</string>
     <string name="error_multiple_response">There is more than one match in database</string>
     <string name="error_network_unavailable">Network is unavailable, please try later…</string>
+    <string name="error_empty_list">Empty List!! Please wait a few seconds and try to refresh…</string>
 
     <!-- Tmp Messages -->
     <string name="valid_login_form">to main screen…</string>
@@ -57,5 +58,6 @@
 
     <!-- NewsActivity -->
     <string name="news_fab">Floating Action Button Clicked!!</string>
+    <string name="news_refresh_list">Refresh</string>
 
 </resources>

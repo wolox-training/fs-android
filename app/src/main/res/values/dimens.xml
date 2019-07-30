@@ -69,5 +69,6 @@
     <dimen name="news_item_img_margin">6dp</dimen>
     <dimen name="news_fab_padding_side">25dp</dimen>
     <dimen name="news_fab_padding_bottom">8dp</dimen>
+    <dimen name="news_padding_default">9dp</dimen>
     
 </resources>
