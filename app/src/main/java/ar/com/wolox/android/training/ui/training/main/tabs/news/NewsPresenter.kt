@@ -69,12 +69,13 @@ class NewsPresenter @Inject constructor(
     }
 
     fun addDummyElements(lastIndex: Int) {
+        // TODO: (Simulation) Dummy method to generate infinity items for recyclerView
         val newsList = mutableListOf<NewsItem>()
 
         for (count in 1..5) {
-            val newsItem = NewsItem("Title $count", "Body of the dummy message number $count")
+            val newsItem = NewsItem("Title $lastIndex($count)", "Body of the dummy message number $lastIndex($count)")
             newsItem.date = Date()
-            newsItem.userLike = (lastIndex % 2 == 0)
+            newsItem.userLike = (lastIndex % 3 == 0)
             newsItem.picture = ICON_DEFAULT
 
             newsList.add(newsItem)
