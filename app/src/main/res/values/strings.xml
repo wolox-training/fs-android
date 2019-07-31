@@ -38,6 +38,11 @@
     <!-- MainActivity -->
     <string name="main_back_msg_title">Really Exit?</string>
     <string name="main_back_msg">Are you sure you want to exit?</string>
+    <string name="main_title">WOLOX</string>
+    <string name="main_tab_news">News</string>
+    <string name="main_tab_profile">Profile</string>
+    <string name="main_first_page">Page 1</string>
+    <string name="main_second_page">Page 2</string>
 
     <!-- Errors-->
     <string name="error_empty_field">The Field is Required</string>

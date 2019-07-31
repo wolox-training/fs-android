@@ -1,7 +1,7 @@
 package ar.com.wolox.android.training.ui.viewpager.fragment
 
-import androidx.fragment.app.Fragment
 import androidx.core.util.Pair
+import androidx.fragment.app.Fragment
 import ar.com.wolox.android.R
 import ar.com.wolox.android.training.ui.viewpager.random.RandomFragment
 import ar.com.wolox.android.training.ui.viewpager.request.RequestFragment

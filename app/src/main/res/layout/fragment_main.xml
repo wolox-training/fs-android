@@ -1,14 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/colorWhite">
 
-    <TextView
+    <ImageView
+        android:id="@+id/vImageLogo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="Main Activity in Progress"
-        android:textSize="18sp"/>
+        android:layout_marginLeft="@dimen/main_logo_padding"
+        android:layout_marginTop="@dimen/main_logo_padding"
+        android:layout_marginBottom="@dimen/main_padding_default"
+        app:layout_constraintBottom_toTopOf="@+id/vTabLayout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/wolox_logo" />
 
-</RelativeLayout>
+    <TextView
+        android:id="@+id/vMainTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginLeft="@dimen/main_logo_text_margin"
+        android:layout_marginTop="@dimen/main_padding_default"
+        android:layout_marginBottom="@dimen/main_padding_default"
+        android:gravity="center_vertical"
+        android:text="@string/main_title"
+        android:textSize="@dimen/font_large"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/vTabLayout"
+        app:layout_constraintStart_toEndOf="@+id/vImageLogo"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/vTabLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/main_padding_tab"
+        android:layout_marginBottom="@dimen/main_padding_default"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/vViewPager"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/vTabNews"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:icon="@drawable/ic_news_list_on"
+            android:text="@string/main_tab_news" />
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/vTabProfile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:icon="@drawable/ic_profile_off"
+            android:text="@string/main_tab_profile" />
+
+    </com.google.android.material.tabs.TabLayout>
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/vViewPager"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/main_padding_default"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/vTabLayout">
+
+        <androidx.viewpager.widget.PagerTitleStrip
+            android:id="@+id/vTitleStrip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom" />
+    </androidx.viewpager.widget.ViewPager>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
