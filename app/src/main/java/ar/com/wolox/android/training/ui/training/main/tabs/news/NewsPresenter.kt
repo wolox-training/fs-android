@@ -20,10 +20,10 @@ class NewsPresenter @Inject constructor(
     val formatter: SimpleDateFormat = SimpleDateFormat(DATE_FORMAT)
 
     override fun onViewAttached() {
-        checkNews()
+        onUpdateNewsRequest()
     }
 
-    fun checkNews() {
+    fun onUpdateNewsRequest() {
         view.enableRefresh()
 
         mServiceAdapter.getNews(object : NewsServiceAdapterListener {
