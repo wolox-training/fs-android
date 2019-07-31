@@ -4,7 +4,7 @@ import ar.com.wolox.android.training.model.NewsItem
 
 interface INewsView {
 
-    fun updateRecyclerView(newsItems: List<NewsItem>)
+    fun updateNews(newsItems: List<NewsItem>)
     fun showEmptyList()
     fun enableRefresh()
     fun disableRefresh()

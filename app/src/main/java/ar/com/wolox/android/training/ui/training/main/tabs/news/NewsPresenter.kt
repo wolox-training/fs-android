@@ -22,6 +22,10 @@ class NewsPresenter @Inject constructor(
     @SuppressLint("SimpleDateFormat")
     val formatter: SimpleDateFormat = SimpleDateFormat(DATE_FORMAT)
 
+    override fun onViewAttached() {
+        refreshRecyclerView()
+    }
+
     fun refreshRecyclerView() {
         view.enableRefresh()
 
@@ -65,7 +69,7 @@ class NewsPresenter @Inject constructor(
             }
         }
 
-        view.updateRecyclerView(newsList)
+        view.updateNews(newsList)
     }
 
     fun addDummyElements(lastIndex: Int) {
