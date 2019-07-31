@@ -14,10 +14,10 @@ class NewsPresenter @Inject constructor() : BasePresenter<INewsView>() {
     var newsList: List<NewsItem> = mutableListOf()
 
     override fun onViewAttached() {
-        checkNews()
+        onUpdateNewsRequest()
     }
 
-    fun checkNews() {
+    fun onUpdateNewsRequest() {
         view.enableRefresh()
 
         // TODO: Refresh simulation, delete after backend implementation is over

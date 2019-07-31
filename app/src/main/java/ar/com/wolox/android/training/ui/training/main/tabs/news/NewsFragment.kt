@@ -64,11 +64,11 @@ class NewsFragment @Inject constructor() : WolmoFragment<NewsPresenter>(), INews
         }
 
         vRefreshListLayout.setOnRefreshListener {
-            presenter.checkNews()
+            presenter.onUpdateNewsRequest()
         }
 
         vRefreshEmptyList.setOnRefreshListener {
-            presenter.checkNews()
+            presenter.onUpdateNewsRequest()
         }
     }
 
