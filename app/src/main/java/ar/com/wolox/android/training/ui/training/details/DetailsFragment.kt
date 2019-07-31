@@ -5,6 +5,7 @@ import ar.com.wolox.android.R
 import ar.com.wolox.android.training.model.NewsItem
 import ar.com.wolox.wolmo.core.fragment.WolmoFragment
 import ar.com.wolox.wolmo.core.presenter.BasePresenter
+import kotlinx.android.synthetic.main.fragment_details.*
 
 class DetailsFragment : WolmoFragment<BasePresenter<Any>>() {
 
@@ -15,6 +16,6 @@ class DetailsFragment : WolmoFragment<BasePresenter<Any>>() {
     override fun init() {
         val item = arguments?.getSerializable("NEW")
         val news = item as NewsItem
-        println(news.text)
+        vTextSample.text = news.text
     }
 }
