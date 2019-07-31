@@ -2,9 +2,7 @@ package ar.com.wolox.android.training.ui.training.main.tabs.news
 
 import android.annotation.SuppressLint
 import ar.com.wolox.android.training.model.NewsItem
-import ar.com.wolox.android.training.network.INewsService
 import ar.com.wolox.android.training.utils.CredentialsSession
-import ar.com.wolox.android.training.utils.networkCallback
 import ar.com.wolox.wolmo.core.presenter.BasePresenter
 import ar.com.wolox.wolmo.networking.retrofit.RetrofitServices
 import java.text.SimpleDateFormat
@@ -15,7 +13,7 @@ private const val DATE_FORMAT = "yyyy-MM-dd'T'hh:mm:ss.sss'Z'"
 private const val ICON_DEFAULT = "http://pngimg.com/uploads/android_logo/android_logo_PNG3.png"
 
 class NewsPresenter @Inject constructor(
-    private val mRetrofitServices: RetrofitServices,
+    private val mServiceAdapter: NewsServiceAdapter,
     private val userCredential: CredentialsSession
 ) : BasePresenter<INewsView>() {
 
@@ -29,33 +27,24 @@ class NewsPresenter @Inject constructor(
     fun refreshRecyclerView() {
         view.enableRefresh()
 
-        mRetrofitServices.getService(INewsService::class.java).getNewsRequest().enqueue(
-                networkCallback {
-                    onResponseSuccessful { response ->
-                        runIfViewAttached { view ->
-                            view.disableRefresh()
-                            if (response != null) {
-                                parseLikesData(response)
-                            } else {
-                                view.showEmptyList()
-                                view.showEmptyDataError()
-                            }
-                        }
-                    }
+        mServiceAdapter.getNews(object : NewsServiceAdapterListener {
+            override fun onSuccess(newsList: List<NewsItem>) {
+                view.disableRefresh()
+                parseLikesData(newsList)
+            }
 
-                    onResponseFailed { _, _ -> runIfViewAttached(Runnable {
-                        view.disableRefresh()
-                        view.showEmptyList()
-                        view.showServiceError()
-                    }) }
+            override fun onEmptyData() {
+                view.disableRefresh()
+                view.showEmptyList()
+                view.showEmptyDataError()
+            }
 
-                    onCallFailure { runIfViewAttached(Runnable {
-                        view.disableRefresh()
-                        view.showEmptyList()
-                        view.showServiceError()
-                    }) }
-                }
-        )
+            override fun onError() {
+                view.disableRefresh()
+                view.showEmptyList()
+                view.showServiceError()
+            }
+        })
     }
 
     private fun parseLikesData(newsList: List<NewsItem>) {

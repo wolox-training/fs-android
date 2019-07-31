@@ -14,7 +14,7 @@ import kotlinx.android.synthetic.main.news_item.view.*
 import org.ocpsoft.prettytime.PrettyTime
 import java.util.Locale
 
-class NewsAdapter(private val dataSet: MutableList<NewsItem>, private val clickListener: (NewsItem) -> Unit) : RecyclerView.Adapter<NewsAdapter.NewsViewHolder>() {
+class NewsListAdapter(private val dataSet: MutableList<NewsItem>, private val clickListener: (NewsItem) -> Unit) : RecyclerView.Adapter<NewsListAdapter.NewsViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsViewHolder {
         return NewsViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.news_item, parent, false))

@@ -17,7 +17,7 @@ import javax.inject.Inject
 
 class NewsFragment @Inject constructor() : WolmoFragment<NewsPresenter>(), INewsView {
 
-    private lateinit var viewAdapter: NewsAdapter
+    private lateinit var viewAdapter: NewsListAdapter
     private lateinit var viewManager: RecyclerView.LayoutManager
     private lateinit var newsItemList: MutableList<NewsItem>
 
@@ -30,17 +30,6 @@ class NewsFragment @Inject constructor() : WolmoFragment<NewsPresenter>(), INews
         vRefreshListLayout.setColorSchemeColors(Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW)
         vRefreshEmptyList.setColorSchemeColors(Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW)
 
-        vRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-                val linearLayoutManager = recyclerView
-                        .layoutManager as LinearLayoutManager?
-                if (linearLayoutManager!!.itemCount <= linearLayoutManager.findLastVisibleItemPosition() + 2) {
-                    presenter.addDummyElements(linearLayoutManager.findLastVisibleItemPosition())
-                }
-            }
-        })
-
         viewManager = LinearLayoutManager(context)
     }
 
@@ -48,10 +37,9 @@ class NewsFragment @Inject constructor() : WolmoFragment<NewsPresenter>(), INews
         vRefreshListLayout.visibility = View.VISIBLE
         vRefreshEmptyList.visibility = View.GONE
 
-        newsItemList = mutableListOf()
-        newsItemList.addAll(newsItems)
+        newsItemList = newsItems as MutableList<NewsItem>
 
-        viewAdapter = NewsAdapter(newsItemList) { partItem: NewsItem -> partItemClicked(partItem) }
+        viewAdapter = NewsListAdapter(newsItemList) { partItem: NewsItem -> partItemClicked(partItem) }
         vRecyclerView.apply {
             setHasFixedSize(true)
             layoutManager = viewManager
@@ -88,6 +76,17 @@ class NewsFragment @Inject constructor() : WolmoFragment<NewsPresenter>(), INews
         vRefreshEmptyList.setOnRefreshListener {
             presenter.refreshRecyclerView()
         }
+
+        vRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                val linearLayoutManager = recyclerView
+                        .layoutManager as LinearLayoutManager?
+                if (linearLayoutManager!!.itemCount <= linearLayoutManager.findLastVisibleItemPosition() + 2) {
+                    presenter.addDummyElements(linearLayoutManager.findLastVisibleItemPosition())
+                }
+            }
+        })
     }
 
     override fun showServiceError() {
@@ -104,11 +103,6 @@ class NewsFragment @Inject constructor() : WolmoFragment<NewsPresenter>(), INews
     }
 
     override fun addNewToList(items: List<NewsItem>) {
-        val auxList = mutableListOf<NewsItem>()
-        auxList.addAll(newsItemList)
-        auxList.addAll(newsItemList.size, items)
-        newsItemList = auxList
-
         viewAdapter.addData(items)
     }
 }
