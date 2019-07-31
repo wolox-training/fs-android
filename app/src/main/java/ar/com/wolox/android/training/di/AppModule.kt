@@ -2,6 +2,8 @@ package ar.com.wolox.android.training.di
 
 import ar.com.wolox.android.training.ui.example.ExampleActivity
 import ar.com.wolox.android.training.ui.example.ExampleFragment
+import ar.com.wolox.android.training.ui.training.details.DetailsActivity
+import ar.com.wolox.android.training.ui.training.details.DetailsFragment
 import ar.com.wolox.android.training.ui.training.login.LoginActivity
 import ar.com.wolox.android.training.ui.training.login.LoginFragment
 import ar.com.wolox.android.training.ui.training.main.MainActivity
@@ -45,4 +47,10 @@ abstract class AppModule {
 
     @ContributesAndroidInjector
     internal abstract fun profileFragment(): ProfileFragment
+
+    @ContributesAndroidInjector
+    internal abstract fun detailsActivity(): DetailsActivity
+
+    @ContributesAndroidInjector
+    internal abstract fun detailsFragment(): DetailsFragment
 }

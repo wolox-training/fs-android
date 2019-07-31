@@ -1,5 +1,6 @@
 package ar.com.wolox.android.training.ui.training.main.tabs.news
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Build
 import android.view.View
@@ -9,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ar.com.wolox.android.R
 import ar.com.wolox.android.training.model.NewsItem
+import ar.com.wolox.android.training.ui.training.details.DetailsActivity
 import ar.com.wolox.android.training.utils.onClickListener
 import ar.com.wolox.wolmo.core.fragment.WolmoFragment
 import com.facebook.drawee.backends.pipeline.Fresco
@@ -107,6 +109,7 @@ class NewsFragment @Inject constructor() : WolmoFragment<NewsPresenter>(), INews
     }
 
     private fun detailsClicked(item: NewsItem) {
-        // TODO: go to details
+        val intent = Intent(activity, DetailsActivity::class.java)
+        startActivity(intent)
     }
 }
