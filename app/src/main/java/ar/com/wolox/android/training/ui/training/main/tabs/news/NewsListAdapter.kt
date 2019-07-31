@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import ar.com.wolox.android.R
 import ar.com.wolox.android.training.model.NewsItem
@@ -14,7 +15,11 @@ import kotlinx.android.synthetic.main.news_item.view.*
 import org.ocpsoft.prettytime.PrettyTime
 import java.util.Locale
 
-class NewsListAdapter(private val dataSet: MutableList<NewsItem>, private val clickListener: (NewsItem) -> Unit) : RecyclerView.Adapter<NewsListAdapter.NewsViewHolder>() {
+class NewsListAdapter(
+    private val dataSet: MutableList<NewsItem>,
+    private val likeClickListener: (NewsItem) -> Unit,
+    private val detailsClickListener: (NewsItem) -> Unit
+) : RecyclerView.Adapter<NewsListAdapter.NewsViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsViewHolder {
         return NewsViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.news_item, parent, false))
@@ -22,7 +27,7 @@ class NewsListAdapter(private val dataSet: MutableList<NewsItem>, private val cl
 
     override fun onBindViewHolder(holder: NewsViewHolder, position: Int) {
         val news: NewsItem = dataSet[position]
-        holder.bind(news, clickListener)
+        holder.bind(news, likeClickListener, detailsClickListener)
     }
 
     override fun getItemCount(): Int = dataSet.size
@@ -33,6 +38,8 @@ class NewsListAdapter(private val dataSet: MutableList<NewsItem>, private val cl
     }
 
     class NewsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+
+        private var vMainContainer: ConstraintLayout? = null
         private var vUsername: TextView? = null
         private var vMessage: TextView? = null
         private var vIcon: SimpleDraweeView? = null
@@ -40,6 +47,7 @@ class NewsListAdapter(private val dataSet: MutableList<NewsItem>, private val cl
         private var vDate: TextView? = null
 
         init {
+            vMainContainer = itemView.vMainContainer
             vUsername = itemView.vUsername
             vMessage = itemView.vMessage
             vIcon = itemView.vUserIcon
@@ -47,7 +55,12 @@ class NewsListAdapter(private val dataSet: MutableList<NewsItem>, private val cl
             vDate = itemView.vDate
         }
 
-        fun bind(news: NewsItem, clickListener: (NewsItem) -> Unit) {
+        fun bind(
+            news: NewsItem,
+            likeClickListener: (NewsItem) -> Unit,
+            detailsClickListener: (NewsItem) -> Unit
+        ) {
+
             vUsername?.text = news.title
             vMessage?.text = news.text
 
@@ -60,7 +73,9 @@ class NewsListAdapter(private val dataSet: MutableList<NewsItem>, private val cl
             vDate?.text = prettyTime.format(news.date)
 
             vLike?.setImageResource(if (news.userLike) R.drawable.ic_like_on else R.drawable.ic_like_off)
-            vLike?.setOnClickListener { clickListener(news) }
+            vLike?.setOnClickListener { likeClickListener(news) }
+
+            vMainContainer?.setOnClickListener { detailsClickListener(news) }
         }
     }
 }

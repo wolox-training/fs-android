@@ -39,7 +39,7 @@ class NewsFragment @Inject constructor() : WolmoFragment<NewsPresenter>(), INews
 
         newsItemList = newsItems as MutableList<NewsItem>
 
-        viewAdapter = NewsListAdapter(newsItemList) { partItem: NewsItem -> partItemClicked(partItem) }
+        viewAdapter = NewsListAdapter(newsItemList, { item -> likeBtnClicked(item) }, { item -> detailsClicked(item) })
         vRecyclerView.apply {
             setHasFixedSize(true)
             layoutManager = viewManager
@@ -97,12 +97,16 @@ class NewsFragment @Inject constructor() : WolmoFragment<NewsPresenter>(), INews
         Toast.makeText(context, getString(R.string.error_news_empty_data), Toast.LENGTH_LONG).show()
     }
 
-    private fun partItemClicked(item: NewsItem) {
+    private fun likeBtnClicked(item: NewsItem) {
         item.userLike = !item.userLike
         viewAdapter.notifyDataSetChanged()
     }
 
     override fun addNewToList(items: List<NewsItem>) {
         viewAdapter.addData(items)
+    }
+
+    private fun detailsClicked(item: NewsItem) {
+        //TODO: go to details
     }
 }
