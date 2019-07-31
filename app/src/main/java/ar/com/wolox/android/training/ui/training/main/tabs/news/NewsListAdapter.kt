@@ -4,13 +4,9 @@ import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import ar.com.wolox.android.R
 import ar.com.wolox.android.training.model.NewsItem
-import com.facebook.drawee.view.SimpleDraweeView
 import kotlinx.android.synthetic.main.news_item.view.*
 import org.ocpsoft.prettytime.PrettyTime
 import java.util.Locale
@@ -39,43 +35,27 @@ class NewsListAdapter(
 
     class NewsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        private var vMainContainer: ConstraintLayout? = null
-        private var vUsername: TextView? = null
-        private var vMessage: TextView? = null
-        private var vIcon: SimpleDraweeView? = null
-        private var vLike: ImageView? = null
-        private var vDate: TextView? = null
-
-        init {
-            vMainContainer = itemView.vMainContainer
-            vUsername = itemView.vUsername
-            vMessage = itemView.vMessage
-            vIcon = itemView.vUserIcon
-            vLike = itemView.vLikeBtn
-            vDate = itemView.vDate
-        }
-
         fun bind(
             news: NewsItem,
             likeClickListener: (NewsItem) -> Unit,
             detailsClickListener: (NewsItem) -> Unit
         ) {
 
-            vUsername?.text = news.title
-            vMessage?.text = news.text
+            itemView.vUsername.text = news.title
+            itemView.vMessage.text = news.text
 
             if (news.picture.isNotEmpty()) {
                 val uri = Uri.parse(news.picture)
-                vIcon?.setImageURI(uri)
+                itemView.vUserIcon.setImageURI(uri)
             }
 
             val prettyTime = PrettyTime(Locale.getDefault())
-            vDate?.text = prettyTime.format(news.date)
+            itemView.vDate.text = prettyTime.format(news.date)
 
-            vLike?.setImageResource(if (news.userLike) R.drawable.ic_like_on else R.drawable.ic_like_off)
-            vLike?.setOnClickListener { likeClickListener(news) }
+            itemView.vLikeBtn.setImageResource(if (news.userLike) R.drawable.ic_like_on else R.drawable.ic_like_off)
+            itemView.vLikeBtn.setOnClickListener { likeClickListener(news) }
 
-            vMainContainer?.setOnClickListener { detailsClickListener(news) }
+            itemView.vMainContainer.setOnClickListener { detailsClickListener(news) }
         }
     }
 }
