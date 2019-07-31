@@ -107,6 +107,6 @@ class NewsFragment @Inject constructor() : WolmoFragment<NewsPresenter>(), INews
     }
 
     private fun detailsClicked(item: NewsItem) {
-        //TODO: go to details
+        // TODO: go to details
     }
 }
