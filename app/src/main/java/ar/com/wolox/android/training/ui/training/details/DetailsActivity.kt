@@ -17,6 +17,6 @@ class DetailsActivity : WolmoActivity() {
             setBackgroundDrawable(getDrawable(R.drawable.gradient_toolbar))
         }
 
-        replaceFragment(R.id.vActivityBaseContent, DetailsFragment())
+        replaceFragment(R.id.vActivityBaseContent, DetailsFragment().apply { this.arguments = intent.extras })
     }
 }

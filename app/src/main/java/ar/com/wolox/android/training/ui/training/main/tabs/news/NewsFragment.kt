@@ -109,7 +109,9 @@ class NewsFragment @Inject constructor() : WolmoFragment<NewsPresenter>(), INews
     }
 
     private fun detailsClicked(item: NewsItem) {
-        val intent = Intent(activity, DetailsActivity::class.java)
+        val intent = Intent(activity, DetailsActivity::class.java).apply {
+            this.putExtra("NEW", item)
+        }
         startActivity(intent)
     }
 }
