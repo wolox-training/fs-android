@@ -4,12 +4,9 @@ import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import ar.com.wolox.android.R
 import ar.com.wolox.android.training.model.NewsItem
-import com.facebook.drawee.view.SimpleDraweeView
 import kotlinx.android.synthetic.main.news_item.view.*
 import org.ocpsoft.prettytime.PrettyTime
 import java.util.Locale
@@ -33,34 +30,20 @@ class NewsListAdapter(private val dataSet: MutableList<NewsItem>, private val cl
     }
 
     class NewsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private var vUsername: TextView? = null
-        private var vMessage: TextView? = null
-        private var vIcon: SimpleDraweeView? = null
-        private var vLike: ImageView? = null
-        private var vDate: TextView? = null
-
-        init {
-            vUsername = itemView.vUsername
-            vMessage = itemView.vMessage
-            vIcon = itemView.vUserIcon
-            vLike = itemView.vLikeBtn
-            vDate = itemView.vDate
-        }
 
         fun bind(news: NewsItem, clickListener: (NewsItem) -> Unit) {
-            vUsername?.text = news.title
-            vMessage?.text = news.text
+            itemView.vUsername.text = news.title
+            itemView.vMessage.text = news.text
 
             if (news.picture.isNotEmpty()) {
                 val uri = Uri.parse(news.picture)
-                vIcon?.setImageURI(uri)
+                itemView.vUserIcon.setImageURI(uri)
             }
 
             val prettyTime = PrettyTime(Locale.getDefault())
-            vDate?.text = prettyTime.format(news.date)
-
-            vLike?.setImageResource(if (news.userLike) R.drawable.ic_like_on else R.drawable.ic_like_off)
-            vLike?.setOnClickListener { clickListener(news) }
+            itemView.vDate.text = prettyTime.format(news.date)
+            itemView.vLikeBtn.setImageResource(if (news.userLike) R.drawable.ic_like_on else R.drawable.ic_like_off)
+            itemView.vLikeBtn.setOnClickListener { clickListener(news) }
         }
     }
 }
