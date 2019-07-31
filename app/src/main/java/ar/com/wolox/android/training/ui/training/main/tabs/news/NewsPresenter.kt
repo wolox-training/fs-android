@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import ar.com.wolox.android.training.model.NewsItem
 import ar.com.wolox.android.training.utils.CredentialsSession
 import ar.com.wolox.wolmo.core.presenter.BasePresenter
-import ar.com.wolox.wolmo.networking.retrofit.RetrofitServices
 import java.text.SimpleDateFormat
 import java.util.Date
 import javax.inject.Inject
