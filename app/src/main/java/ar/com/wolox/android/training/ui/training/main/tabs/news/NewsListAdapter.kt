@@ -41,7 +41,7 @@ class NewsListAdapter(private val dataSet: MutableList<NewsItem>, private val cl
             }
 
             val prettyTime = PrettyTime(Locale.getDefault())
-            itemView.vDate.text = prettyTime.format(news.date)
+            itemView.vDate.text = prettyTime.format(news.getDate())
             itemView.vLikeBtn.setImageResource(if (news.userLike) R.drawable.ic_like_on else R.drawable.ic_like_off)
             itemView.vLikeBtn.setOnClickListener { clickListener(news) }
         }

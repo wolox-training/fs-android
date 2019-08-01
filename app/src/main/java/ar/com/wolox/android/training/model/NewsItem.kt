@@ -10,21 +10,21 @@ data class NewsItem(
     val text: String,
     var picture: String,
     var userLike: Boolean,
-    var date: Date,
     val likes: List<Int>,
     @SerializedName("createdAt")
     var createdAt: String
 ) {
-    fun updateDate() {
-        if (this.createdAt.isNotEmpty()) {
-            val formatter: SimpleDateFormat = SimpleDateFormat(DATE_FORMAT, Locale.getDefault())
-            this.date = formatter.parse(this.createdAt)
-        }
-    }
-
     fun updateLike(userId: Int) {
         if (this.likes.isNotEmpty() && this.likes.contains(userId)) {
             this.userLike = true
+        }
+    }
+
+    fun getDate(): Date {
+        return if (this.createdAt.isNotEmpty()) {
+            SimpleDateFormat(DATE_FORMAT, Locale.getDefault()).parse(this.createdAt)
+        } else {
+            Date()
         }
     }
 

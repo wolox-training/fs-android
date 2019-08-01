@@ -3,7 +3,6 @@ package ar.com.wolox.android.training.ui.training.main.tabs.news
 import ar.com.wolox.android.training.model.NewsItem
 import ar.com.wolox.android.training.utils.CredentialsSession
 import ar.com.wolox.wolmo.core.presenter.BasePresenter
-import java.util.Date
 import javax.inject.Inject
 
 class NewsPresenter @Inject constructor(
@@ -47,7 +46,6 @@ class NewsPresenter @Inject constructor(
         val userId = userCredential.id
 
         for (news in newsList) {
-            news.updateDate()
             news.updateLike(userId)
         }
 
@@ -75,7 +73,6 @@ class NewsPresenter @Inject constructor(
                     "Body of the dummy message number $index($count)",
                     ICON_DEFAULT,
                     false,
-                    Date(),
                     listOf(),
                     "")
 
