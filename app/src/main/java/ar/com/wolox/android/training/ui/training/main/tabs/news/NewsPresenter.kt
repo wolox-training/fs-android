@@ -65,10 +65,13 @@ class NewsPresenter @Inject constructor(
         val newsList = mutableListOf<NewsItem>()
 
         for (count in 1..5) {
-            val newsItem = NewsItem("Title $lastIndex($count)", "Body of the dummy message number $lastIndex($count)")
-            newsItem.date = Date()
-            newsItem.userLike = (lastIndex % 3 == 0)
-            newsItem.picture = ICON_DEFAULT
+            val newsItem = NewsItem("Title $lastIndex($count)",
+                    "Body of the dummy message number $lastIndex($count)",
+                    ICON_DEFAULT,
+                    false,
+                    Date(),
+                    listOf(),
+                    "")
 
             newsList.add(newsItem)
         }
