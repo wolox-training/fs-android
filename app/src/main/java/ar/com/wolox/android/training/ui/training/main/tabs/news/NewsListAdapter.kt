@@ -14,7 +14,7 @@ import java.util.Locale
 class NewsListAdapter(
     private val dataSet: MutableList<NewsItem>,
     private val likeClickListener: (NewsItem) -> Unit,
-    private val detailsClickListener: (NewsItem) -> Unit
+    private val detailsClickListener: (NewsItem, Int) -> Unit
 ) : RecyclerView.Adapter<NewsListAdapter.NewsViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsViewHolder {
@@ -23,7 +23,7 @@ class NewsListAdapter(
 
     override fun onBindViewHolder(holder: NewsViewHolder, position: Int) {
         val news: NewsItem = dataSet[position]
-        holder.bind(news, likeClickListener, detailsClickListener)
+        holder.bind(news, position, likeClickListener, detailsClickListener)
     }
 
     override fun getItemCount(): Int = dataSet.size
@@ -37,8 +37,9 @@ class NewsListAdapter(
 
         fun bind(
             news: NewsItem,
+            position: Int,
             likeClickListener: (NewsItem) -> Unit,
-            detailsClickListener: (NewsItem) -> Unit
+            detailsClickListener: (NewsItem, Int) -> Unit
         ) {
 
             itemView.vUsername.text = news.title
@@ -55,7 +56,7 @@ class NewsListAdapter(
             itemView.vLikeBtn.setImageResource(if (news.userLike) R.drawable.ic_like_on else R.drawable.ic_like_off)
             itemView.vLikeBtn.setOnClickListener { likeClickListener(news) }
 
-            itemView.vMainContainer.setOnClickListener { detailsClickListener(news) }
+            itemView.vMainContainer.setOnClickListener { detailsClickListener(news, position) }
         }
     }
 }

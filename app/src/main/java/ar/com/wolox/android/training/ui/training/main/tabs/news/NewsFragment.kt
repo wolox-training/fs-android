@@ -50,7 +50,7 @@ class NewsFragment @Inject constructor() : WolmoFragment<NewsPresenter>(), INews
         newsItemList = mutableListOf()
         newsItemList.addAll(newsItems)
 
-        viewAdapter = NewsListAdapter(newsItemList, { item -> likeBtnClicked(item) }, { item -> detailsClicked(item) })
+        viewAdapter = NewsListAdapter(newsItemList, { item -> likeBtnClicked(item) }, { item, position -> detailsClicked(item, position) })
         vRecyclerView.apply {
             setHasFixedSize(true)
             layoutManager = viewManager
@@ -121,14 +121,17 @@ class NewsFragment @Inject constructor() : WolmoFragment<NewsPresenter>(), INews
         viewAdapter.addData(items)
     }
 
-    private fun detailsClicked(item: NewsItem) {
+    private fun detailsClicked(item: NewsItem, position: Int) {
         val intent = Intent(activity, DetailsActivity::class.java).apply {
-            this.putExtra("NEW", item)
+            this.putExtra(KEY_NEWS_ITEM, item)
+            this.putExtra(KEY_NEWS_POSITION, position)
         }
         startActivity(intent)
     }
 
     companion object {
         private const val PADDING_TO_REFRESH = 2
+        private const val KEY_NEWS_ITEM = "NEWS"
+        private const val KEY_NEWS_POSITION = "POSITION"
     }
 }
