@@ -71,5 +71,8 @@
     <dimen name="news_margin_default">8dp</dimen>
     <dimen name="news_padding_default">9dp</dimen>
     <dimen name="news_separator">1dp</dimen>
+
+    <!-- DetailsActivity -->
+    <dimen name="details_icon">50dp</dimen>
     
 </resources>
