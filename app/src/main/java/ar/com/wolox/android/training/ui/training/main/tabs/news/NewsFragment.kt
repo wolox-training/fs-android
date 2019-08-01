@@ -1,11 +1,12 @@
 package ar.com.wolox.android.training.ui.training.main.tabs.news
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
-import android.os.Build
+import android.net.ConnectivityManager
+import android.net.NetworkInfo
 import android.view.View
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ar.com.wolox.android.R
@@ -25,7 +26,6 @@ class NewsFragment @Inject constructor() : WolmoFragment<NewsPresenter>(), INews
 
     override fun layout(): Int = R.layout.fragment_news
 
-    @RequiresApi(Build.VERSION_CODES.M)
     override fun init() {
         Fresco.initialize(context)
 
@@ -35,11 +35,20 @@ class NewsFragment @Inject constructor() : WolmoFragment<NewsPresenter>(), INews
         viewManager = LinearLayoutManager(context)
     }
 
+    override fun isNetworkAvailable(): Boolean {
+        val connectivityManager = context?.getSystemService(Context.CONNECTIVITY_SERVICE)
+        return if (connectivityManager is ConnectivityManager) {
+            val networkInfo: NetworkInfo? = connectivityManager.activeNetworkInfo
+            networkInfo?.isConnected ?: false
+        } else false
+    }
+
     override fun updateNews(newsItems: List<NewsItem>) {
         vRefreshListLayout.visibility = View.VISIBLE
         vRefreshEmptyList.visibility = View.GONE
 
-        newsItemList = newsItems as MutableList<NewsItem>
+        newsItemList = mutableListOf()
+        newsItemList.addAll(newsItems)
 
         viewAdapter = NewsListAdapter(newsItemList, { item -> likeBtnClicked(item) }, { item -> detailsClicked(item) })
         vRecyclerView.apply {
@@ -84,8 +93,8 @@ class NewsFragment @Inject constructor() : WolmoFragment<NewsPresenter>(), INews
                 super.onScrolled(recyclerView, dx, dy)
                 val linearLayoutManager = recyclerView
                         .layoutManager as LinearLayoutManager?
-                if (linearLayoutManager!!.itemCount <= linearLayoutManager.findLastVisibleItemPosition() + 2) {
-                    presenter.addDummyElements(linearLayoutManager.findLastVisibleItemPosition())
+                if (linearLayoutManager!!.itemCount <= linearLayoutManager.findLastVisibleItemPosition() + PADDING_TO_REFRESH) {
+                    presenter.onEndOfList(linearLayoutManager.findLastVisibleItemPosition())
                 }
             }
         })
@@ -97,6 +106,10 @@ class NewsFragment @Inject constructor() : WolmoFragment<NewsPresenter>(), INews
 
     override fun showEmptyDataError() {
         Toast.makeText(context, getString(R.string.error_news_empty_data), Toast.LENGTH_LONG).show()
+    }
+
+    override fun showNetworkUnavailabeError() {
+        Toast.makeText(context, getString(R.string.error_network_unavailable), Toast.LENGTH_LONG).show()
     }
 
     private fun likeBtnClicked(item: NewsItem) {
@@ -113,5 +126,9 @@ class NewsFragment @Inject constructor() : WolmoFragment<NewsPresenter>(), INews
             this.putExtra("NEW", item)
         }
         startActivity(intent)
+    }
+
+    companion object {
+        private const val PADDING_TO_REFRESH = 2
     }
 }
