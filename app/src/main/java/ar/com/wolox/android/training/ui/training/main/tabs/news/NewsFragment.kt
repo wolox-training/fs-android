@@ -1,6 +1,9 @@
 package ar.com.wolox.android.training.ui.training.main.tabs.news
 
+import android.content.Context
 import android.graphics.Color
+import android.net.ConnectivityManager
+import android.net.NetworkInfo
 import android.view.View
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -28,6 +31,14 @@ class NewsFragment @Inject constructor() : WolmoFragment<NewsPresenter>(), INews
         vRefreshEmptyList.setColorSchemeColors(Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW)
 
         viewManager = LinearLayoutManager(context)
+    }
+
+    override fun isNetworkAvailable(): Boolean {
+        val connectivityManager = context?.getSystemService(Context.CONNECTIVITY_SERVICE)
+        return if (connectivityManager is ConnectivityManager) {
+            val networkInfo: NetworkInfo? = connectivityManager.activeNetworkInfo
+            networkInfo?.isConnected ?: false
+        } else false
     }
 
     override fun updateNews(newsItems: List<NewsItem>) {
@@ -93,6 +104,10 @@ class NewsFragment @Inject constructor() : WolmoFragment<NewsPresenter>(), INews
 
     override fun showEmptyDataError() {
         Toast.makeText(context, getString(R.string.error_news_empty_data), Toast.LENGTH_LONG).show()
+    }
+
+    override fun showNetworkUnavailabeError() {
+        Toast.makeText(context, getString(R.string.error_network_unavailable), Toast.LENGTH_LONG).show()
     }
 
     private fun partItemClicked(item: NewsItem) {

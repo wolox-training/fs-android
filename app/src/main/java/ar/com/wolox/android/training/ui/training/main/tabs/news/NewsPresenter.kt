@@ -18,24 +18,29 @@ class NewsPresenter @Inject constructor(
     fun onUpdateNewsRequest() {
         view.enableRefresh()
 
-        mServiceAdapter.getNews(object : NewsServiceAdapterListener {
-            override fun onSuccess(newsList: List<NewsItem>) {
-                view.disableRefresh()
-                parseLikesData(newsList)
-            }
+        if (!view.isNetworkAvailable()) {
+            view.disableRefresh()
+            view.showNetworkUnavailabeError()
+        } else {
+            mServiceAdapter.getNews(object : NewsServiceAdapterListener {
+                override fun onSuccess(newsList: List<NewsItem>) {
+                    view.disableRefresh()
+                    parseLikesData(newsList)
+                }
 
-            override fun onEmptyData() {
-                view.disableRefresh()
-                view.showEmptyList()
-                view.showEmptyDataError()
-            }
+                override fun onEmptyData() {
+                    view.disableRefresh()
+                    view.showEmptyList()
+                    view.showEmptyDataError()
+                }
 
-            override fun onError() {
-                view.disableRefresh()
-                view.showEmptyList()
-                view.showServiceError()
-            }
-        })
+                override fun onError() {
+                    view.disableRefresh()
+                    view.showEmptyList()
+                    view.showServiceError()
+                }
+            })
+        }
     }
 
     private fun parseLikesData(newsList: List<NewsItem>) {
