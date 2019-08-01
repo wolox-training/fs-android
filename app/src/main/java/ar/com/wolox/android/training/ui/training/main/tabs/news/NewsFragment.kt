@@ -34,7 +34,8 @@ class NewsFragment @Inject constructor() : WolmoFragment<NewsPresenter>(), INews
         vRefreshListLayout.visibility = View.VISIBLE
         vRefreshEmptyList.visibility = View.GONE
 
-        newsItemList = newsItems as MutableList<NewsItem>
+        newsItemList = mutableListOf()
+        newsItemList.addAll(newsItems)
 
         viewAdapter = NewsListAdapter(newsItemList) { partItem: NewsItem -> partItemClicked(partItem) }
         vRecyclerView.apply {
@@ -79,7 +80,7 @@ class NewsFragment @Inject constructor() : WolmoFragment<NewsPresenter>(), INews
                 super.onScrolled(recyclerView, dx, dy)
                 val linearLayoutManager = recyclerView
                         .layoutManager as LinearLayoutManager?
-                if (linearLayoutManager!!.itemCount <= linearLayoutManager.findLastVisibleItemPosition() + 2) {
+                if (linearLayoutManager!!.itemCount <= linearLayoutManager.findLastVisibleItemPosition() + PADDING_TO_REFRESH) {
                     presenter.onEndOfList(linearLayoutManager.findLastVisibleItemPosition())
                 }
             }
@@ -101,5 +102,9 @@ class NewsFragment @Inject constructor() : WolmoFragment<NewsPresenter>(), INews
 
     override fun addNewToList(items: List<NewsItem>) {
         viewAdapter.addData(items)
+    }
+
+    companion object {
+        private const val PADDING_TO_REFRESH = 2
     }
 }

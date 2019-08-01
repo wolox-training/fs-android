@@ -1,10 +1,8 @@
 package ar.com.wolox.android.training.ui.training.main.tabs.news
 
-import android.annotation.SuppressLint
 import ar.com.wolox.android.training.model.NewsItem
 import ar.com.wolox.android.training.utils.CredentialsSession
 import ar.com.wolox.wolmo.core.presenter.BasePresenter
-import java.text.SimpleDateFormat
 import java.util.Date
 import javax.inject.Inject
 
