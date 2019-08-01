@@ -1,7 +1,9 @@
 package ar.com.wolox.android.training.model
 
 import com.google.gson.annotations.SerializedName
+import java.text.SimpleDateFormat
 import java.util.Date
+import java.util.Locale
 
 data class NewsItem(
     val title: String,
@@ -12,4 +14,21 @@ data class NewsItem(
     val likes: List<Int>,
     @SerializedName("createdAt")
     var createdAt: String
-)
+) {
+    fun updateDate() {
+        if (this.createdAt.isNotEmpty()) {
+            val formatter: SimpleDateFormat = SimpleDateFormat(DATE_FORMAT, Locale.getDefault())
+            this.date = formatter.parse(this.createdAt)
+        }
+    }
+
+    fun updateLike(userId: Int) {
+        if (this.likes.isNotEmpty() && this.likes.contains(userId)) {
+            this.userLike = true
+        }
+    }
+
+    companion object {
+        private const val DATE_FORMAT = "yyyy-MM-dd'T'hh:mm:ss.sss'Z'"
+    }
+}

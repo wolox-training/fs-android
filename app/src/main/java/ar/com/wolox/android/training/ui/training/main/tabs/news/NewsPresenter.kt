@@ -8,16 +8,10 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import javax.inject.Inject
 
-private const val DATE_FORMAT = "yyyy-MM-dd'T'hh:mm:ss.sss'Z'"
-private const val ICON_DEFAULT = "http://pngimg.com/uploads/android_logo/android_logo_PNG3.png"
-
 class NewsPresenter @Inject constructor(
     private val mServiceAdapter: NewsServiceAdapter,
     private val userCredential: CredentialsSession
 ) : BasePresenter<INewsView>() {
-
-    @SuppressLint("SimpleDateFormat")
-    val formatter: SimpleDateFormat = SimpleDateFormat(DATE_FORMAT)
 
     override fun onViewAttached() {
         onUpdateNewsRequest()
@@ -50,11 +44,8 @@ class NewsPresenter @Inject constructor(
         val userId = userCredential.id
 
         for (news in newsList) {
-            news.date = formatter.parse(news.createdAt)
-
-            if (news.likes.isNotEmpty() && news.likes.contains(userId)) {
-                news.userLike = true
-            }
+            news.updateDate()
+            news.updateLike(userId)
         }
 
         view.updateNews(newsList)
@@ -77,5 +68,9 @@ class NewsPresenter @Inject constructor(
         }
 
         view.addNewToList(newsList)
+    }
+
+    companion object {
+        private const val ICON_DEFAULT = "http://pngimg.com/uploads/android_logo/android_logo_PNG3.png"
     }
 }
