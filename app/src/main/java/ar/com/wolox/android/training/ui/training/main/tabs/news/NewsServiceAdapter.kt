@@ -5,23 +5,17 @@ import ar.com.wolox.android.training.utils.networkCallback
 import ar.com.wolox.wolmo.networking.retrofit.RetrofitServices
 import javax.inject.Inject
 
-class NewsServiceAdapter @Inject constructor(private val mRetrofitServices: RetrofitServices) {
+class NewsServiceAdapter @Inject constructor(private val retrofitServices: RetrofitServices) {
 
     fun getNews(listener: NewsServiceAdapterListener) {
-        mRetrofitServices.getService(NewsService::class.java).getNewsRequest().enqueue(
+        retrofitServices.getService(NewsService::class.java).getNewsRequest().enqueue(
                 networkCallback {
                     onResponseSuccessful { response ->
-                        if (response != null) {
-                            listener.onSuccess(response)
-                        } else {
-                            listener.onEmptyData()
-                        }
+                        response?.let { listener.onSuccess(it) } ?: listener.onEmptyData()
                     }
 
                     onResponseFailed { _, _ ->
-                        run {
-                            listener.onError()
-                        }
+                        listener.onError()
                     }
 
                     onCallFailure {
