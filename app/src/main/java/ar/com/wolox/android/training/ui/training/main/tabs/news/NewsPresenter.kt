@@ -60,7 +60,7 @@ class NewsPresenter @Inject constructor(
         view.updateNews(newsList)
     }
 
-    fun addDummyElements(lastIndex: Int) {
+    fun onEndOfList(lastIndex: Int) {
         // TODO: (Simulation) Dummy method to generate infinity items for recyclerView
         val newsList = mutableListOf<NewsItem>()
 
