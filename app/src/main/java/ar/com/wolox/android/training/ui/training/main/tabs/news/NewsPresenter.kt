@@ -51,16 +51,28 @@ class NewsPresenter @Inject constructor(
             news.updateLike(userId)
         }
 
-        view.updateNews(newsList)
+        view.updateNews(fillDataList(newsList))
     }
 
-    fun onEndOfList(lastIndex: Int) {
-        // TODO: (Simulation) Dummy method to generate infinity items for recyclerView
+    private fun fillDataList(dataList: List<NewsItem>): List<NewsItem> {
+        // TODO: Fill list with dummy objects from service
+        return if (dataList.size < 5) {
+            val auxList = mutableListOf<NewsItem>()
+            auxList.addAll(dataList)
+            auxList.addAll(generateSimulationItems(dataList.size))
+            auxList
+        } else {
+            dataList
+        }
+    }
+
+    private fun generateSimulationItems(index: Int): MutableList<NewsItem> {
+        // TODO: (Simulation) Dummy method to generate 5 dummy objects
         val newsList = mutableListOf<NewsItem>()
 
         for (count in 1..5) {
-            val newsItem = NewsItem("Title $lastIndex($count)",
-                    "Body of the dummy message number $lastIndex($count)",
+            val newsItem = NewsItem("Title $index($count)",
+                    "Body of the dummy message number $index($count)",
                     ICON_DEFAULT,
                     false,
                     Date(),
@@ -69,8 +81,12 @@ class NewsPresenter @Inject constructor(
 
             newsList.add(newsItem)
         }
+        return newsList
+    }
 
-        view.addNewToList(newsList)
+    fun onEndOfList(lastIndex: Int) {
+        // TODO: (Simulation) Dummy method to add items to recyclerView
+        view.addNewToList(generateSimulationItems(lastIndex))
     }
 
     companion object {
