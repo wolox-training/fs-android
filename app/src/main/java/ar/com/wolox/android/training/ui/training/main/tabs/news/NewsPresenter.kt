@@ -11,7 +11,7 @@ import javax.inject.Inject
 
 class NewsPresenter @Inject constructor(
     private val serviceAdapter: NewsServiceAdapter,
-    private val credentialsSession: CredentialsSession
+    private var credentialsSession: CredentialsSession
 ) : BasePresenter<INewsView>() {
 
     override fun onViewAttached() {
@@ -27,6 +27,7 @@ class NewsPresenter @Inject constructor(
         } else {
             serviceAdapter.getNews(object : NewsGetServiceAdapterListener {
                 override fun onSuccess(newsList: List<NewsItem>) {
+                    initList(newsList)
                     view.disableRefresh()
                     view.updateNews(fillDataList(newsList))
                 }
@@ -46,8 +47,12 @@ class NewsPresenter @Inject constructor(
         }
     }
 
+    private fun initList(newsList: List<NewsItem>) {
+        newsList.forEach { it.credentialsSession = credentialsSession }
+    }
+
     fun onEventMessageRequest(eventMessage: EventMessage) {
-        view.replaceItemAtIndex(eventMessage.item, eventMessage.position)
+        view.replaceItemAtIndex(eventMessage.item)
     }
 
     fun onLikeRequest(position: Int, item: NewsItem) {
@@ -55,7 +60,7 @@ class NewsPresenter @Inject constructor(
             view.showUploadingError()
         } else {
             view.disableLikeBtn()
-            item.modifyLike(credentialsSession.id)
+            item.modifyLike()
             view.refreshView()
             if (!view.isNetworkAvailable()) {
                 view.showNetworkUnavailableError()
@@ -63,19 +68,20 @@ class NewsPresenter @Inject constructor(
             } else {
                 serviceAdapter.modifyNews(position = item.id, body = item, listener = object : NewsPutServiceAdapterListener {
                     override fun onSuccess(newsItem: NewsItem) {
+                        newsItem.credentialsSession = credentialsSession
                         view.enableLikeBtn()
-                        view.replaceItemAtIndex(newsItem, position)
+                        view.replaceItemAtIndex(newsItem)
                     }
 
                     override fun onEmptyData() {
-                        item.modifyLike(credentialsSession.id)
+                        item.modifyLike()
                         view.refreshView()
                         view.enableLikeBtn()
                         view.showEmptyDataError()
                     }
 
                     override fun onError() {
-                        item.modifyLike(credentialsSession.id)
+                        item.modifyLike()
                         view.refreshView()
                         view.enableLikeBtn()
                         view.showServiceError()
@@ -109,6 +115,7 @@ class NewsPresenter @Inject constructor(
                     ICON_DEFAULT,
                     "Body of the dummy message number $index($count)",
                     mutableListOf())
+            newsItem.credentialsSession = credentialsSession
 
             newsList.add(newsItem)
         }

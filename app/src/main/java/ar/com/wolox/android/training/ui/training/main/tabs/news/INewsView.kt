@@ -24,7 +24,7 @@ interface INewsView {
 
     fun addNewToList(items: List<NewsItem>)
 
-    fun replaceItemAtIndex(item: NewsItem, position: Int)
+    fun replaceItemAtIndex(item: NewsItem)
 
     fun refreshView()
 }

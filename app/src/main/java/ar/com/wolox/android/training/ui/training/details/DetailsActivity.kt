@@ -4,8 +4,9 @@ import android.view.WindowManager
 import androidx.core.content.ContextCompat
 import ar.com.wolox.android.R
 import ar.com.wolox.wolmo.core.activity.WolmoActivity
+import javax.inject.Inject
 
-class DetailsActivity : WolmoActivity() {
+class DetailsActivity @Inject constructor() : WolmoActivity() {
 
     override fun layout(): Int = R.layout.activity_base
 
