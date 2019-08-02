@@ -1,4 +1,4 @@
-package ar.com.wolox.android.training.ui.training.main.tabs.news
+package ar.com.wolox.android.training.ui.training.adapter
 
 import ar.com.wolox.android.training.model.NewsItem
 

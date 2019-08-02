@@ -1,7 +1,11 @@
 package ar.com.wolox.android.training.ui.training.details
 
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkInfo
 import android.net.Uri
 import android.os.Bundle
+import android.widget.Toast
 import ar.com.wolox.android.R
 import ar.com.wolox.android.training.model.EventMessage
 import ar.com.wolox.android.training.model.NewsItem
@@ -60,6 +64,30 @@ class DetailsFragment : WolmoFragment<DetailsPresenter>(), IDetailsView {
     override fun postChanges(item: NewsItem, position: Int) {
         val eventMessage = EventMessage(item, position)
         EventBus.getDefault().post(eventMessage)
+    }
+
+    override fun enableLikeBtn() {
+        vLikeBtn.isClickable = true
+    }
+
+    override fun disableLikeBtn() {
+        vLikeBtn.isClickable = false
+    }
+
+    override fun isNetworkAvailable(): Boolean {
+        val connectivityManager = context?.getSystemService(Context.CONNECTIVITY_SERVICE)
+        return if (connectivityManager is ConnectivityManager) {
+            val networkInfo: NetworkInfo? = connectivityManager.activeNetworkInfo
+            networkInfo?.isConnected ?: false
+        } else false
+    }
+
+    override fun showNetworkUnavailableError() {
+        Toast.makeText(context, getString(R.string.error_network_unavailable), Toast.LENGTH_LONG).show()
+    }
+
+    override fun showServiceError() {
+        Toast.makeText(context, getString(R.string.error_news_service), Toast.LENGTH_LONG).show()
     }
 
     companion object {

@@ -6,4 +6,12 @@ interface IDetailsView {
 
     fun changeLike(status: Boolean)
     fun postChanges(item: NewsItem, position: Int)
+
+    fun enableLikeBtn()
+    fun disableLikeBtn()
+
+    fun isNetworkAvailable(): Boolean
+
+    fun showNetworkUnavailableError()
+    fun showServiceError()
 }

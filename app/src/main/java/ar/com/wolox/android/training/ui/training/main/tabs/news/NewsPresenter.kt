@@ -2,6 +2,9 @@ package ar.com.wolox.android.training.ui.training.main.tabs.news
 
 import ar.com.wolox.android.training.model.EventMessage
 import ar.com.wolox.android.training.model.NewsItem
+import ar.com.wolox.android.training.ui.training.adapter.NewsGetServiceAdapterListener
+import ar.com.wolox.android.training.ui.training.adapter.NewsPutServiceAdapterListener
+import ar.com.wolox.android.training.ui.training.adapter.NewsServiceAdapter
 import ar.com.wolox.wolmo.core.presenter.BasePresenter
 import javax.inject.Inject
 
