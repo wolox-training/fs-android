@@ -3,10 +3,12 @@ package ar.com.wolox.android.training.ui.training.details
 import android.net.Uri
 import android.os.Bundle
 import ar.com.wolox.android.R
+import ar.com.wolox.android.training.model.EventMessage
 import ar.com.wolox.android.training.model.NewsItem
 import ar.com.wolox.wolmo.core.fragment.WolmoFragment
 import com.facebook.drawee.backends.pipeline.Fresco
 import kotlinx.android.synthetic.main.fragment_details.*
+import org.greenrobot.eventbus.EventBus
 import org.ocpsoft.prettytime.PrettyTime
 import java.util.Locale
 
@@ -53,6 +55,11 @@ class DetailsFragment : WolmoFragment<DetailsPresenter>(), IDetailsView {
 
     override fun changeLike(status: Boolean) {
         vLikeBtn.setImageResource(if (status) R.drawable.ic_like_on else R.drawable.ic_like_off)
+    }
+
+    override fun postChanges(item: NewsItem, position: Int) {
+        val eventMessage = EventMessage(item, position)
+        EventBus.getDefault().post(eventMessage)
     }
 
     companion object {

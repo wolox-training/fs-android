@@ -17,4 +17,6 @@ interface INewsView {
     fun showNetworkUnavailabeError()
 
     fun addNewToList(items: List<NewsItem>)
+
+    fun replaceItemAtIndex(item: NewsItem, position: Int)
 }

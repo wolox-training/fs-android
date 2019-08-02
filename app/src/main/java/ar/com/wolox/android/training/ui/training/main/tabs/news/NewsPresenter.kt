@@ -1,5 +1,6 @@
 package ar.com.wolox.android.training.ui.training.main.tabs.news
 
+import ar.com.wolox.android.training.model.EventMessage
 import ar.com.wolox.android.training.model.NewsItem
 import ar.com.wolox.wolmo.core.presenter.BasePresenter
 import javax.inject.Inject
@@ -38,6 +39,11 @@ class NewsPresenter @Inject constructor(
                 }
             })
         }
+    }
+
+    fun onEventMessageRequest(eventMessage: EventMessage) {
+        view.replaceItemAtIndex(eventMessage.item, eventMessage.position)
+        // TODO update News in server!
     }
 
     private fun fillDataList(dataList: List<NewsItem>): List<NewsItem> {

@@ -10,5 +10,6 @@ class DetailsPresenter @Inject constructor(private val credentialsSession: Crede
     fun onLikeRequest(item: NewsItem, position: Int) {
         item.setLike(credentialsSession.id, !item.getLike(credentialsSession.id))
         view.changeLike(item.getLike(credentialsSession.id))
+        view.postChanges(item, position)
     }
 }
