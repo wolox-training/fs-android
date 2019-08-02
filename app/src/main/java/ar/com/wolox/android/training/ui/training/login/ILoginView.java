@@ -33,4 +33,6 @@ public interface ILoginView {
     void hideProgressDialog();
 
     boolean isNetworkAvailable();
+
+    void loginWithGoogle();
 }

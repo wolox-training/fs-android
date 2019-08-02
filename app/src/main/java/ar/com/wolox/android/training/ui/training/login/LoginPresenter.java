@@ -133,4 +133,8 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
             });
         }
     }
+
+    void onGoogleLoginRequest() {
+        getView().loginWithGoogle();
+    }
 }

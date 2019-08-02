@@ -10,6 +10,10 @@ import android.widget.Toast;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.SignInButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -38,6 +42,8 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements View
 
     private ProgressDialog mProgressDialog;
 
+    private GoogleSignInClient mGoogleSignInClient;
+
     @Override
     public int layout() {
         return R.layout.fragment_login;
@@ -60,12 +66,21 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements View
             view.findViewById(R.id.btn_login).setOnClickListener(this);
             view.findViewById(R.id.btn_singup).setOnClickListener(this);
             view.findViewById(R.id.tyc_txt).setOnClickListener(this);
+
+            SignInButton signInButton = view.findViewById(R.id.btn_google_login);
+            signInButton.setSize(SignInButton.SIZE_STANDARD);
+            signInButton.setOnClickListener(this);
         }
 
         mProgressDialog = new ProgressDialog(getContext());
         mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         mProgressDialog.setCancelable(false);
         mProgressDialog.setCanceledOnTouchOutside(false);
+
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+        mGoogleSignInClient = GoogleSignIn.getClient(Objects.requireNonNull(getContext()), gso);
 
         getPresenter().onInit();
     }
@@ -86,6 +101,8 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements View
             case R.id.tyc_txt:
                 getPresenter().onTermsAndConditionClicked();
                 break;
+            case R.id.btn_google_login:
+                getPresenter().onGoogleLoginRequest();
             default:
                 break;
         }
@@ -215,5 +232,12 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements View
     @Override
     public void showServiceError(String message) {
         Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void loginWithGoogle() {
+        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+        //startActivityForResult(signInIntent, RC_SIGN_IN);
+        startActivity(signInIntent);
     }
 }
