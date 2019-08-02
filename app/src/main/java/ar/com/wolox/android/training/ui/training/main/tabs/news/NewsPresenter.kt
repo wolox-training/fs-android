@@ -42,24 +42,37 @@ class NewsPresenter @Inject constructor(
     }
 
     fun onEventMessageRequest(eventMessage: EventMessage) {
-        // view.replaceItemAtIndex(eventMessage.item, eventMessage.position)
-        if (!view.isNetworkAvailable()) {
-            view.showNetworkUnavailableError()
+        view.replaceItemAtIndex(eventMessage.item, eventMessage.position)
+    }
+
+    fun onLikeRequest(position: Int, item: NewsItem) {
+        if (view.isUploadingData()) {
+            view.showUploadingError()
         } else {
+            view.disableLikeBtn()
+            if (!view.isNetworkAvailable()) {
+                view.showNetworkUnavailableError()
+            } else {
+                view.modifyLike(item)
+                mServiceAdapter.modifyNews(position = item.id, body = item, listener = object : NewsPutServiceAdapterListener {
+                    override fun onSuccess(newsItem: NewsItem) {
+                        view.enableLikeBtn()
+                        view.replaceItemAtIndex(newsItem, position)
+                    }
 
-            mServiceAdapter.modifyNews(position = eventMessage.item.id, body = eventMessage.item, listener = object : NewsPutServiceAdapterListener {
-                override fun onSuccess(newsItem: NewsItem) {
-                    view.replaceItemAtIndex(newsItem, eventMessage.position)
-                }
+                    override fun onEmptyData() {
+                        view.enableLikeBtn()
+                        view.modifyLike(item)
+                        view.showEmptyDataError()
+                    }
 
-                override fun onEmptyData() {
-                    view.showEmptyDataError()
-                }
-
-                override fun onError() {
-                    view.showServiceError()
-                }
-            })
+                    override fun onError() {
+                        view.enableLikeBtn()
+                        view.modifyLike(item)
+                        view.showServiceError()
+                    }
+                })
+            }
         }
     }
 

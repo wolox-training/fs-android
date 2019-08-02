@@ -14,7 +14,7 @@ import java.util.Locale
 
 class NewsListAdapter(
     private val dataSet: MutableList<NewsItem>,
-    private val likeClickListener: (NewsItem) -> Unit,
+    private val likeClickListener: (NewsItem, Int) -> Unit,
     private val detailsClickListener: (NewsItem, Int) -> Unit,
     private val credentialsSession: CredentialsSession
 ) : RecyclerView.Adapter<NewsListAdapter.NewsViewHolder>() {
@@ -40,7 +40,7 @@ class NewsListAdapter(
         fun bind(
             news: NewsItem,
             position: Int,
-            likeClickListener: (NewsItem) -> Unit,
+            likeClickListener: (NewsItem, Int) -> Unit,
             detailsClickListener: (NewsItem, Int) -> Unit,
             credentialsSession: CredentialsSession
         ) {
@@ -57,7 +57,7 @@ class NewsListAdapter(
             itemView.vDate.text = prettyTime.format(news.getDate())
 
             itemView.vLikeBtn.setImageResource(if (news.getLike(credentialsSession.id)) R.drawable.ic_like_on else R.drawable.ic_like_off)
-            itemView.vLikeBtn.setOnClickListener { likeClickListener(news) }
+            itemView.vLikeBtn.setOnClickListener { likeClickListener(news, position) }
 
             itemView.vMainContainer.setOnClickListener { detailsClickListener(news, position) }
         }

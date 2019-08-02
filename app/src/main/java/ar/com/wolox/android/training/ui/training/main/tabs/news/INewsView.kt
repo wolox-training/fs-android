@@ -11,6 +11,13 @@ interface INewsView {
     fun enableRefresh()
     fun disableRefresh()
 
+    fun modifyLike(item: NewsItem)
+    fun showUploadingError()
+
+    fun enableLikeBtn()
+    fun disableLikeBtn()
+    fun isUploadingData(): Boolean
+
     fun showServiceError()
     fun showEmptyDataError()
 

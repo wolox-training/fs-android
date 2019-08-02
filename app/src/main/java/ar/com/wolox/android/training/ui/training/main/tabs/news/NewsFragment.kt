@@ -29,6 +29,7 @@ class NewsFragment @Inject constructor(private val credentialsSession: Credentia
     private lateinit var viewAdapter: NewsListAdapter
     private lateinit var viewManager: RecyclerView.LayoutManager
     private lateinit var newsItemList: MutableList<NewsItem>
+    private var uploadingData: Boolean = false
 
     override fun layout(): Int = R.layout.fragment_news
 
@@ -66,7 +67,7 @@ class NewsFragment @Inject constructor(private val credentialsSession: Credentia
         newsItemList = mutableListOf()
         newsItemList.addAll(newsItems)
 
-        viewAdapter = NewsListAdapter(newsItemList, { item -> likeBtnClicked(item) }, { item, position -> detailsClicked(item, position) }, credentialsSession)
+        viewAdapter = NewsListAdapter(newsItemList, { item, position -> likeBtnClicked(item, position) }, { item, position -> detailsClicked(item, position) }, credentialsSession)
 
         vRecyclerView.apply {
             setHasFixedSize(true)
@@ -129,9 +130,16 @@ class NewsFragment @Inject constructor(private val credentialsSession: Credentia
         Toast.makeText(context, getString(R.string.error_network_unavailable), Toast.LENGTH_LONG).show()
     }
 
-    private fun likeBtnClicked(item: NewsItem) {
+    private fun likeBtnClicked(item: NewsItem, position: Int) {
+        presenter.onLikeRequest(position, item)
+    }
+
+    override fun modifyLike(item: NewsItem) {
         item.setLike(credentialsSession.id, !item.getLike(credentialsSession.id))
-        viewAdapter.notifyDataSetChanged()
+    }
+
+    override fun showUploadingError() {
+        Toast.makeText(context, getString(R.string.news_uploading), Toast.LENGTH_SHORT).show()
     }
 
     override fun addNewToList(items: List<NewsItem>) {
@@ -152,6 +160,16 @@ class NewsFragment @Inject constructor(private val credentialsSession: Credentia
         newsItemList.add(position, item)
         viewAdapter.notifyDataSetChanged()
     }
+
+    override fun enableLikeBtn() {
+        uploadingData = false
+    }
+
+    override fun disableLikeBtn() {
+        uploadingData = true
+    }
+
+    override fun isUploadingData() = uploadingData
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onMessageEvent(eventMessage: EventMessage) {
