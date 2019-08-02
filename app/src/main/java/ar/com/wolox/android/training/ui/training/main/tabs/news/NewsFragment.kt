@@ -144,9 +144,9 @@ class NewsFragment @Inject constructor(private val credentialsSession: Credentia
 
     private fun detailsClicked(item: NewsItem, position: Int) {
         val intent = Intent(activity, DetailsActivity::class.java).apply {
-            this.putExtra(KEY_NEWS_ITEM, item)
-            this.putExtra(KEY_NEWS_POSITION, position)
-            this.putExtra(KEY_USER_ID, credentialsSession.id)
+            putExtra(KEY_NEWS_ITEM, item)
+            putExtra(KEY_NEWS_POSITION, position)
+            putExtra(KEY_USER_ID, credentialsSession.id)
         }
         startActivity(intent)
     }
