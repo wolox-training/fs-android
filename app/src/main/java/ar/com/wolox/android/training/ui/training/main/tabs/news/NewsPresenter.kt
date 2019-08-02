@@ -18,9 +18,9 @@ class NewsPresenter @Inject constructor(
 
         if (!view.isNetworkAvailable()) {
             view.disableRefresh()
-            view.showNetworkUnavailabeError()
+            view.showNetworkUnavailableError()
         } else {
-            mServiceAdapter.getNews(object : NewsServiceAdapterListener {
+            mServiceAdapter.getNews(object : NewsGetServiceAdapterListener {
                 override fun onSuccess(newsList: List<NewsItem>) {
                     view.disableRefresh()
                     view.updateNews(fillDataList(newsList))
@@ -42,8 +42,25 @@ class NewsPresenter @Inject constructor(
     }
 
     fun onEventMessageRequest(eventMessage: EventMessage) {
-        view.replaceItemAtIndex(eventMessage.item, eventMessage.position)
-        // TODO update News in server!
+        // view.replaceItemAtIndex(eventMessage.item, eventMessage.position)
+        if (!view.isNetworkAvailable()) {
+            view.showNetworkUnavailableError()
+        } else {
+
+            mServiceAdapter.modifyNews(position = eventMessage.item.id, body = eventMessage.item, listener = object : NewsPutServiceAdapterListener {
+                override fun onSuccess(newsItem: NewsItem) {
+                    view.replaceItemAtIndex(newsItem, eventMessage.position)
+                }
+
+                override fun onEmptyData() {
+                    view.showEmptyDataError()
+                }
+
+                override fun onError() {
+                    view.showServiceError()
+                }
+            })
+        }
     }
 
     private fun fillDataList(dataList: List<NewsItem>): List<NewsItem> {
@@ -63,11 +80,13 @@ class NewsPresenter @Inject constructor(
         val newsList = mutableListOf<NewsItem>()
 
         for (count in 1..5) {
-            val newsItem = NewsItem("Title $index($count)",
-                    "Body of the dummy message number $index($count)",
+            val newsItem = NewsItem(index + count,
+                    2,
+                    "2019-08-01T10:00:00.000Z",
+                    "Title $index($count)",
                     ICON_DEFAULT,
-                    mutableListOf(),
-                    "")
+                    "Body of the dummy message number $index($count)",
+                    mutableListOf())
 
             newsList.add(newsItem)
         }

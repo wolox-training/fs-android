@@ -125,7 +125,7 @@ class NewsFragment @Inject constructor(private val credentialsSession: Credentia
         Toast.makeText(context, getString(R.string.error_news_empty_data), Toast.LENGTH_LONG).show()
     }
 
-    override fun showNetworkUnavailabeError() {
+    override fun showNetworkUnavailableError() {
         Toast.makeText(context, getString(R.string.error_network_unavailable), Toast.LENGTH_LONG).show()
     }
 

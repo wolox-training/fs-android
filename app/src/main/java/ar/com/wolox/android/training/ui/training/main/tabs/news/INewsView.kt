@@ -14,7 +14,7 @@ interface INewsView {
     fun showServiceError()
     fun showEmptyDataError()
 
-    fun showNetworkUnavailabeError()
+    fun showNetworkUnavailableError()
 
     fun addNewToList(items: List<NewsItem>)
 
