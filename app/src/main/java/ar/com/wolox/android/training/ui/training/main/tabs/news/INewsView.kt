@@ -11,7 +11,6 @@ interface INewsView {
     fun enableRefresh()
     fun disableRefresh()
 
-    fun modifyLike(item: NewsItem)
     fun showUploadingError()
 
     fun enableLikeBtn()
@@ -26,4 +25,6 @@ interface INewsView {
     fun addNewToList(items: List<NewsItem>)
 
     fun replaceItemAtIndex(item: NewsItem, position: Int)
+
+    fun refreshView()
 }

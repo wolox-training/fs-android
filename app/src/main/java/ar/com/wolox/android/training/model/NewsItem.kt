@@ -33,11 +33,11 @@ data class NewsItem(
         return this.likes.isNotEmpty() && this.likes.contains(userId)
     }
 
-    fun setLike(userId: Int, status: Boolean) {
-        if (status) {
-            likes.add(userId)
-        } else {
+    fun modifyLike(userId: Int) {
+        if (likes.contains(userId)) {
             likes.remove(userId)
+        } else {
+            likes.add(userId)
         }
     }
 

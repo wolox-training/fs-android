@@ -13,7 +13,7 @@ class DetailsPresenter @Inject constructor(
 ) : BasePresenter<IDetailsView>() {
 
     fun onLikeRequest(item: NewsItem, position: Int) {
-        item.setLike(credentialsSession.id, !item.getLike(credentialsSession.id))
+        item.modifyLike(credentialsSession.id)
         view.changeLike(item.getLike(credentialsSession.id))
         view.disableLikeBtn()
 

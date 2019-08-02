@@ -5,11 +5,13 @@ import ar.com.wolox.android.training.model.NewsItem
 import ar.com.wolox.android.training.ui.training.adapter.NewsGetServiceAdapterListener
 import ar.com.wolox.android.training.ui.training.adapter.NewsPutServiceAdapterListener
 import ar.com.wolox.android.training.ui.training.adapter.NewsServiceAdapter
+import ar.com.wolox.android.training.utils.CredentialsSession
 import ar.com.wolox.wolmo.core.presenter.BasePresenter
 import javax.inject.Inject
 
 class NewsPresenter @Inject constructor(
-    private val mServiceAdapter: NewsServiceAdapter
+    private val serviceAdapter: NewsServiceAdapter,
+    private val credentialsSession: CredentialsSession
 ) : BasePresenter<INewsView>() {
 
     override fun onViewAttached() {
@@ -23,7 +25,7 @@ class NewsPresenter @Inject constructor(
             view.disableRefresh()
             view.showNetworkUnavailableError()
         } else {
-            mServiceAdapter.getNews(object : NewsGetServiceAdapterListener {
+            serviceAdapter.getNews(object : NewsGetServiceAdapterListener {
                 override fun onSuccess(newsList: List<NewsItem>) {
                     view.disableRefresh()
                     view.updateNews(fillDataList(newsList))
@@ -53,25 +55,29 @@ class NewsPresenter @Inject constructor(
             view.showUploadingError()
         } else {
             view.disableLikeBtn()
+            item.modifyLike(credentialsSession.id)
+            view.refreshView()
             if (!view.isNetworkAvailable()) {
                 view.showNetworkUnavailableError()
+                view.enableLikeBtn()
             } else {
-                view.modifyLike(item)
-                mServiceAdapter.modifyNews(position = item.id, body = item, listener = object : NewsPutServiceAdapterListener {
+                serviceAdapter.modifyNews(position = item.id, body = item, listener = object : NewsPutServiceAdapterListener {
                     override fun onSuccess(newsItem: NewsItem) {
                         view.enableLikeBtn()
                         view.replaceItemAtIndex(newsItem, position)
                     }
 
                     override fun onEmptyData() {
+                        item.modifyLike(credentialsSession.id)
+                        view.refreshView()
                         view.enableLikeBtn()
-                        view.modifyLike(item)
                         view.showEmptyDataError()
                     }
 
                     override fun onError() {
+                        item.modifyLike(credentialsSession.id)
+                        view.refreshView()
                         view.enableLikeBtn()
-                        view.modifyLike(item)
                         view.showServiceError()
                     }
                 })

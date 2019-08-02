@@ -134,10 +134,6 @@ class NewsFragment @Inject constructor(private val credentialsSession: Credentia
         presenter.onLikeRequest(position, item)
     }
 
-    override fun modifyLike(item: NewsItem) {
-        item.setLike(credentialsSession.id, !item.getLike(credentialsSession.id))
-    }
-
     override fun showUploadingError() {
         Toast.makeText(context, getString(R.string.news_uploading), Toast.LENGTH_SHORT).show()
     }
@@ -170,6 +166,10 @@ class NewsFragment @Inject constructor(private val credentialsSession: Credentia
     }
 
     override fun isUploadingData() = uploadingData
+
+    override fun refreshView() {
+        viewAdapter.notifyDataSetChanged()
+    }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onMessageEvent(eventMessage: EventMessage) {
