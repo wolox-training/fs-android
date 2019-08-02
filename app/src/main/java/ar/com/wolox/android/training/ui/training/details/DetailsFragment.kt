@@ -14,6 +14,7 @@ class DetailsFragment : WolmoFragment<DetailsPresenter>(), IDetailsView {
 
     private lateinit var newsDetail: NewsItem
     private var position: Int = -1
+    private var userId: Int = -1
 
     override fun layout(): Int = R.layout.fragment_details
 
@@ -26,6 +27,9 @@ class DetailsFragment : WolmoFragment<DetailsPresenter>(), IDetailsView {
         val posExtra = arguments?.getSerializable(KEY_NEWS_POSITION)
         position = posExtra as Int
 
+        val idExtra = arguments?.getSerializable(KEY_USER_ID)
+        userId = idExtra as Int
+
         Fresco.initialize(context)
 
         vTitle.text = newsDetail.title
@@ -36,9 +40,9 @@ class DetailsFragment : WolmoFragment<DetailsPresenter>(), IDetailsView {
         }
 
         val prettyTime = PrettyTime(Locale.getDefault())
-        vDate.text = prettyTime.format(newsDetail.date)
+        vDate.text = prettyTime.format(newsDetail.getDate())
 
-        vLikeBtn.setImageResource(if (newsDetail.userLike) R.drawable.ic_like_on else R.drawable.ic_like_off)
+        vLikeBtn.setImageResource(if (newsDetail.getLike(userId)) R.drawable.ic_like_on else R.drawable.ic_like_off)
     }
 
     override fun setListeners() {
@@ -54,5 +58,6 @@ class DetailsFragment : WolmoFragment<DetailsPresenter>(), IDetailsView {
     companion object {
         private const val KEY_NEWS_ITEM = "NEWS"
         private const val KEY_NEWS_POSITION = "POSITION"
+        private const val KEY_USER_ID = "USERID"
     }
 }

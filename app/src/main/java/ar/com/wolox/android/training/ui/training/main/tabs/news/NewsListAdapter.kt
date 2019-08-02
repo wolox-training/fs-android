@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ar.com.wolox.android.R
 import ar.com.wolox.android.training.model.NewsItem
+import ar.com.wolox.android.training.utils.CredentialsSession
 import kotlinx.android.synthetic.main.news_item.view.*
 import org.ocpsoft.prettytime.PrettyTime
 import java.util.Locale
@@ -14,7 +15,8 @@ import java.util.Locale
 class NewsListAdapter(
     private val dataSet: MutableList<NewsItem>,
     private val likeClickListener: (NewsItem) -> Unit,
-    private val detailsClickListener: (NewsItem, Int) -> Unit
+    private val detailsClickListener: (NewsItem, Int) -> Unit,
+    private val credentialsSession: CredentialsSession
 ) : RecyclerView.Adapter<NewsListAdapter.NewsViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsViewHolder {
@@ -23,7 +25,7 @@ class NewsListAdapter(
 
     override fun onBindViewHolder(holder: NewsViewHolder, position: Int) {
         val news: NewsItem = dataSet[position]
-        holder.bind(news, position, likeClickListener, detailsClickListener)
+        holder.bind(news, position, likeClickListener, detailsClickListener, credentialsSession)
     }
 
     override fun getItemCount(): Int = dataSet.size
@@ -39,9 +41,9 @@ class NewsListAdapter(
             news: NewsItem,
             position: Int,
             likeClickListener: (NewsItem) -> Unit,
-            detailsClickListener: (NewsItem, Int) -> Unit
+            detailsClickListener: (NewsItem, Int) -> Unit,
+            credentialsSession: CredentialsSession
         ) {
-
             itemView.vUsername.text = news.title
             itemView.vMessage.text = news.text
 
@@ -51,9 +53,10 @@ class NewsListAdapter(
             }
 
             val prettyTime = PrettyTime(Locale.getDefault())
-            itemView.vDate.text = prettyTime.format(news.date)
 
-            itemView.vLikeBtn.setImageResource(if (news.userLike) R.drawable.ic_like_on else R.drawable.ic_like_off)
+            itemView.vDate.text = prettyTime.format(news.getDate())
+
+            itemView.vLikeBtn.setImageResource(if (news.getLike(credentialsSession.id)) R.drawable.ic_like_on else R.drawable.ic_like_off)
             itemView.vLikeBtn.setOnClickListener { likeClickListener(news) }
 
             itemView.vMainContainer.setOnClickListener { detailsClickListener(news, position) }

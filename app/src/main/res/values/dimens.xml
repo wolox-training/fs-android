@@ -74,5 +74,6 @@
 
     <!-- DetailsActivity -->
     <dimen name="details_icon">50dp</dimen>
+    <dimen name="details_txt_margin">8dp</dimen>
     
 </resources>
