@@ -1,13 +1,11 @@
 package ar.com.wolox.android.training.ui.training.main.tabs.news
 
 import ar.com.wolox.android.training.model.NewsItem
-import ar.com.wolox.android.training.utils.CredentialsSession
 import ar.com.wolox.wolmo.core.presenter.BasePresenter
 import javax.inject.Inject
 
 class NewsPresenter @Inject constructor(
-    private val mServiceAdapter: NewsServiceAdapter,
-    private val userCredential: CredentialsSession
+    private val mServiceAdapter: NewsServiceAdapter
 ) : BasePresenter<INewsView>() {
 
     override fun onViewAttached() {
@@ -24,7 +22,7 @@ class NewsPresenter @Inject constructor(
             mServiceAdapter.getNews(object : NewsServiceAdapterListener {
                 override fun onSuccess(newsList: List<NewsItem>) {
                     view.disableRefresh()
-                    parseLikesData(newsList)
+                    view.updateNews(fillDataList(newsList))
                 }
 
                 override fun onEmptyData() {
@@ -40,16 +38,6 @@ class NewsPresenter @Inject constructor(
                 }
             })
         }
-    }
-
-    private fun parseLikesData(newsList: List<NewsItem>) {
-        val userId = userCredential.id
-
-        for (news in newsList) {
-            news.updateLike(userId)
-        }
-
-        view.updateNews(fillDataList(newsList))
     }
 
     private fun fillDataList(dataList: List<NewsItem>): List<NewsItem> {
@@ -72,8 +60,7 @@ class NewsPresenter @Inject constructor(
             val newsItem = NewsItem("Title $index($count)",
                     "Body of the dummy message number $index($count)",
                     ICON_DEFAULT,
-                    false,
-                    listOf(),
+                    mutableListOf(),
                     "")
 
             newsList.add(newsItem)

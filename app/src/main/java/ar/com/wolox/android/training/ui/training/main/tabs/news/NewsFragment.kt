@@ -10,13 +10,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ar.com.wolox.android.R
 import ar.com.wolox.android.training.model.NewsItem
+import ar.com.wolox.android.training.utils.CredentialsSession
 import ar.com.wolox.android.training.utils.onClickListener
 import ar.com.wolox.wolmo.core.fragment.WolmoFragment
 import com.facebook.drawee.backends.pipeline.Fresco
 import kotlinx.android.synthetic.main.fragment_news.*
 import javax.inject.Inject
 
-class NewsFragment @Inject constructor() : WolmoFragment<NewsPresenter>(), INewsView {
+class NewsFragment @Inject constructor(private val credentialsSession: CredentialsSession) : WolmoFragment<NewsPresenter>(), INewsView {
 
     private lateinit var viewAdapter: NewsListAdapter
     private lateinit var viewManager: RecyclerView.LayoutManager
@@ -48,7 +49,7 @@ class NewsFragment @Inject constructor() : WolmoFragment<NewsPresenter>(), INews
         newsItemList = mutableListOf()
         newsItemList.addAll(newsItems)
 
-        viewAdapter = NewsListAdapter(newsItemList) { partItem: NewsItem -> partItemClicked(partItem) }
+        viewAdapter = NewsListAdapter(newsItemList, { partItem: NewsItem -> partItemClicked(partItem) }, credentialsSession)
         vRecyclerView.apply {
             setHasFixedSize(true)
             layoutManager = viewManager
@@ -111,7 +112,7 @@ class NewsFragment @Inject constructor() : WolmoFragment<NewsPresenter>(), INews
     }
 
     private fun partItemClicked(item: NewsItem) {
-        item.userLike = !item.userLike
+        item.setLike(credentialsSession.id, !item.getLike(credentialsSession.id))
         viewAdapter.notifyDataSetChanged()
     }
 

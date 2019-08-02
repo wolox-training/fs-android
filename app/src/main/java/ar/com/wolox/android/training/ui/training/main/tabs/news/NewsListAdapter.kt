@@ -7,11 +7,12 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ar.com.wolox.android.R
 import ar.com.wolox.android.training.model.NewsItem
+import ar.com.wolox.android.training.utils.CredentialsSession
 import kotlinx.android.synthetic.main.news_item.view.*
 import org.ocpsoft.prettytime.PrettyTime
 import java.util.Locale
 
-class NewsListAdapter(private val dataSet: MutableList<NewsItem>, private val clickListener: (NewsItem) -> Unit) : RecyclerView.Adapter<NewsListAdapter.NewsViewHolder>() {
+class NewsListAdapter(private val dataSet: MutableList<NewsItem>, private val clickListener: (NewsItem) -> Unit, private val credentialsSession: CredentialsSession) : RecyclerView.Adapter<NewsListAdapter.NewsViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsViewHolder {
         return NewsViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.news_item, parent, false))
@@ -19,7 +20,7 @@ class NewsListAdapter(private val dataSet: MutableList<NewsItem>, private val cl
 
     override fun onBindViewHolder(holder: NewsViewHolder, position: Int) {
         val news: NewsItem = dataSet[position]
-        holder.bind(news, clickListener)
+        holder.bind(news, clickListener, credentialsSession)
     }
 
     override fun getItemCount(): Int = dataSet.size
@@ -31,7 +32,7 @@ class NewsListAdapter(private val dataSet: MutableList<NewsItem>, private val cl
 
     class NewsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        fun bind(news: NewsItem, clickListener: (NewsItem) -> Unit) {
+        fun bind(news: NewsItem, clickListener: (NewsItem) -> Unit, credentialsSession: CredentialsSession) {
             itemView.vUsername.text = news.title
             itemView.vMessage.text = news.text
 
@@ -42,7 +43,7 @@ class NewsListAdapter(private val dataSet: MutableList<NewsItem>, private val cl
 
             val prettyTime = PrettyTime(Locale.getDefault())
             itemView.vDate.text = prettyTime.format(news.getDate())
-            itemView.vLikeBtn.setImageResource(if (news.userLike) R.drawable.ic_like_on else R.drawable.ic_like_off)
+            itemView.vLikeBtn.setImageResource(if (news.getLike(credentialsSession.id)) R.drawable.ic_like_on else R.drawable.ic_like_off)
             itemView.vLikeBtn.setOnClickListener { clickListener(news) }
         }
     }
