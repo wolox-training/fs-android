@@ -159,16 +159,6 @@ class NewsFragment @Inject constructor() : WolmoFragment<NewsPresenter>(), INews
         viewAdapter.notifyDataSetChanged()
     }
 
-    override fun enableLikeBtn() {
-        uploadingData = false
-    }
-
-    override fun disableLikeBtn() {
-        uploadingData = true
-    }
-
-    override fun isUploadingData() = uploadingData
-
     override fun refreshView() {
         viewAdapter.notifyDataSetChanged()
     }

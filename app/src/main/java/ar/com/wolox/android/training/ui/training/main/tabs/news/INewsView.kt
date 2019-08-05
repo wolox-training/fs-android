@@ -13,10 +13,6 @@ interface INewsView {
 
     fun showUploadingError()
 
-    fun enableLikeBtn()
-    fun disableLikeBtn()
-    fun isUploadingData(): Boolean
-
     fun showServiceError()
     fun showEmptyDataError()
 

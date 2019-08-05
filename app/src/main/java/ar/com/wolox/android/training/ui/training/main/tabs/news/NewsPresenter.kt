@@ -14,6 +14,8 @@ class NewsPresenter @Inject constructor(
     private var credentialsSession: CredentialsSession
 ) : BasePresenter<INewsView>() {
 
+    private var uploadingData: Boolean = false
+
     override fun onViewAttached() {
         onUpdateNewsRequest()
     }
@@ -56,34 +58,34 @@ class NewsPresenter @Inject constructor(
     }
 
     fun onLikeRequest(item: NewsItem) {
-        if (view.isUploadingData()) {
+        if (uploadingData) {
             view.showUploadingError()
         } else {
-            view.disableLikeBtn()
+            uploadingData = true
             item.modifyLike()
             view.refreshView()
             if (!view.isNetworkAvailable()) {
                 view.showNetworkUnavailableError()
-                view.enableLikeBtn()
+                uploadingData = false
             } else {
                 serviceAdapter.modifyNews(positionId = item.id, body = item, listener = object : NewsPutServiceAdapterListener {
                     override fun onSuccess(newsItem: NewsItem) {
                         newsItem.credentialsSession = credentialsSession
-                        view.enableLikeBtn()
+                        uploadingData = false
                         view.replaceItemAtIndex(newsItem)
                     }
 
                     override fun onEmptyData() {
                         item.modifyLike()
                         view.refreshView()
-                        view.enableLikeBtn()
+                        uploadingData = false
                         view.showEmptyDataError()
                     }
 
                     override fun onError() {
                         item.modifyLike()
                         view.refreshView()
-                        view.enableLikeBtn()
+                        uploadingData = false
                         view.showServiceError()
                     }
                 })
