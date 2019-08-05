@@ -7,4 +7,6 @@ interface IProfileView {
     fun isNetworkAvailable(): Boolean
 
     fun updateProfileList(serviceData: List<ProfileItem>)
+
+    fun reproduceVideo(url: String)
 }

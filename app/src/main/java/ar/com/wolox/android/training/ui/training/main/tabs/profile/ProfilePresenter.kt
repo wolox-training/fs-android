@@ -18,4 +18,8 @@ class ProfilePresenter @Inject constructor() : BasePresenter<IProfileView>() {
 
         view.updateProfileList(sampleList)
     }
+
+    fun onSearchRequest(query: String) {
+        view.reproduceVideo("2ZBtPf7FOoM")
+    }
 }

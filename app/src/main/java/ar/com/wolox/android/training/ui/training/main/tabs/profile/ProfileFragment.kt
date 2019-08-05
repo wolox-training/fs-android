@@ -9,11 +9,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ar.com.wolox.android.R
 import ar.com.wolox.android.training.model.ProfileItem
+import ar.com.wolox.android.training.utils.onClickListener
 import ar.com.wolox.wolmo.core.fragment.WolmoFragment
 import com.facebook.drawee.backends.pipeline.Fresco
+import com.google.android.youtube.player.YouTubeStandalonePlayer
 import kotlinx.android.synthetic.main.fragment_profile.vRecyclerViewProfiles
 import kotlinx.android.synthetic.main.fragment_profile.vRefreshEmptyProfiles
 import kotlinx.android.synthetic.main.fragment_profile.vRefreshListProfiles
+import kotlinx.android.synthetic.main.fragment_profile.vSearch
+import kotlinx.android.synthetic.main.fragment_profile.vSearchQuery
 import javax.inject.Inject
 
 class ProfileFragment @Inject constructor() : WolmoFragment<ProfilePresenter>(), IProfileView {
@@ -42,6 +46,12 @@ class ProfileFragment @Inject constructor() : WolmoFragment<ProfilePresenter>(),
         } else false
     }
 
+    override fun setListeners() {
+        vSearch.onClickListener {
+            presenter.onSearchRequest(vSearchQuery.text.toString())
+        }
+    }
+
     override fun updateProfileList(serviceData: List<ProfileItem>) {
         vRefreshListProfiles.visibility = View.VISIBLE
         vRefreshEmptyProfiles.visibility = View.GONE
@@ -61,5 +71,14 @@ class ProfileFragment @Inject constructor() : WolmoFragment<ProfilePresenter>(),
 
     private fun selectedItem(item: ProfileItem) {
         println("Click")
+    }
+
+    override fun reproduceVideo(url: String) {
+        val intent = YouTubeStandalonePlayer.createVideoIntent(activity, API_KEY, url)
+        startActivity(intent)
+    }
+
+    companion object {
+        private const val API_KEY = "AIzaSyAyr6Gc7wWjVxbK69nlxgVWyPVWrewV0_0"
     }
 }
