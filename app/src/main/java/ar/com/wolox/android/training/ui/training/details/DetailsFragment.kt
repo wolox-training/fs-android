@@ -15,12 +15,11 @@ import kotlinx.android.synthetic.main.fragment_details.*
 import org.greenrobot.eventbus.EventBus
 import org.ocpsoft.prettytime.PrettyTime
 import java.util.Locale
+import javax.inject.Inject
 
-class DetailsFragment : WolmoFragment<DetailsPresenter>(), IDetailsView {
+class DetailsFragment @Inject constructor() : WolmoFragment<DetailsPresenter>(), IDetailsView {
 
     private lateinit var newsDetail: NewsItem
-    private var position: Int = -1
-    private var userId: Int = -1
 
     override fun layout(): Int = R.layout.fragment_details
 
@@ -30,14 +29,18 @@ class DetailsFragment : WolmoFragment<DetailsPresenter>(), IDetailsView {
         val itemExtra = arguments?.getSerializable(KEY_NEWS_ITEM)
         newsDetail = itemExtra as NewsItem
 
-        val posExtra = arguments?.getSerializable(KEY_NEWS_POSITION)
-        position = posExtra as Int
-
-        val idExtra = arguments?.getSerializable(KEY_USER_ID)
-        userId = idExtra as Int
-
         Fresco.initialize(context)
 
+        presenter.onInit(newsDetail)
+    }
+
+    override fun showArgumentsError() {
+        Toast.makeText(context, getString(R.string.error_invalid_arguments), Toast.LENGTH_LONG).show()
+        activity?.finish()
+    }
+
+    override fun updateView(item: NewsItem) {
+        newsDetail = item
         vTitle.text = newsDetail.title
         vDescription.text = newsDetail.text
         if (newsDetail.picture.isNotEmpty()) {
@@ -48,12 +51,12 @@ class DetailsFragment : WolmoFragment<DetailsPresenter>(), IDetailsView {
         val prettyTime = PrettyTime(Locale.getDefault())
         vDate.text = prettyTime.format(newsDetail.getDate())
 
-        vLikeBtn.setImageResource(if (newsDetail.getLike(userId)) R.drawable.ic_like_on else R.drawable.ic_like_off)
+        vLikeBtn.setImageResource(if (newsDetail.getLike()) R.drawable.ic_like_on else R.drawable.ic_like_off)
     }
 
     override fun setListeners() {
         vLikeBtn.setOnClickListener {
-            presenter.onLikeRequest(newsDetail, position)
+            presenter.onLikeRequest(newsDetail)
         }
     }
 
@@ -61,8 +64,8 @@ class DetailsFragment : WolmoFragment<DetailsPresenter>(), IDetailsView {
         vLikeBtn.setImageResource(if (status) R.drawable.ic_like_on else R.drawable.ic_like_off)
     }
 
-    override fun postChanges(item: NewsItem, position: Int) {
-        val eventMessage = EventMessage(item, position)
+    override fun postChanges(item: NewsItem) {
+        val eventMessage = EventMessage(item)
         EventBus.getDefault().post(eventMessage)
     }
 
@@ -92,7 +95,5 @@ class DetailsFragment : WolmoFragment<DetailsPresenter>(), IDetailsView {
 
     companion object {
         private const val KEY_NEWS_ITEM = "NEWS"
-        private const val KEY_NEWS_POSITION = "POSITION"
-        private const val KEY_USER_ID = "USERID"
     }
 }

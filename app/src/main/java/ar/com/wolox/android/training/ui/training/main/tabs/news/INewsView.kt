@@ -13,10 +13,6 @@ interface INewsView {
 
     fun showUploadingError()
 
-    fun enableLikeBtn()
-    fun disableLikeBtn()
-    fun isUploadingData(): Boolean
-
     fun showServiceError()
     fun showEmptyDataError()
 
@@ -24,7 +20,7 @@ interface INewsView {
 
     fun addNewToList(items: List<NewsItem>)
 
-    fun replaceItemAtIndex(item: NewsItem, position: Int)
+    fun replaceItemAtIndex(item: NewsItem)
 
     fun refreshView()
 }

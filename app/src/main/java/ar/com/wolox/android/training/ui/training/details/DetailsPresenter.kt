@@ -8,22 +8,31 @@ import ar.com.wolox.wolmo.core.presenter.BasePresenter
 import javax.inject.Inject
 
 class DetailsPresenter @Inject constructor(
-    private val credentialsSession: CredentialsSession,
-    private val mServiceAdapter: NewsServiceAdapter
+    private val serviceAdapter: NewsServiceAdapter,
+    private val credentialsSession: CredentialsSession
 ) : BasePresenter<IDetailsView>() {
 
-    fun onLikeRequest(item: NewsItem, position: Int) {
-        item.modifyLike(credentialsSession.id)
-        view.changeLike(item.getLike(credentialsSession.id))
+    fun onInit(item: NewsItem) {
+        if (item.text.isEmpty() || item.text.isEmpty() || item.picture.isEmpty()) {
+            view.showArgumentsError()
+        }
+        item.credentialsSession = credentialsSession
+        view.updateView(item)
+    }
+
+    fun onLikeRequest(item: NewsItem) {
+        item.modifyLike()
+        view.changeLike(item.getLike())
         view.disableLikeBtn()
 
         if (!view.isNetworkAvailable()) {
             view.showNetworkUnavailableError()
         } else {
-            mServiceAdapter.modifyNews(position + POSITION_IN_SERVICE, item, object : NewsPutServiceAdapterListener {
+            serviceAdapter.modifyNews(item.id, item, object : NewsPutServiceAdapterListener {
                 override fun onSuccess(newsItem: NewsItem) {
+                    newsItem.credentialsSession = credentialsSession
                     view.enableLikeBtn()
-                    view.postChanges(item, position)
+                    view.postChanges(item)
                 }
 
                 override fun onEmptyData() {
@@ -37,9 +46,5 @@ class DetailsPresenter @Inject constructor(
                 }
             })
         }
-    }
-
-    companion object {
-        private const val POSITION_IN_SERVICE = 1
     }
 }

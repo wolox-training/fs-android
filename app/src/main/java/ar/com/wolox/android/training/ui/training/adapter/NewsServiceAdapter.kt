@@ -26,8 +26,8 @@ class NewsServiceAdapter @Inject constructor(private val retrofitServices: Retro
         )
     }
 
-    fun modifyNews(position: Int, body: NewsItem, listener: NewsPutServiceAdapterListener) {
-        retrofitServices.getService(NewsService::class.java).putNewsRequest(position, body).enqueue(
+    fun modifyNews(positionId: Int, body: NewsItem, listener: NewsPutServiceAdapterListener) {
+        retrofitServices.getService(NewsService::class.java).putNewsRequest(positionId, body).enqueue(
                 networkCallback {
                     onResponseSuccessful { response ->
                         response?.let { listener.onSuccess(response) } ?: listener.onEmptyData()

@@ -14,17 +14,19 @@ import ar.com.wolox.android.R
 import ar.com.wolox.android.training.model.EventMessage
 import ar.com.wolox.android.training.model.NewsItem
 import ar.com.wolox.android.training.ui.training.details.DetailsActivity
-import ar.com.wolox.android.training.utils.CredentialsSession
 import ar.com.wolox.android.training.utils.onClickListener
 import ar.com.wolox.wolmo.core.fragment.WolmoFragment
 import com.facebook.drawee.backends.pipeline.Fresco
-import kotlinx.android.synthetic.main.fragment_news.*
+import kotlinx.android.synthetic.main.fragment_news.vFab
+import kotlinx.android.synthetic.main.fragment_news.vRecyclerView
+import kotlinx.android.synthetic.main.fragment_news.vRefreshEmptyList
+import kotlinx.android.synthetic.main.fragment_news.vRefreshListLayout
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import javax.inject.Inject
 
-class NewsFragment @Inject constructor(private val credentialsSession: CredentialsSession) : WolmoFragment<NewsPresenter>(), INewsView {
+class NewsFragment @Inject constructor() : WolmoFragment<NewsPresenter>(), INewsView {
 
     private lateinit var viewAdapter: NewsListAdapter
     private lateinit var viewManager: RecyclerView.LayoutManager
@@ -67,7 +69,7 @@ class NewsFragment @Inject constructor(private val credentialsSession: Credentia
         newsItemList = mutableListOf()
         newsItemList.addAll(newsItems)
 
-        viewAdapter = NewsListAdapter(newsItemList, { item, position -> likeBtnClicked(item, position) }, { item, position -> detailsClicked(item, position) }, credentialsSession)
+        viewAdapter = NewsListAdapter(newsItemList, { item -> likeBtnClicked(item) }, { item -> detailsClicked(item) })
 
         vRecyclerView.apply {
             setHasFixedSize(true)
@@ -130,8 +132,8 @@ class NewsFragment @Inject constructor(private val credentialsSession: Credentia
         Toast.makeText(context, getString(R.string.error_network_unavailable), Toast.LENGTH_LONG).show()
     }
 
-    private fun likeBtnClicked(item: NewsItem, position: Int) {
-        presenter.onLikeRequest(position, item)
+    private fun likeBtnClicked(item: NewsItem) {
+        presenter.onLikeRequest(item)
     }
 
     override fun showUploadingError() {
@@ -142,30 +144,20 @@ class NewsFragment @Inject constructor(private val credentialsSession: Credentia
         viewAdapter.addData(items)
     }
 
-    private fun detailsClicked(item: NewsItem, position: Int) {
+    private fun detailsClicked(item: NewsItem) {
         val intent = Intent(activity, DetailsActivity::class.java).apply {
             putExtra(KEY_NEWS_ITEM, item)
-            putExtra(KEY_NEWS_POSITION, position)
-            putExtra(KEY_USER_ID, credentialsSession.id)
         }
         startActivity(intent)
     }
 
-    override fun replaceItemAtIndex(item: NewsItem, position: Int) {
+    override fun replaceItemAtIndex(item: NewsItem) {
+        val position = newsItemList.indexOfFirst { it.id == item.id && it.userId == item.userId }
+
         newsItemList.removeAt(position)
         newsItemList.add(position, item)
         viewAdapter.notifyDataSetChanged()
     }
-
-    override fun enableLikeBtn() {
-        uploadingData = false
-    }
-
-    override fun disableLikeBtn() {
-        uploadingData = true
-    }
-
-    override fun isUploadingData() = uploadingData
 
     override fun refreshView() {
         viewAdapter.notifyDataSetChanged()
@@ -179,7 +171,5 @@ class NewsFragment @Inject constructor(private val credentialsSession: Credentia
     companion object {
         private const val PADDING_TO_REFRESH = 2
         private const val KEY_NEWS_ITEM = "NEWS"
-        private const val KEY_NEWS_POSITION = "POSITION"
-        private const val KEY_USER_ID = "USERID"
     }
 }

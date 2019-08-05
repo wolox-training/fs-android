@@ -1,5 +1,6 @@
 package ar.com.wolox.android.training.model
 
+import ar.com.wolox.android.training.utils.CredentialsSession
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 import java.text.SimpleDateFormat
@@ -17,6 +18,8 @@ data class NewsItem(
 
 ) : Serializable {
 
+    @Transient lateinit var credentialsSession: CredentialsSession
+
     fun getDate(): Date {
         return if (this.createdAt.isNotEmpty()) {
             try {
@@ -29,15 +32,15 @@ data class NewsItem(
         }
     }
 
-    fun getLike(userId: Int): Boolean {
-        return this.likes.isNotEmpty() && this.likes.contains(userId)
+    fun getLike(): Boolean {
+        return this.likes.isNotEmpty() && this.likes.contains(credentialsSession.id)
     }
 
-    fun modifyLike(userId: Int) {
-        if (likes.contains(userId)) {
-            likes.remove(userId)
+    fun modifyLike() {
+        if (likes.contains(credentialsSession.id)) {
+            likes.remove(credentialsSession.id)
         } else {
-            likes.add(userId)
+            likes.add(credentialsSession .id)
         }
     }
 
