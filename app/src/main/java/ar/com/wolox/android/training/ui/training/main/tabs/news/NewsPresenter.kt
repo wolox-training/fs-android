@@ -54,7 +54,7 @@ class NewsPresenter @Inject constructor(
     }
 
     fun onEventMessageRequest(eventMessage: EventMessage) {
-        view.replaceItemAtIndex(eventMessage.item)
+        view.replaceNews(eventMessage.item)
     }
 
     fun onLikeRequest(item: NewsItem) {
@@ -68,11 +68,11 @@ class NewsPresenter @Inject constructor(
                 view.showNetworkUnavailableError()
                 uploadingData = false
             } else {
-                serviceAdapter.modifyNews(positionId = item.id, body = item, listener = object : NewsPutServiceAdapterListener {
+                serviceAdapter.modifyNews(news = item, listener = object : NewsPutServiceAdapterListener {
                     override fun onSuccess(newsItem: NewsItem) {
                         newsItem.credentialsSession = credentialsSession
                         uploadingData = false
-                        view.replaceItemAtIndex(newsItem)
+                        view.replaceNews(newsItem)
                     }
 
                     override fun onEmptyData() {

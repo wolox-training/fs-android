@@ -151,7 +151,7 @@ class NewsFragment @Inject constructor() : WolmoFragment<NewsPresenter>(), INews
         startActivity(intent)
     }
 
-    override fun replaceItemAtIndex(item: NewsItem) {
+    override fun replaceNews(item: NewsItem) {
         val position = newsItemList.indexOfFirst { it.id == item.id && it.userId == item.userId }
 
         newsItemList.removeAt(position)

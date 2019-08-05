@@ -23,7 +23,7 @@ class DetailsFragment @Inject constructor() : WolmoFragment<DetailsPresenter>(),
 
     override fun layout(): Int = R.layout.fragment_details
 
-    override fun handleArguments(arguments: Bundle?) = arguments != null
+    override fun handleArguments(arguments: Bundle?) = arguments != null && arguments.containsKey(KEY_NEWS_ITEM)
 
     override fun init() {
         val itemExtra = arguments?.getSerializable(KEY_NEWS_ITEM)
