@@ -66,7 +66,7 @@ class NewsFragment @Inject constructor() : WolmoFragment<NewsPresenter>(), INews
         newsItemList = mutableListOf()
         newsItemList.addAll(newsItems)
 
-        viewAdapter = NewsListAdapter(newsItemList, { item, position -> likeBtnClicked(item, position) }, { item, position -> detailsClicked(item, position) })
+        viewAdapter = NewsListAdapter(newsItemList, { item -> likeBtnClicked(item) }, { item -> detailsClicked(item) })
 
         vRecyclerView.apply {
             setHasFixedSize(true)
@@ -129,8 +129,8 @@ class NewsFragment @Inject constructor() : WolmoFragment<NewsPresenter>(), INews
         Toast.makeText(context, getString(R.string.error_network_unavailable), Toast.LENGTH_LONG).show()
     }
 
-    private fun likeBtnClicked(item: NewsItem, position: Int) {
-        presenter.onLikeRequest(position, item)
+    private fun likeBtnClicked(item: NewsItem) {
+        presenter.onLikeRequest(item)
     }
 
     override fun showUploadingError() {
@@ -141,10 +141,9 @@ class NewsFragment @Inject constructor() : WolmoFragment<NewsPresenter>(), INews
         viewAdapter.addData(items)
     }
 
-    private fun detailsClicked(item: NewsItem, position: Int) {
+    private fun detailsClicked(item: NewsItem) {
         val intent = Intent(activity, DetailsActivity::class.java).apply {
             putExtra(KEY_NEWS_ITEM, item)
-            putExtra(KEY_NEWS_POSITION, position)
         }
         startActivity(intent)
     }
@@ -179,6 +178,5 @@ class NewsFragment @Inject constructor() : WolmoFragment<NewsPresenter>(), INews
     companion object {
         private const val PADDING_TO_REFRESH = 2
         private const val KEY_NEWS_ITEM = "NEWS"
-        private const val KEY_NEWS_POSITION = "POSITION"
     }
 }

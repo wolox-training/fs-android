@@ -55,7 +55,7 @@ class NewsPresenter @Inject constructor(
         view.replaceItemAtIndex(eventMessage.item)
     }
 
-    fun onLikeRequest(position: Int, item: NewsItem) {
+    fun onLikeRequest(item: NewsItem) {
         if (view.isUploadingData()) {
             view.showUploadingError()
         } else {
