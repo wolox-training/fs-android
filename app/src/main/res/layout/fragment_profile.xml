@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/vRefreshListLayout"
+        android:id="@+id/vRefreshListProfiles"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="@dimen/profile_default_margin"
@@ -19,7 +19,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/vRecyclerView"
+            android:id="@+id/vRecyclerViewProfiles"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_margin="@dimen/profile_default_margin"
@@ -33,7 +33,7 @@
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/vRefreshEmptyList"
+        android:id="@+id/vRefreshEmptyProfiles"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginStart="@dimen/profile_default_margin"
