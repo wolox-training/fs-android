@@ -28,7 +28,7 @@ class NewsListAdapter(
 
     override fun onBindViewHolder(holder: NewsViewHolder, position: Int) {
         val news: NewsItem = dataSet[position]
-        holder.bind(news, position, likeClickListener, detailsClickListener)
+        holder.bind(news, likeClickListener, detailsClickListener)
     }
 
     override fun getItemCount(): Int = dataSet.size
@@ -42,7 +42,6 @@ class NewsListAdapter(
 
         fun bind(
             news: NewsItem,
-            position: Int,
             likeClickListener: (NewsItem) -> Unit,
             detailsClickListener: (NewsItem) -> Unit
         ) {

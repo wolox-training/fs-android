@@ -17,7 +17,10 @@ import ar.com.wolox.android.training.ui.training.details.DetailsActivity
 import ar.com.wolox.android.training.utils.onClickListener
 import ar.com.wolox.wolmo.core.fragment.WolmoFragment
 import com.facebook.drawee.backends.pipeline.Fresco
-import kotlinx.android.synthetic.main.fragment_news.*
+import kotlinx.android.synthetic.main.fragment_news.vFab
+import kotlinx.android.synthetic.main.fragment_news.vRecyclerView
+import kotlinx.android.synthetic.main.fragment_news.vRefreshEmptyList
+import kotlinx.android.synthetic.main.fragment_news.vRefreshListLayout
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode

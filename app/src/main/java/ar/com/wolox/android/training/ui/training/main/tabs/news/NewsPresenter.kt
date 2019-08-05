@@ -66,7 +66,7 @@ class NewsPresenter @Inject constructor(
                 view.showNetworkUnavailableError()
                 view.enableLikeBtn()
             } else {
-                serviceAdapter.modifyNews(position = item.id, body = item, listener = object : NewsPutServiceAdapterListener {
+                serviceAdapter.modifyNews(positionId = item.id, body = item, listener = object : NewsPutServiceAdapterListener {
                     override fun onSuccess(newsItem: NewsItem) {
                         newsItem.credentialsSession = credentialsSession
                         view.enableLikeBtn()
