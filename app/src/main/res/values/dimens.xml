@@ -75,5 +75,9 @@
     <!-- DetailsActivity -->
     <dimen name="details_icon">50dp</dimen>
     <dimen name="details_txt_margin">8dp</dimen>
+
+
+    <!-- ProfileActivity -->
+    <dimen name="profile_default_margin">8dp</dimen>
     
 </resources>
