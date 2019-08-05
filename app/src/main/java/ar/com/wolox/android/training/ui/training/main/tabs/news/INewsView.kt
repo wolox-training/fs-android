@@ -20,7 +20,7 @@ interface INewsView {
 
     fun addNewToList(items: List<NewsItem>)
 
-    fun replaceItemAtIndex(item: NewsItem)
+    fun replaceNews(item: NewsItem)
 
     fun refreshView()
 }
