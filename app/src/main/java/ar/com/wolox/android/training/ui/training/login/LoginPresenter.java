@@ -45,9 +45,10 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
             getView().showMainScreen();
 
         } else {
-            //Check login from google, and do autologin
+            //Check login from google, and do autoLogin
             GoogleSignInAccount account = getView().getSignedUser();
-            if (Objects.equals(account.getId(), userCredentials.getToken()) &&
+            if (account != null &&
+                    Objects.equals(account.getId(), userCredentials.getToken()) &&
                     Objects.equals(account.getEmail(), userCredentials.getUsername())) {
                 User user = new User(userCredentials.getUsername(), "");
                 user.setToken(userCredentials.getToken());
