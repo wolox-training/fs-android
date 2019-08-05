@@ -26,7 +26,7 @@ class DetailsFragment @Inject constructor() : WolmoFragment<DetailsPresenter>(),
     override fun handleArguments(arguments: Bundle?) = arguments != null && arguments.containsKey(KEY_NEWS_ITEM)
 
     override fun init() {
-        val itemExtra = arguments?.getSerializable(KEY_NEWS_ITEM)
+        val itemExtra = arguments!!.getSerializable(KEY_NEWS_ITEM)!!
         newsDetail = itemExtra as NewsItem
 
         Fresco.initialize(context)
