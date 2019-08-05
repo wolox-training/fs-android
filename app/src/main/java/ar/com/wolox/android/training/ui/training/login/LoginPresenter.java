@@ -23,6 +23,7 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
 
     private static final long DELAY = 5000L;
     private static final int RC_SIGN_IN = 10;
+    private static final int USER_ID_LIMIT = 100;
 
     private CredentialsSession userCredentials;
     private LoginAdapter loginAdapter;
@@ -177,6 +178,10 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
                 userCredentials.clearCredentials();
                 userCredentials.setUsername(account.getEmail());
                 userCredentials.setToken(account.getId());
+
+                int idUser = addDecimalsOfNumber(Double.parseDouble(Objects.requireNonNull(account.getId())));
+                userCredentials.setId(idUser);
+
                 getView().showMainScreen();
             } else {
                 getView().showLoginWithGoogleError();
@@ -184,6 +189,21 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
         } catch (ApiException e) {
             getView().hideProgressDialog();
             getView().showLoginWithGoogleError();
+        }
+    }
+
+    private int addDecimalsOfNumber(double idToken) {
+        //Sum all digits from the token to generate an user id
+        //Example:: IN: 321 -> 3 + 2 + 1 = 6 -> OUT: 6
+        try {
+            double idUserDouble = 0d;
+            while (idToken > 0) {
+                idUserDouble = idUserDouble + (idToken % USER_ID_LIMIT);
+                idToken = idToken / USER_ID_LIMIT;
+            }
+            return (int) idUserDouble;
+        } catch (Exception e) {
+            return 0;
         }
     }
 }
