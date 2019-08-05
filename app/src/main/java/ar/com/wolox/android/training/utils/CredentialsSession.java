@@ -14,10 +14,12 @@ public class CredentialsSession {
     private static final String USER_KEY = "USERNAME";
     private static final String PASS_KEY = "PASSWORD";
     private static final String USER_ID_KEY = "ID";
+    private static final String TOKEN_KEY = "TOKEN";
 
     private String user;
     private String pass;
     private int id;
+    private String token;
     private SharedPreferencesManager manager;
 
     @Inject
@@ -26,6 +28,7 @@ public class CredentialsSession {
         user = sharedPreferencesManager.get(USER_KEY, null);
         pass = sharedPreferencesManager.get(PASS_KEY, null);
         id = sharedPreferencesManager.get(USER_ID_KEY, -1);
+        token = sharedPreferencesManager.get(TOKEN_KEY, null);
     }
 
     public String getUsername() {
@@ -71,6 +74,21 @@ public class CredentialsSession {
         }
     }
 
+    public String getToken() {
+        if (token == null) {
+            return manager.get(TOKEN_KEY, null);
+        } else {
+            return token;
+        }
+    }
+
+    public void setToken(String tokenKey) {
+        token = tokenKey;
+        if (manager != null) {
+            manager.store(TOKEN_KEY, tokenKey);
+        }
+    }
+
     public void clearCredentials() {
         user = "";
         pass = "";
@@ -78,5 +96,6 @@ public class CredentialsSession {
         manager.clearKey(USER_KEY);
         manager.clearKey(PASS_KEY);
         manager.clearKey(USER_ID_KEY);
+        manager.clearKey(TOKEN_KEY);
     }
 }

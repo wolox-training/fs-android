@@ -31,7 +31,6 @@ class NewsFragment @Inject constructor() : WolmoFragment<NewsPresenter>(), INews
     private lateinit var viewAdapter: NewsListAdapter
     private lateinit var viewManager: RecyclerView.LayoutManager
     private lateinit var newsItemList: MutableList<NewsItem>
-    private var uploadingData: Boolean = false
 
     override fun layout(): Int = R.layout.fragment_news
 

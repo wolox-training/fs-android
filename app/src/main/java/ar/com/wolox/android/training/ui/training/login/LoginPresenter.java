@@ -2,6 +2,11 @@ package ar.com.wolox.android.training.ui.training.login;
 
 import android.os.Handler;
 
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.Task;
+
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -17,6 +22,7 @@ import ar.com.wolox.wolmo.core.presenter.BasePresenter;
 public class LoginPresenter extends BasePresenter<ILoginView> {
 
     private static final long DELAY = 5000L;
+    private static final int RC_SIGN_IN = 10;
 
     private CredentialsSession userCredentials;
     private LoginAdapter loginAdapter;
@@ -37,9 +43,22 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
             getView().updateCredentials(user);
             getView().hideAnimations();
             getView().showMainScreen();
+
         } else {
-            new Handler().postDelayed(() -> getView().hideAnimations(), DELAY);
+            //Check login from google, and do autologin
+            GoogleSignInAccount account = getView().getSignedUser();
+            if (Objects.equals(account.getId(), userCredentials.getToken()) &&
+                    Objects.equals(account.getEmail(), userCredentials.getUsername())) {
+                User user = new User(userCredentials.getUsername(), "");
+                user.setToken(userCredentials.getToken());
+                getView().updateCredentials(user);
+                getView().hideAnimations();
+                getView().showMainScreen();
+            } else {
+                new Handler().postDelayed(() -> getView().hideAnimations(), DELAY);
+            }
         }
+
     }
 
     /**
@@ -125,6 +144,7 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
                 @Override
                 public void onSuccess(User user) {
                     getView().hideProgressDialog();
+                    userCredentials.clearCredentials();
                     userCredentials.setUsername(user.getEmail());
                     userCredentials.setPassword(user.getPassword());
                     userCredentials.setId(user.getId());
@@ -136,5 +156,33 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
 
     void onGoogleLoginRequest() {
         getView().loginWithGoogle();
+    }
+
+    void onActivityResult(final int requestCode, final Task<GoogleSignInAccount> task) {
+        getView().showProgressDialog();
+        if (requestCode == RC_SIGN_IN) {
+            handleSignInResult(task);
+        } else {
+            getView().hideProgressDialog();
+            getView().showLoginWithGoogleError();
+        }
+    }
+
+    private void handleSignInResult(final Task<GoogleSignInAccount> completedTask) {
+        try {
+            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
+            if (account != null) {
+                getView().hideProgressDialog();
+                userCredentials.clearCredentials();
+                userCredentials.setUsername(account.getEmail());
+                userCredentials.setToken(account.getId());
+                getView().showMainScreen();
+            } else {
+                getView().showLoginWithGoogleError();
+            }
+        } catch (ApiException e) {
+            getView().hideProgressDialog();
+            getView().showLoginWithGoogleError();
+        }
     }
 }

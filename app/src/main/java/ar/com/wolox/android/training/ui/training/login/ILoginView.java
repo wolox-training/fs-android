@@ -1,5 +1,7 @@
 package ar.com.wolox.android.training.ui.training.login;
 
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+
 import ar.com.wolox.android.training.model.User;
 
 /**
@@ -35,4 +37,6 @@ public interface ILoginView {
     boolean isNetworkAvailable();
 
     void loginWithGoogle();
+    void showLoginWithGoogleError();
+    GoogleSignInAccount getSignedUser();
 }
