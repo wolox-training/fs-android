@@ -55,6 +55,7 @@
     <string name="error_news_empty_data">No data from service, please wait a few seconds and try again</string>
     <string name="error_invalid_arguments">Internal error, please try again…</string>
     <string name="error_login_google">Error whit Google connection, please try again…</string>
+    <string name="error_credentials_error">Credentials expired… Please login again</string>
 
     <!-- Tmp Messages -->
     <string name="valid_login_form">to main screen…</string>
