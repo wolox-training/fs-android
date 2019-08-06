@@ -33,8 +33,9 @@ public class LoginPresenterTest {
         mILoginView = mock(ILoginView.class);
         mCredentials = mock(CredentialsSession.class);
         mAdapter = mock(LoginAdapter.class);
+        LoginGoogleAdapter mGoogleAdapter = mock(LoginGoogleAdapter.class);
 
-        mPresenter = new LoginPresenter(mCredentials, mAdapter);
+        mPresenter = new LoginPresenter(mCredentials, mAdapter, mGoogleAdapter);
         mPresenter.attachView(mILoginView);
     }
 
