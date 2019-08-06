@@ -1,8 +1,8 @@
-package ar.com.wolox.android.training.ui.training.main.tabs.news
+package ar.com.wolox.android.training.ui.training.adapter
 
 import ar.com.wolox.android.training.model.NewsItem
 
-interface NewsServiceAdapterListener {
+interface NewsGetServiceAdapterListener {
 
     fun onSuccess(newsList: List<NewsItem>)
     fun onEmptyData()

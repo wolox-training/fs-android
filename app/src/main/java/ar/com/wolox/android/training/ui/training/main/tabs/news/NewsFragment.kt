@@ -1,27 +1,37 @@
 package ar.com.wolox.android.training.ui.training.main.tabs.news
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
+import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ar.com.wolox.android.R
+import ar.com.wolox.android.training.model.EventMessage
 import ar.com.wolox.android.training.model.NewsItem
-import ar.com.wolox.android.training.utils.CredentialsSession
+import ar.com.wolox.android.training.ui.training.details.DetailsActivity
 import ar.com.wolox.android.training.utils.onClickListener
 import ar.com.wolox.wolmo.core.fragment.WolmoFragment
 import com.facebook.drawee.backends.pipeline.Fresco
-import kotlinx.android.synthetic.main.fragment_news.*
+import kotlinx.android.synthetic.main.fragment_news.vFab
+import kotlinx.android.synthetic.main.fragment_news.vRecyclerView
+import kotlinx.android.synthetic.main.fragment_news.vRefreshEmptyList
+import kotlinx.android.synthetic.main.fragment_news.vRefreshListLayout
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import javax.inject.Inject
 
-class NewsFragment @Inject constructor(private val credentialsSession: CredentialsSession) : WolmoFragment<NewsPresenter>(), INewsView {
+class NewsFragment @Inject constructor() : WolmoFragment<NewsPresenter>(), INewsView {
 
     private lateinit var viewAdapter: NewsListAdapter
     private lateinit var viewManager: RecyclerView.LayoutManager
     private lateinit var newsItemList: MutableList<NewsItem>
+    private var uploadingData: Boolean = false
 
     override fun layout(): Int = R.layout.fragment_news
 
@@ -32,6 +42,16 @@ class NewsFragment @Inject constructor(private val credentialsSession: Credentia
         vRefreshEmptyList.setColorSchemeColors(Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW)
 
         viewManager = LinearLayoutManager(context)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        EventBus.getDefault().register(this)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        EventBus.getDefault().unregister(this)
     }
 
     override fun isNetworkAvailable(): Boolean {
@@ -49,7 +69,8 @@ class NewsFragment @Inject constructor(private val credentialsSession: Credentia
         newsItemList = mutableListOf()
         newsItemList.addAll(newsItems)
 
-        viewAdapter = NewsListAdapter(newsItemList, { partItem: NewsItem -> partItemClicked(partItem) }, credentialsSession)
+        viewAdapter = NewsListAdapter(newsItemList, { item -> likeBtnClicked(item) }, { item -> detailsClicked(item) })
+
         vRecyclerView.apply {
             setHasFixedSize(true)
             layoutManager = viewManager
@@ -107,20 +128,48 @@ class NewsFragment @Inject constructor(private val credentialsSession: Credentia
         Toast.makeText(context, getString(R.string.error_news_empty_data), Toast.LENGTH_LONG).show()
     }
 
-    override fun showNetworkUnavailabeError() {
+    override fun showNetworkUnavailableError() {
         Toast.makeText(context, getString(R.string.error_network_unavailable), Toast.LENGTH_LONG).show()
     }
 
-    private fun partItemClicked(item: NewsItem) {
-        item.setLike(credentialsSession.id, !item.getLike(credentialsSession.id))
-        viewAdapter.notifyDataSetChanged()
+    private fun likeBtnClicked(item: NewsItem) {
+        presenter.onLikeRequest(item)
+    }
+
+    override fun showUploadingError() {
+        Toast.makeText(context, getString(R.string.news_uploading), Toast.LENGTH_SHORT).show()
     }
 
     override fun addNewToList(items: List<NewsItem>) {
         viewAdapter.addData(items)
     }
 
+    private fun detailsClicked(item: NewsItem) {
+        val intent = Intent(activity, DetailsActivity::class.java).apply {
+            putExtra(KEY_NEWS_ITEM, item)
+        }
+        startActivity(intent)
+    }
+
+    override fun replaceNews(item: NewsItem) {
+        val position = newsItemList.indexOfFirst { it.id == item.id && it.userId == item.userId }
+
+        newsItemList.removeAt(position)
+        newsItemList.add(position, item)
+        viewAdapter.notifyDataSetChanged()
+    }
+
+    override fun refreshView() {
+        viewAdapter.notifyDataSetChanged()
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onMessageEvent(eventMessage: EventMessage) {
+        presenter.onEventMessageRequest(eventMessage)
+    }
+
     companion object {
         private const val PADDING_TO_REFRESH = 2
+        private const val KEY_NEWS_ITEM = "NEWS"
     }
 }

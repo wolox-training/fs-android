@@ -29,6 +29,9 @@
         <activity android:name=".training.ui.training.singup.SingUpActivity"
             android:screenOrientation="portrait" />
 
+        <activity android:name=".training.ui.training.details.DetailsActivity"
+            android:screenOrientation="portrait" />
+
         <activity
             android:name=".training.ui.viewpager.ViewPagerActivity"
             android:screenOrientation="portrait" />

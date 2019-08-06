@@ -1,35 +1,46 @@
 package ar.com.wolox.android.training.model
 
+import ar.com.wolox.android.training.utils.CredentialsSession
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
 data class NewsItem(
-    val title: String,
-    val text: String,
-    var picture: String,
-    val likes: MutableList<Int>,
-    @SerializedName("createdAt")
-    var createdAt: String
-) {
+    @SerializedName("id") val id: Int,
+    @SerializedName("userId") val userId: Int,
+    @SerializedName("createdAt") var createdAt: String,
+    @SerializedName("title") val title: String,
+    @SerializedName("picture") var picture: String,
+    @SerializedName("text") val text: String,
+    @SerializedName("likes") val likes: MutableList<Int>
+
+) : Serializable {
+
+    @Transient lateinit var credentialsSession: CredentialsSession
+
     fun getDate(): Date {
         return if (this.createdAt.isNotEmpty()) {
-            SimpleDateFormat(DATE_FORMAT, Locale.getDefault()).parse(this.createdAt)
+            try {
+                SimpleDateFormat(DATE_FORMAT, Locale.getDefault()).parse(this.createdAt)
+            } catch (e: Exception) {
+                Date()
+            }
         } else {
             Date()
         }
     }
 
-    fun getLike(userId: Int): Boolean {
-        return this.likes.isNotEmpty() && this.likes.contains(userId)
+    fun getLike(): Boolean {
+        return this.likes.isNotEmpty() && this.likes.contains(credentialsSession.id)
     }
 
-    fun setLike(userId: Int, status: Boolean) {
-        if (status) {
-            likes.add(userId)
+    fun modifyLike() {
+        if (likes.contains(credentialsSession.id)) {
+            likes.remove(credentialsSession.id)
         } else {
-            likes.remove(userId)
+            likes.add(credentialsSession .id)
         }
     }
 

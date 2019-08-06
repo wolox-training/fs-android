@@ -11,10 +11,16 @@ interface INewsView {
     fun enableRefresh()
     fun disableRefresh()
 
+    fun showUploadingError()
+
     fun showServiceError()
     fun showEmptyDataError()
 
-    fun showNetworkUnavailabeError()
+    fun showNetworkUnavailableError()
 
     fun addNewToList(items: List<NewsItem>)
+
+    fun replaceNews(item: NewsItem)
+
+    fun refreshView()
 }
