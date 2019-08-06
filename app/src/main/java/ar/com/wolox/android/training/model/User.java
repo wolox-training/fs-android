@@ -22,6 +22,12 @@ public class User {
         this.password = password;
     }
 
+    public User(String email) {
+        this.email = email;
+        this.password = "";
+        this.token = "";
+    }
+
     public String getEmail() {
         return email;
     }

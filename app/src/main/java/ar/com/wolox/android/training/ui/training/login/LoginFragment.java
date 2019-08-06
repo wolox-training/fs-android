@@ -257,4 +257,9 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements View
     public void showLoginWithGoogleError() {
         Toast.makeText(getContext(), getString(R.string.error_login_google), Toast.LENGTH_LONG).show();
     }
+
+    @Override
+    public void showCredentialsError() {
+        Toast.makeText(getContext(), getString(R.string.error_credentials_error), Toast.LENGTH_LONG).show();
+    }
 }

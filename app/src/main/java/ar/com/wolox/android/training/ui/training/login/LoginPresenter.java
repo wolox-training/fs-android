@@ -3,10 +3,8 @@ package ar.com.wolox.android.training.ui.training.login;
 import android.os.Handler;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 
-import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -23,15 +21,18 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
 
     private static final long DELAY = 5000L;
     private static final int RC_SIGN_IN = 10;
-    private static final int USER_ID_LIMIT = 100;
 
     private CredentialsSession userCredentials;
     private LoginAdapter loginAdapter;
+    private LoginGoogleAdapter googleAdapter;
 
     @Inject
-    public LoginPresenter(CredentialsSession credentialsSession, LoginAdapter loginAdapter) {
+    public LoginPresenter(CredentialsSession credentialsSession,
+                          LoginAdapter loginAdapter,
+                          LoginGoogleAdapter googleAdapter) {
         this.userCredentials = credentialsSession;
         this.loginAdapter = loginAdapter;
+        this.googleAdapter = googleAdapter;
     }
 
     /**
@@ -46,21 +47,33 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
             getView().showMainScreen();
 
         } else {
-            //Check login from google, and do autoLogin
-            GoogleSignInAccount account = getView().getSignedUser();
-            if (account != null &&
-                    Objects.equals(account.getId(), userCredentials.getToken()) &&
-                    Objects.equals(account.getEmail(), userCredentials.getUsername())) {
-                User user = new User(userCredentials.getUsername(), "");
-                user.setToken(userCredentials.getToken());
-                getView().updateCredentials(user);
-                getView().hideAnimations();
-                getView().showMainScreen();
-            } else {
-                new Handler().postDelayed(() -> getView().hideAnimations(), DELAY);
-            }
-        }
+            googleAdapter.checkLoggedUser(getView().getSignedUser(), new ILoginGoogleAdapterListener() {
+                @Override
+                public void onNullCredentials() {
+                    new Handler().postDelayed(() -> getView().hideAnimations(), DELAY);
+                }
 
+                @Override
+                public void onExpiredCredentials() {
+                    new Handler().postDelayed(() -> {
+                        getView().hideAnimations();
+                        getView().showCredentialsError();
+                    }, DELAY);
+                }
+
+                @Override
+                public void onLoggedUser(User user) {
+                    getView().updateCredentials(user);
+                    getView().hideAnimations();
+                    getView().showMainScreen();
+                }
+
+                @Override
+                public void onError() {
+                    new Handler().postDelayed(() -> getView().hideAnimations(), DELAY);
+                }
+            });
+        }
     }
 
     /**
@@ -149,6 +162,7 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
                     userCredentials.clearCredentials();
                     userCredentials.setUsername(user.getEmail());
                     userCredentials.setPassword(user.getPassword());
+                    userCredentials.setToken(user.getToken());
                     userCredentials.setId(user.getId());
                     getView().showMainScreen();
                 }
@@ -157,53 +171,48 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
     }
 
     void onGoogleLoginRequest() {
-        getView().loginWithGoogle();
+        if (!getView().isNetworkAvailable()) {
+            getView().showNetworkUnavailableError();
+        } else {
+            getView().loginWithGoogle();
+        }
     }
 
     void onActivityResult(final int requestCode, final Task<GoogleSignInAccount> task) {
         getView().showProgressDialog();
         if (requestCode == RC_SIGN_IN) {
-            handleSignInResult(task);
+            googleAdapter.loginUser(task, new ILoginGoogleAdapterListener() {
+                @Override
+                public void onNullCredentials() {
+                    getView().hideProgressDialog();
+                    getView().showLoginWithGoogleError();
+                }
+
+                @Override
+                public void onExpiredCredentials() {
+                    getView().hideProgressDialog();
+                    getView().showLoginWithGoogleError();
+                }
+
+                @Override
+                public void onLoggedUser(User user) {
+                    getView().hideProgressDialog();
+                    userCredentials.clearCredentials();
+                    userCredentials.setUsername(user.getEmail());
+                    userCredentials.setToken(user.getToken());
+                    userCredentials.setId(user.getId());
+                    getView().showMainScreen();
+                }
+
+                @Override
+                public void onError() {
+                    getView().hideProgressDialog();
+                    getView().showLoginWithGoogleError();
+                }
+            });
         } else {
             getView().hideProgressDialog();
             getView().showLoginWithGoogleError();
-        }
-    }
-
-    private void handleSignInResult(final Task<GoogleSignInAccount> completedTask) {
-        try {
-            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
-            if (account != null) {
-                getView().hideProgressDialog();
-                userCredentials.clearCredentials();
-                userCredentials.setUsername(account.getEmail());
-                userCredentials.setToken(account.getId());
-
-                int idUser = addDecimalsOfNumber(Double.parseDouble(Objects.requireNonNull(account.getId())));
-                userCredentials.setId(idUser);
-
-                getView().showMainScreen();
-            } else {
-                getView().showLoginWithGoogleError();
-            }
-        } catch (ApiException e) {
-            getView().hideProgressDialog();
-            getView().showLoginWithGoogleError();
-        }
-    }
-
-    private int addDecimalsOfNumber(double idToken) {
-        //Sum all digits from the token to generate an user id
-        //Example:: IN: 321 -> 3 + 2 + 1 = 6 -> OUT: 6
-        try {
-            double idUserDouble = 0d;
-            while (idToken > 0) {
-                idUserDouble = idUserDouble + (idToken % USER_ID_LIMIT);
-                idToken = idToken / USER_ID_LIMIT;
-            }
-            return (int) idUserDouble;
-        } catch (Exception e) {
-            return 0;
         }
     }
 }
