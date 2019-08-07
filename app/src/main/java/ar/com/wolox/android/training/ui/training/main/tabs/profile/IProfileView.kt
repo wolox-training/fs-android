@@ -6,6 +6,7 @@ interface IProfileView {
 
     fun isNetworkAvailable(): Boolean
 
+    fun initProfileList(serviceData: YoutubeAdapterResponse)
     fun updateProfileList(serviceData: YoutubeAdapterResponse)
 
     fun reproduceVideo(url: String)

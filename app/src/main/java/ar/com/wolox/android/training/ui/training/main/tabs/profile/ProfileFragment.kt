@@ -16,6 +16,7 @@ import ar.com.wolox.android.training.utils.onClickListener
 import ar.com.wolox.wolmo.core.fragment.WolmoFragment
 import com.facebook.drawee.backends.pipeline.Fresco
 import com.google.android.youtube.player.YouTubeStandalonePlayer
+import kotlinx.android.synthetic.main.fragment_news.*
 import kotlinx.android.synthetic.main.fragment_profile.*
 import javax.inject.Inject
 
@@ -24,6 +25,7 @@ class ProfileFragment @Inject constructor() : WolmoFragment<ProfilePresenter>(),
     private lateinit var viewAdapter: ProfileListAdapter
     private lateinit var viewManager: RecyclerView.LayoutManager
     private lateinit var profileList: MutableList<YoutubeListItem>
+    private lateinit var nextPageToken: String
 
     override fun layout(): Int = R.layout.fragment_profile
 
@@ -60,12 +62,26 @@ class ProfileFragment @Inject constructor() : WolmoFragment<ProfilePresenter>(),
         vRefreshEmptyProfiles.setOnRefreshListener {
             vRefreshEmptyProfiles.isRefreshing = false
         }
+
+        vRecyclerViewProfiles.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+
+                val linearLayoutManager = recyclerView
+                        .layoutManager as LinearLayoutManager?
+                if (linearLayoutManager!!.itemCount <= linearLayoutManager.findLastVisibleItemPosition() +
+                        PADDING_TO_REFRESH) {
+                    presenter.onEndOfList(nextPageToken)
+                }
+            }
+        })
     }
 
-    override fun updateProfileList(serviceData: YoutubeAdapterResponse) {
+    override fun initProfileList(serviceData: YoutubeAdapterResponse) {
         vRefreshListProfiles.visibility = View.VISIBLE
         vRefreshEmptyProfiles.visibility = View.INVISIBLE
 
+        nextPageToken = serviceData.nextPageToken
         profileList = mutableListOf()
         profileList.addAll(serviceData.listItem)
 
@@ -77,6 +93,11 @@ class ProfileFragment @Inject constructor() : WolmoFragment<ProfilePresenter>(),
             adapter = viewAdapter
         }
         viewAdapter.notifyDataSetChanged()
+    }
+
+    override fun updateProfileList(serviceData: YoutubeAdapterResponse) {
+        nextPageToken = serviceData.nextPageToken
+        viewAdapter.addData(serviceData.listItem)
     }
 
     private fun selectedItem(item: YoutubeListItem) {
@@ -106,5 +127,6 @@ class ProfileFragment @Inject constructor() : WolmoFragment<ProfilePresenter>(),
 
     companion object {
         private const val API_KEY = "AIzaSyAyr6Gc7wWjVxbK69nlxgVWyPVWrewV0_0"
+        private const val PADDING_TO_REFRESH = 3
     }
 }

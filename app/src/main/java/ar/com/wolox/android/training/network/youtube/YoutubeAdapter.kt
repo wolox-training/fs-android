@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 class YoutubeAdapter @Inject constructor() {
 
-    fun getSongs(query: String, listener: IYoutubeAdapterListener) {
+    fun getSongs(query: String, nextPageToken: String, listener: IYoutubeAdapterListener) {
         val retrofit: Retrofit = Retrofit.Builder()
                                     .baseUrl(BASE_URL)
                                     .addConverterFactory(GsonConverterFactory.create())
@@ -21,10 +21,18 @@ class YoutubeAdapter @Inject constructor() {
         val api = retrofit.create(YoutubeService::class.java)
         val body: HashMap<String, String> = hashMapOf()
         body[KEY_PART] = VALUE_PART
-        body[KEY_QUERY] = query
+
+        if (query.isNotEmpty()) {
+            body[KEY_QUERY] = query
+        }
+
         body[KEY_API] = VALUE_API
         body[KEY_TYPE] = VALUE_TYPE
         body[KEY_MAX] = VALUE_MAX
+
+        if (nextPageToken.isNotEmpty()) {
+            body[KEY_TOKEN] = nextPageToken
+        }
 
         val call = api.searchSongs(body)
         call.enqueue(object : Callback<YoutubeResponse> {
@@ -60,6 +68,7 @@ class YoutubeAdapter @Inject constructor() {
         private const val KEY_API = "key"
         private const val KEY_TYPE = "type"
         private const val KEY_MAX = "maxResults"
+        private const val KEY_TOKEN = "pageToken"
 
         private const val VALUE_PART = "snippet"
         private const val VALUE_API = "AIzaSyC4VaaeF5ig9nIJByd13hsnOOzUjPvO6WM"

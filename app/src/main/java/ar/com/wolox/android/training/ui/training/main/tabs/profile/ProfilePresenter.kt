@@ -11,6 +11,8 @@ class ProfilePresenter @Inject constructor(
     private val adapter: YoutubeAdapter
 ) : BasePresenter<IProfileView>() {
 
+    var downloadingData: Boolean = false
+
     fun onInit() {
         view.showEmptyData()
     }
@@ -21,7 +23,7 @@ class ProfilePresenter @Inject constructor(
         if (query.isEmpty()) {
             view.showEmptyData()
         } else {
-            adapter.getSongs(query, object : IYoutubeAdapterListener {
+            adapter.getSongs(query, "", object : IYoutubeAdapterListener {
                 override fun onFailure() {
                     view.showEmptyData()
                 }
@@ -32,7 +34,7 @@ class ProfilePresenter @Inject constructor(
 
                 override fun onSuccess(response: YoutubeAdapterResponse) {
                     // view.reproduceVideo(response.listItem[0].id)
-                    view.updateProfileList(response)
+                    view.initProfileList(response)
                 }
             })
         }
@@ -41,5 +43,27 @@ class ProfilePresenter @Inject constructor(
     fun onItemClickRequest(item: YoutubeListItem) {
         // Ej: URL := "https://www.youtube.com/watch?v=2G5rfPISIwo" => id := "2G5rfPISIwo"
         view.reproduceVideo(item.id)
+    }
+
+    fun onEndOfList(nextPageToken: String) {
+        if (!downloadingData) {
+            downloadingData = true
+            adapter.getSongs("", nextPageToken, object : IYoutubeAdapterListener {
+                override fun onFailure() {
+                    downloadingData = false
+                    view.showEmptyData()
+                }
+
+                override fun onEmptyData() {
+                    downloadingData = false
+                    view.showEmptyData()
+                }
+
+                override fun onSuccess(response: YoutubeAdapterResponse) {
+                    downloadingData = false
+                    view.updateProfileList(response)
+                }
+            })
+        }
     }
 }
