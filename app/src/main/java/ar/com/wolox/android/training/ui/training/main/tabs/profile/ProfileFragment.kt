@@ -15,12 +15,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ar.com.wolox.android.R
 import ar.com.wolox.android.training.model.ProfileItem
-import ar.com.wolox.android.training.ui.training.TestActivity
 import ar.com.wolox.android.training.utils.onClickListener
 import ar.com.wolox.wolmo.core.fragment.WolmoFragment
 import com.facebook.drawee.backends.pipeline.Fresco
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
+import com.google.android.youtube.player.YouTubeStandalonePlayer
 import com.google.api.client.extensions.android.http.AndroidHttp
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential
 import com.google.api.client.json.jackson2.JacksonFactory
@@ -31,7 +31,6 @@ import kotlinx.android.synthetic.main.fragment_profile.vRefreshListProfiles
 import kotlinx.android.synthetic.main.fragment_profile.vSearch
 import kotlinx.android.synthetic.main.fragment_profile.vSearchQuery
 import pub.devrel.easypermissions.EasyPermissions
-import java.lang.Exception
 import javax.inject.Inject
 
 class ProfileFragment @Inject constructor() : WolmoFragment<ProfilePresenter>(), IProfileView {
@@ -90,8 +89,8 @@ class ProfileFragment @Inject constructor() : WolmoFragment<ProfilePresenter>(),
 
     override fun reproduceVideo(url: String) {
         // TODO: Reproducir video de youtube
-        // val intent = YouTubeStandalonePlayer.createVideoIntent(activity, API_KEY, url)
-        // startActivity(intent)
+        val intent = YouTubeStandalonePlayer.createVideoIntent(activity, API_KEY, url)
+        startActivity(intent)
 
         // TODO: Verificar
         // val scopes: Collection<String> = listOf(YouTubeScopes.YOUTUBE_READONLY)
@@ -101,8 +100,9 @@ class ProfileFragment @Inject constructor() : WolmoFragment<ProfilePresenter>(),
 
         // getResultsFromApi()
 
-        val intent = Intent(activity, TestActivity::class.java)
-        startActivity(intent)
+        // TODO TestActivity!!
+        // val intent = Intent(activity, TestActivity::class.java)
+        // startActivity(intent)
     }
 
     private fun getResultsFromApi() {
@@ -213,7 +213,7 @@ class ProfileFragment @Inject constructor() : WolmoFragment<ProfilePresenter>(),
             if (channels != null) {
                 val channel = channels[0]
                 channelInfo.add("CHANNEL ID: " + channel.id + "." + "TITLE: " + channel.snippet.title +
-                    ", " + "VIEWS: " + channel.statistics.viewCount)
+                        ", " + "VIEWS: " + channel.statistics.viewCount)
             }
             return channelInfo
         }

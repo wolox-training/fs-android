@@ -5,7 +5,5 @@ import java.io.Serializable
 
 class ProfileItem(
     @SerializedName("nextPageToken") val nextPage: String,
-    @SerializedName("prevPageToken") val prevPage: String,
-    @SerializedName("totalResults") val totalResults: Int,
-    @SerializedName("items") val items: List<YoutubeItem>
+    @SerializedName("prevPageToken") val prevPage: String
 ) : Serializable
