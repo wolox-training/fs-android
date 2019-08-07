@@ -1,10 +1,12 @@
 package ar.com.wolox.android.training.ui.training.main.tabs.profile
 
+import android.app.Activity
 import android.content.Context
 import android.graphics.Color
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ar.com.wolox.android.R
@@ -14,7 +16,6 @@ import ar.com.wolox.android.training.utils.onClickListener
 import ar.com.wolox.wolmo.core.fragment.WolmoFragment
 import com.facebook.drawee.backends.pipeline.Fresco
 import com.google.android.youtube.player.YouTubeStandalonePlayer
-import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential
 import kotlinx.android.synthetic.main.fragment_profile.*
 import javax.inject.Inject
 
@@ -23,7 +24,6 @@ class ProfileFragment @Inject constructor() : WolmoFragment<ProfilePresenter>(),
     private lateinit var viewAdapter: ProfileListAdapter
     private lateinit var viewManager: RecyclerView.LayoutManager
     private lateinit var profileList: MutableList<YoutubeListItem>
-    private lateinit var googleCredential: GoogleAccountCredential
 
     override fun layout(): Int = R.layout.fragment_profile
 
@@ -32,6 +32,9 @@ class ProfileFragment @Inject constructor() : WolmoFragment<ProfilePresenter>(),
 
         vRefreshListProfiles.setColorSchemeColors(Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW)
         vRefreshEmptyProfiles.setColorSchemeColors(Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW)
+
+        vRefreshListProfiles.isRefreshing = false
+        vRefreshEmptyProfiles.isRefreshing = false
 
         viewManager = LinearLayoutManager(context)
         presenter.onInit()
@@ -49,11 +52,19 @@ class ProfileFragment @Inject constructor() : WolmoFragment<ProfilePresenter>(),
         vSearch.onClickListener {
             presenter.onSearchRequest(vSearchQuery.text.toString())
         }
+
+        vRefreshListProfiles.setOnRefreshListener {
+            vRefreshListProfiles.isRefreshing = false
+        }
+
+        vRefreshEmptyProfiles.setOnRefreshListener {
+            vRefreshEmptyProfiles.isRefreshing = false
+        }
     }
 
     override fun updateProfileList(serviceData: YoutubeAdapterResponse) {
         vRefreshListProfiles.visibility = View.VISIBLE
-        vRefreshEmptyProfiles.visibility = View.GONE
+        vRefreshEmptyProfiles.visibility = View.INVISIBLE
 
         profileList = mutableListOf()
         profileList.addAll(serviceData.listItem)
@@ -69,26 +80,28 @@ class ProfileFragment @Inject constructor() : WolmoFragment<ProfilePresenter>(),
     }
 
     private fun selectedItem(item: YoutubeListItem) {
-        println("Click")
+        presenter.onItemClickRequest(item)
     }
 
     override fun reproduceVideo(url: String) {
-        // TODO: Reproducir video de youtube
         val intent = YouTubeStandalonePlayer.createVideoIntent(activity, API_KEY, url)
         startActivity(intent)
-
-        // TODO: Verificar
-        // val scopes: Collection<String> = listOf(YouTubeScopes.YOUTUBE_READONLY)
-
-        // googleCredential = GoogleAccountCredential.usingOAuth2(context, scopes)
-        // googleCredential.backOff = ExponentialBackOff()
-
-        // getResultsFromApi()
     }
 
     override fun showEmptyData() {
-        vRefreshListProfiles.visibility = View.GONE
+        vRefreshListProfiles.visibility = View.INVISIBLE
         vRefreshEmptyProfiles.visibility = View.VISIBLE
+    }
+
+    override fun hideSoftKeyboard() {
+        val imm: InputMethodManager = activity?.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        var focus = activity?.currentFocus
+
+        if (focus == null) {
+            focus = View(activity)
+        }
+
+        imm.hideSoftInputFromWindow(focus.windowToken, 0)
     }
 
     companion object {

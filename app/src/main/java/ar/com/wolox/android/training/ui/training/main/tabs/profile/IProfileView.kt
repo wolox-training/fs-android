@@ -11,4 +11,6 @@ interface IProfileView {
     fun reproduceVideo(url: String)
 
     fun showEmptyData()
+
+    fun hideSoftKeyboard()
 }

@@ -79,5 +79,6 @@
 
     <!-- ProfileActivity -->
     <dimen name="profile_default_margin">8dp</dimen>
+    <dimen name="profile_youtube_btn_margin">25dp</dimen>
     
 </resources>

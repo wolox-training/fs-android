@@ -5,6 +5,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <EditText
+        android:id="@+id/vSearchQuery"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:ems="10"
+        android:hint="@string/profile_search_txt"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toTopOf="@+id/vRefreshListProfiles"
+        app:layout_constraintEnd_toStartOf="@+id/vSearch"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <Button
         android:id="@+id/vSearch"
         android:layout_width="wrap_content"
@@ -26,7 +42,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/vSearch">
+        app:layout_constraintTop_toBottomOf="@+id/vSearch" >
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/vRecyclerViewProfiles"
@@ -37,25 +53,23 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:listitem="@layout/profile_item"
-            tools:visibility="visible" />
+            tools:listitem="@layout/profile_item" />
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/vRefreshEmptyProfiles"
         android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="@dimen/profile_default_margin"
-        android:layout_marginEnd="314dp"
-        android:layout_marginBottom="@dimen/profile_default_margin"
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/news_padding_default"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="@dimen/news_padding_default"
+        android:layout_marginBottom="@dimen/news_padding_default"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/vSearch"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:visibility="gone">
+        app:layout_constraintTop_toBottomOf="@+id/vSearchQuery"
+        tools:visibility="gone" >
 
         <ImageView
             android:id="@+id/vEmptyListIcon"
@@ -64,21 +78,5 @@
             android:scaleType="center"
             app:srcCompat="@drawable/empty_list_error" />
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
-    <EditText
-        android:id="@+id/vSearchQuery"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:hint="@string/profile_search_txt"
-        app:layout_constraintBottom_toTopOf="@+id/vRefreshListProfiles"
-        app:layout_constraintEnd_toStartOf="@+id/vSearch"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

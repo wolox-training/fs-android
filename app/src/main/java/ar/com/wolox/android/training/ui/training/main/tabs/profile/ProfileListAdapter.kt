@@ -42,13 +42,25 @@ class ProfileListAdapter(
             itemView.vDescription.text = profile.description
             itemView.vYoutubePreview.initialize(profile.id, object : YouTubeThumbnailView.OnInitializedListener {
                 override fun onInitializationSuccess(p0: YouTubeThumbnailView?, p1: YouTubeThumbnailLoader?) {
-                    println("onInitializationSuccess")
+                    p1?.setVideo(profile.id)
+                    p1?.setOnThumbnailLoadedListener(object : YouTubeThumbnailLoader.OnThumbnailLoadedListener {
+                        override fun onThumbnailLoaded(p0: YouTubeThumbnailView?, p1: String?) {
+                            p0?.visibility = View.VISIBLE
+                        }
+
+                        override fun onThumbnailError(p0: YouTubeThumbnailView?, p1: YouTubeThumbnailLoader.ErrorReason?) {
+                            println("onThumbnailError: " + p1?.name)
+                        }
+                    })
                 }
 
                 override fun onInitializationFailure(p0: YouTubeThumbnailView?, p1: YouTubeInitializationResult?) {
-                    println("onInitializationFailure")
+                    println("onInitializationFailure: " + p1?.name)
                 }
             })
+
+            itemView.vYoutubePreview.setOnClickListener { selectedItem(profile) }
+            itemView.vPlayBtn.setOnClickListener { selectedItem(profile) }
         }
     }
 }

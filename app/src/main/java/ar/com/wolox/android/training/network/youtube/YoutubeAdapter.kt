@@ -20,11 +20,11 @@ class YoutubeAdapter @Inject constructor() {
 
         val api = retrofit.create(YoutubeService::class.java)
         val body: HashMap<String, String> = hashMapOf()
-        body["part"] = "snippet"
-        body["q"] = query
-        body["key"] = "AIzaSyC4VaaeF5ig9nIJByd13hsnOOzUjPvO6WM" // TODO en el postman funciona esta apiKey
-        // body["key"] = "AIzaSyBLjm_MxR2K2bMWW15RFSJYk6Xvt4oBZz0"
-        body["type"] = "video"
+        body[KEY_PART] = VALUE_PART
+        body[KEY_QUERY] = query
+        body[KEY_API] = VALUE_API
+        body[KEY_TYPE] = VALUE_TYPE
+        body[KEY_MAX] = VALUE_MAX
 
         val call = api.searchSongs(body)
         call.enqueue(object : Callback<YoutubeResponse> {
@@ -54,5 +54,16 @@ class YoutubeAdapter @Inject constructor() {
 
     companion object {
         private const val BASE_URL = "https://www.googleapis.com/youtube/v3/"
+
+        private const val KEY_PART = "part"
+        private const val KEY_QUERY = "q"
+        private const val KEY_API = "key"
+        private const val KEY_TYPE = "type"
+        private const val KEY_MAX = "maxResults"
+
+        private const val VALUE_PART = "snippet"
+        private const val VALUE_API = "AIzaSyC4VaaeF5ig9nIJByd13hsnOOzUjPvO6WM"
+        private const val VALUE_TYPE = "video"
+        private const val VALUE_MAX = "10"
     }
 }

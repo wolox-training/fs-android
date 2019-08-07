@@ -34,7 +34,7 @@
             android:layout_height="wrap_content"
             android:scaleType="centerInside"
             app:srcCompat="@drawable/ic_youtube_btn"
-            android:layout_margin="25dp"/>
+            android:layout_margin="@dimen/profile_youtube_btn_margin"/>
     </RelativeLayout>
 
     <TextView
@@ -61,6 +61,7 @@
         android:layout_marginTop="@dimen/profile_default_margin"
         android:layout_marginEnd="@dimen/profile_default_margin"
         android:layout_marginBottom="@dimen/profile_default_margin"
+        android:maxLines="2"
         android:ellipsize="end"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
