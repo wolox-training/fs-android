@@ -127,6 +127,6 @@ class ProfileFragment @Inject constructor() : WolmoFragment<ProfilePresenter>(),
 
     companion object {
         private const val API_KEY = "AIzaSyAyr6Gc7wWjVxbK69nlxgVWyPVWrewV0_0"
-        private const val PADDING_TO_REFRESH = 3
+        private const val PADDING_TO_REFRESH = 5
     }
 }
