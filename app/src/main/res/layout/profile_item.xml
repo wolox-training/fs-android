@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <com.facebook.drawee.view.SimpleDraweeView
-        android:id="@+id/vMainScreen"
+    <com.google.android.youtube.player.YouTubeThumbnailView
+        android:id="@+id/vYoutubePreview"
         android:layout_width="@dimen/news_item_img_size"
         android:layout_height="@dimen/news_item_img_size"
         android:layout_marginStart="@dimen/profile_default_margin"
@@ -14,8 +15,27 @@
         android:layout_marginBottom="@dimen/profile_default_margin"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/googleg_disabled_color_18" />
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <RelativeLayout
+        android:id="@+id/vLayoutOverPreview"
+        android:layout_width="@dimen/news_item_img_size"
+        android:layout_height="@dimen/news_item_img_size"
+        android:layout_marginStart="@dimen/profile_default_margin"
+        android:layout_marginTop="@dimen/profile_default_margin"
+        android:layout_marginBottom="@dimen/profile_default_margin"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/vPlayBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="centerInside"
+            app:srcCompat="@drawable/ic_youtube_btn"
+            android:layout_margin="25dp"/>
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/vTitle"
@@ -29,7 +49,7 @@
         android:textSize="@dimen/font_medium_extra"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/vMainScreen"
+        app:layout_constraintStart_toEndOf="@+id/vYoutubePreview"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Title Example" />
 
@@ -42,19 +62,20 @@
         android:layout_marginEnd="@dimen/profile_default_margin"
         android:layout_marginBottom="@dimen/profile_default_margin"
         android:ellipsize="end"
-        tools:text="Description Example"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/vMainScreen"
-        app:layout_constraintTop_toBottomOf="@+id/vTitle" />
+        app:layout_constraintStart_toEndOf="@+id/vYoutubePreview"
+        app:layout_constraintTop_toBottomOf="@+id/vTitle"
+        tools:text="Description Example" />
 
     <TextView
         android:id="@+id/vSeparator"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="@dimen/news_separator"
         android:background="@color/colorGray"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="parent"
-        tools:layout_editor_absoluteX="16dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

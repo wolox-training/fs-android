@@ -37,9 +37,6 @@
             android:name=".training.ui.viewpager.ViewPagerActivity"
             android:screenOrientation="portrait" />
 
-        <activity android:name=".training.ui.training.TestActivity"
-            android:screenOrientation="portrait" />
-
     </application>
 
 </manifest>

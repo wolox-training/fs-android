@@ -1,5 +1,7 @@
 package ar.com.wolox.android.training.network.youtube
 
+import ar.com.wolox.android.training.model.youtube.YoutubeAdapterResponse
+import ar.com.wolox.android.training.model.youtube.YoutubeListItem
 import ar.com.wolox.android.training.model.youtube.YoutubeResponse
 import retrofit2.Call
 import retrofit2.Callback
@@ -29,7 +31,16 @@ class YoutubeAdapter @Inject constructor() {
             override fun onResponse(call: Call<YoutubeResponse>, response: Response<YoutubeResponse>) {
                 if (response.body() != null) {
                     val result: YoutubeResponse = response.body()!!
-                    listener.onSuccess(result)
+
+                    val videoList = mutableListOf<YoutubeListItem>()
+                    result.items.forEach {
+                        val item = YoutubeListItem(it.id.videoId, it.snippet.title, it.snippet.description)
+                        videoList.add(item)
+                    }
+
+                    val adapterResponse = YoutubeAdapterResponse(result.nextPageToken, videoList)
+
+                    listener.onSuccess(adapterResponse)
                 } else {
                     listener.onEmptyData()
                 }

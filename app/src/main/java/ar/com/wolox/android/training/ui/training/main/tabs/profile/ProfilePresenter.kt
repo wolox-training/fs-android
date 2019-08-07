@@ -1,7 +1,6 @@
 package ar.com.wolox.android.training.ui.training.main.tabs.profile
 
-import ar.com.wolox.android.training.model.ProfileItem
-import ar.com.wolox.android.training.model.youtube.YoutubeResponse
+import ar.com.wolox.android.training.model.youtube.YoutubeAdapterResponse
 import ar.com.wolox.android.training.network.youtube.IYoutubeAdapterListener
 import ar.com.wolox.android.training.network.youtube.YoutubeAdapter
 import ar.com.wolox.wolmo.core.presenter.BasePresenter
@@ -12,31 +11,23 @@ class ProfilePresenter @Inject constructor(
 ) : BasePresenter<IProfileView>() {
 
     fun onInit() {
-        val sampleList = mutableListOf<ProfileItem>()
-        val sampleItem = ProfileItem(
-                "NextSample",
-                "PrevSample"
-        )
-        sampleList.add(sampleItem)
-
-        view.updateProfileList(sampleList)
     }
 
     fun onSearchRequest(query: String) {
         // view.reproduceVideo("2ZBtPf7FOoM")
 
-        adapter.getSongs("queen", object : IYoutubeAdapterListener {
+        adapter.getSongs(query, object : IYoutubeAdapterListener {
             override fun onFailure() {
-                println("FAILURE")
+                view.showEmptyData()
             }
 
             override fun onEmptyData() {
-                println("EMPTY DATA")
+                view.showEmptyData()
             }
 
-            override fun onSuccess(response: YoutubeResponse) {
-                println("SUCCESS")
-                view.reproduceVideo(response.items[0].id.videoId)
+            override fun onSuccess(response: YoutubeAdapterResponse) {
+                // view.reproduceVideo(response.listItem[0].id)
+                view.updateProfileList(response)
             }
         })
     }
