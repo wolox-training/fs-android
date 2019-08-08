@@ -1,7 +1,5 @@
 package ar.com.wolox.android.training.ui.training.login;
 
-import android.os.Handler;
-
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.tasks.Task;
 
@@ -13,17 +11,16 @@ import java.util.regex.Pattern;
 import javax.inject.Inject;
 
 import ar.com.wolox.android.training.model.User;
+import ar.com.wolox.android.training.ui.training.adapter.LoginGoogleAdapter;
 import ar.com.wolox.android.training.ui.training.adapter.LoginGoogleAdapterListener;
 import ar.com.wolox.android.training.utils.CredentialsSession;
 import ar.com.wolox.wolmo.core.presenter.BasePresenter;
-import ar.com.wolox.android.training.ui.training.adapter.LoginGoogleAdapter;
 
 /**
  * LoginPresenter
  */
 public class LoginPresenter extends BasePresenter<ILoginView> {
 
-    private static final long DELAY = 5000L;
     private static final int RC_SIGN_IN = 10;
 
     private CredentialsSession userCredentials;
@@ -54,15 +51,13 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
             googleAdapter.checkLoggedUser(new LoginGoogleAdapterListener() {
                 @Override
                 public void onNullCredentials() {
-                    new Handler().postDelayed(() -> getView().hideAnimations(), DELAY);
+                    getView().hideAnimations();
                 }
 
                 @Override
                 public void onExpiredCredentials() {
-                    new Handler().postDelayed(() -> {
-                        getView().hideAnimations();
-                        getView().showCredentialsError();
-                    }, DELAY);
+                    getView().hideAnimations();
+                    getView().showCredentialsError();
                 }
 
                 @Override
@@ -74,7 +69,7 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
 
                 @Override
                 public void onError() {
-                    new Handler().postDelayed(() -> getView().hideAnimations(), DELAY);
+                    getView().hideAnimations();
                 }
             });
         }
