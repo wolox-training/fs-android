@@ -43,7 +43,7 @@ class LoginGoogleAdapter @Inject constructor(
         try {
 
             val account: GoogleSignInAccount = completedTask.getResult(ApiException::class.java)!!
-            val user: User = User(account.email)
+            val user = User(account.email)
             user.token = account.id
 
             val idUser: Int = addDecimalsOnNumber(account.id!!.toDouble())
@@ -54,11 +54,11 @@ class LoginGoogleAdapter @Inject constructor(
         }
     }
 
-    fun addDecimalsOnNumber(input: Double): Int {
+    private fun addDecimalsOnNumber(input: Double): Int {
         // Sum all digits from the token to generate an user id (negative)
         // Example:: IN: 321 -> 3 + 2 + 1 = 6 -> OUT: -6
         var idToken: Double = input
-        try {
+        return try {
             var idUserDouble = 0.0
             while (idToken > 0) {
                 idUserDouble += (idToken % USER_ID_LIMIT)
@@ -66,9 +66,9 @@ class LoginGoogleAdapter @Inject constructor(
             }
 
             val result: Int = idUserDouble.toInt()
-            return -result
+            -result
         } catch (e: Exception) {
-            return 0
+            0
         }
     }
 
