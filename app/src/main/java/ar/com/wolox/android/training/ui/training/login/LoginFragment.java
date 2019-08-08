@@ -11,9 +11,7 @@ import android.widget.Toast;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -43,8 +41,6 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements View
     private TextInputEditText mPassTxt;
 
     private ProgressDialog mProgressDialog;
-
-    private GoogleSignInClient mGoogleSignInClient;
 
     @Override
     public int layout() {
@@ -78,11 +74,6 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements View
         mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         mProgressDialog.setCancelable(false);
         mProgressDialog.setCanceledOnTouchOutside(false);
-
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestEmail()
-                .build();
-        mGoogleSignInClient = GoogleSignIn.getClient(Objects.requireNonNull(getContext()), gso);
 
         getPresenter().onInit();
     }
@@ -236,13 +227,9 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements View
         Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
     }
 
-    public GoogleSignInAccount getSignedUser() {
-        return GoogleSignIn.getLastSignedInAccount(Objects.requireNonNull(getContext()));
-    }
-
     @Override
-    public void loginWithGoogle() {
-        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+    public void loginWithGoogle(GoogleSignInClient client) {
+        Intent signInIntent = client.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 

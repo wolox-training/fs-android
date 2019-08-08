@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import ar.com.wolox.android.training.model.User;
+import ar.com.wolox.android.training.ui.training.adapter.LoginGoogleAdapter;
 import ar.com.wolox.android.training.utils.CredentialsSession;
 
 import static org.mockito.ArgumentMatchers.any;
