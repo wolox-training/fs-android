@@ -5,6 +5,8 @@ import ar.com.wolox.android.training.model.User
 import ar.com.wolox.android.training.utils.CredentialsSession
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
 import java.lang.Exception
@@ -14,6 +16,13 @@ class LoginGoogleAdapter @Inject constructor(
     private val credentialsSession: CredentialsSession,
     private val context: Context
 ) {
+
+    fun getLoginGoogleIntent(): GoogleSignInClient {
+        val gso: GoogleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build()
+        return GoogleSignIn.getClient(context, gso)
+    }
 
     fun checkLoggedUser(listener: LoginGoogleAdapterListener) {
         val account = GoogleSignIn.getLastSignedInAccount(context)

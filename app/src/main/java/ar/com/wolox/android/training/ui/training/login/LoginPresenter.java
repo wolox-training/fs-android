@@ -178,7 +178,7 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
         if (!getView().isNetworkAvailable()) {
             getView().showNetworkUnavailableError();
         } else {
-            getView().loginWithGoogle();
+            getView().loginWithGoogle(googleAdapter.getLoginGoogleIntent());
         }
     }
 
