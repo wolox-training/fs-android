@@ -38,7 +38,7 @@ class ProfileListAdapter(
             itemView.vTitle.text = profile.title
             itemView.vDescription.text = profile.description
 
-            itemView.vYoutubeImgPreview.setImageURI(profile.defaultImg)
+            itemView.vYoutubeImgPreview.setImageURI(profile.highImg)
             itemView.vYoutubeImgPreview.setOnClickListener { selectedItem(profile) }
 
             itemView.vPlayBtn.setOnClickListener { selectedItem(profile) }

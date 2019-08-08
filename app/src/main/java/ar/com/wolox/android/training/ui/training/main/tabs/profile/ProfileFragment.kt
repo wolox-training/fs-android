@@ -16,7 +16,6 @@ import ar.com.wolox.android.training.utils.onClickListener
 import ar.com.wolox.wolmo.core.fragment.WolmoFragment
 import com.facebook.drawee.backends.pipeline.Fresco
 import com.google.android.youtube.player.YouTubeStandalonePlayer
-import kotlinx.android.synthetic.main.fragment_news.*
 import kotlinx.android.synthetic.main.fragment_profile.*
 import javax.inject.Inject
 
@@ -127,6 +126,6 @@ class ProfileFragment @Inject constructor() : WolmoFragment<ProfilePresenter>(),
 
     companion object {
         private const val API_KEY = "AIzaSyAyr6Gc7wWjVxbK69nlxgVWyPVWrewV0_0"
-        private const val PADDING_TO_REFRESH = 5
+        private const val PADDING_TO_REFRESH = 3
     }
 }

@@ -8,8 +8,8 @@
 
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/vYoutubeImgPreview"
-        android:layout_width="@dimen/news_item_img_size"
-        android:layout_height="@dimen/news_item_img_size"
+        android:layout_width="@dimen/profile_item_img_size"
+        android:layout_height="@dimen/profile_item_img_size"
         android:layout_marginStart="@dimen/profile_default_margin"
         android:layout_marginTop="@dimen/profile_default_margin"
         android:layout_marginBottom="@dimen/profile_default_margin"
@@ -19,8 +19,8 @@
 
     <RelativeLayout
         android:id="@+id/vLayoutOverPreview"
-        android:layout_width="@dimen/news_item_img_size"
-        android:layout_height="@dimen/news_item_img_size"
+        android:layout_width="@dimen/profile_item_img_size"
+        android:layout_height="@dimen/profile_item_img_size"
         android:layout_marginStart="@dimen/profile_default_margin"
         android:layout_marginTop="@dimen/profile_default_margin"
         android:layout_marginBottom="@dimen/profile_default_margin"
@@ -51,7 +51,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/vYoutubeImgPreview"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="Title Example" />
+        tools:text="Title Example \nWith 2 Lines" />
 
     <TextView
         android:id="@+id/vDescription"
@@ -67,7 +67,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/vYoutubeImgPreview"
         app:layout_constraintTop_toBottomOf="@+id/vTitle"
-        tools:text="Description Example" />
+        tools:text="Description Example \n with 2 lines" />
 
     <TextView
         android:id="@+id/vSeparator"
