@@ -5,14 +5,18 @@ import android.os.Handler;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.tasks.Task;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.inject.Inject;
 
 import ar.com.wolox.android.training.model.User;
+import ar.com.wolox.android.training.ui.training.adapter.LoginGoogleAdapterListener;
 import ar.com.wolox.android.training.utils.CredentialsSession;
 import ar.com.wolox.wolmo.core.presenter.BasePresenter;
+import ar.com.wolox.android.training.ui.training.adapter.LoginGoogleAdapter;
 
 /**
  * LoginPresenter
@@ -29,10 +33,10 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
     @Inject
     public LoginPresenter(CredentialsSession credentialsSession,
                           LoginAdapter loginAdapter,
-                          LoginGoogleAdapter googleAdapter) {
+                          LoginGoogleAdapter adapter) {
         this.userCredentials = credentialsSession;
         this.loginAdapter = loginAdapter;
-        this.googleAdapter = googleAdapter;
+        this.googleAdapter = adapter;
     }
 
     /**
@@ -47,7 +51,7 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
             getView().showMainScreen();
 
         } else {
-            googleAdapter.checkLoggedUser(getView().getSignedUser(), new ILoginGoogleAdapterListener() {
+            googleAdapter.checkLoggedUser(new LoginGoogleAdapterListener() {
                 @Override
                 public void onNullCredentials() {
                     new Handler().postDelayed(() -> getView().hideAnimations(), DELAY);
@@ -62,7 +66,7 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
                 }
 
                 @Override
-                public void onLoggedUser(User user) {
+                public void onLoggedUser(@NotNull User user) {
                     getView().updateCredentials(user);
                     getView().hideAnimations();
                     getView().showMainScreen();
@@ -181,7 +185,7 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
     void onActivityResult(final int requestCode, final Task<GoogleSignInAccount> task) {
         getView().showProgressDialog();
         if (requestCode == RC_SIGN_IN) {
-            googleAdapter.loginUser(task, new ILoginGoogleAdapterListener() {
+            googleAdapter.loginUser(task, new LoginGoogleAdapterListener() {
                 @Override
                 public void onNullCredentials() {
                     getView().hideProgressDialog();
@@ -195,7 +199,7 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
                 }
 
                 @Override
-                public void onLoggedUser(User user) {
+                public void onLoggedUser(@NotNull User user) {
                     getView().hideProgressDialog();
                     userCredentials.clearCredentials();
                     userCredentials.setUsername(user.getEmail());
