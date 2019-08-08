@@ -1,16 +1,15 @@
 package ar.com.wolox.android.training.network.youtube
 
+import android.content.Context
 import ar.com.wolox.android.training.model.youtube.YoutubeAdapterResponse
 import ar.com.wolox.android.training.model.youtube.YoutubeListItem
 import ar.com.wolox.android.training.model.youtube.YoutubeResponse
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import com.google.gson.GsonBuilder
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Inject
 
-class YoutubeAdapter @Inject constructor() {
+class YoutubeAdapter @Inject constructor(val context: Context) {
 
     fun getSongs(query: String, nextPageToken: String, listener: IYoutubeAdapterListener) {
         val retrofit: Retrofit = Retrofit.Builder()
@@ -21,11 +20,7 @@ class YoutubeAdapter @Inject constructor() {
         val api = retrofit.create(YoutubeService::class.java)
         val body: HashMap<String, String> = hashMapOf()
         body[KEY_PART] = VALUE_PART
-
-        if (query.isNotEmpty()) {
-            body[KEY_QUERY] = query
-        }
-
+        body[KEY_QUERY] = query
         body[KEY_API] = VALUE_API
         body[KEY_TYPE] = VALUE_TYPE
         body[KEY_MAX] = VALUE_MAX
@@ -33,6 +28,8 @@ class YoutubeAdapter @Inject constructor() {
         if (nextPageToken.isNotEmpty()) {
             body[KEY_TOKEN] = nextPageToken
         }
+
+/* // TODO: Replace YoutubeAPI Call (requests limit exceeded) with json file from assets
 
         val call = api.searchSongs(body)
         call.enqueue(object : Callback<YoutubeResponse> {
@@ -42,14 +39,17 @@ class YoutubeAdapter @Inject constructor() {
 
                     val videoList = mutableListOf<YoutubeListItem>()
                     result.items.forEach {
-                        val item = YoutubeListItem(it.id.videoId, it.snippet.title, it.snippet.description)
+                        val item = YoutubeListItem(it.id.videoId, it.snippet.title, it.snippet.description,
+                                it.snippet.thumbnails.default.url, it.snippet.thumbnails.medium.url,
+                                it.snippet.thumbnails.high.url)
                         videoList.add(item)
                     }
 
-                    val adapterResponse = YoutubeAdapterResponse(result.nextPageToken, videoList)
+                    val adapterResponse = YoutubeAdapterResponse(result.nextPageToken, result.nextPageToken, videoList)
 
                     listener.onSuccess(adapterResponse)
                 } else {
+                    println(response.errorBody().toString())
                     listener.onEmptyData()
                 }
             }
@@ -58,6 +58,33 @@ class YoutubeAdapter @Inject constructor() {
                 listener.onFailure()
             }
         })
+*/
+        val sampleResponse = getSampleFromAssets()
+        if (sampleResponse == null) {
+            listener.onEmptyData()
+        } else {
+            listener.onSuccess(sampleResponse)
+        }
+    }
+
+    private fun getSampleFromAssets(): YoutubeAdapterResponse? {
+        val inputStream = context.assets.open("youtube_sample.json")
+        val size = inputStream.available()
+        val buffer = ByteArray(size)
+        inputStream.read(buffer)
+        inputStream.close()
+        val json = String(buffer)
+
+        val gson = GsonBuilder().create()
+        val result = gson.fromJson(json, YoutubeResponse::class.java)
+        val videoList = mutableListOf<YoutubeListItem>()
+        result.items.forEach {
+            val item = YoutubeListItem(it.id.videoId, it.snippet.title, it.snippet.description,
+                    it.snippet.thumbnails.default.url, it.snippet.thumbnails.medium.url,
+                    it.snippet.thumbnails.high.url)
+            videoList.add(item)
+        }
+        return YoutubeAdapterResponse(result.nextPageToken, result.nextPageToken, videoList)
     }
 
     companion object {
@@ -71,7 +98,7 @@ class YoutubeAdapter @Inject constructor() {
         private const val KEY_TOKEN = "pageToken"
 
         private const val VALUE_PART = "snippet"
-        private const val VALUE_API = "AIzaSyC4VaaeF5ig9nIJByd13hsnOOzUjPvO6WM"
+        private const val VALUE_API = "AIzaSyB_7puJZkQvPawdT61QIygRCajnXYsXsJo"
         private const val VALUE_TYPE = "video"
         private const val VALUE_MAX = "10"
     }

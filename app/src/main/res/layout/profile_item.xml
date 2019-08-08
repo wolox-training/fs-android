@@ -6,8 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <com.google.android.youtube.player.YouTubeThumbnailView
-        android:id="@+id/vYoutubePreview"
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/vYoutubeImgPreview"
         android:layout_width="@dimen/news_item_img_size"
         android:layout_height="@dimen/news_item_img_size"
         android:layout_marginStart="@dimen/profile_default_margin"
@@ -49,7 +49,7 @@
         android:textSize="@dimen/font_medium_extra"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/vYoutubePreview"
+        app:layout_constraintStart_toEndOf="@+id/vYoutubeImgPreview"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Title Example" />
 
@@ -65,7 +65,7 @@
         android:ellipsize="end"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/vYoutubePreview"
+        app:layout_constraintStart_toEndOf="@+id/vYoutubeImgPreview"
         app:layout_constraintTop_toBottomOf="@+id/vTitle"
         tools:text="Description Example" />
 

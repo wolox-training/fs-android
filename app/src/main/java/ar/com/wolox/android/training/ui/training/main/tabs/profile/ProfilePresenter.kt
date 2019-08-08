@@ -12,6 +12,7 @@ class ProfilePresenter @Inject constructor(
 ) : BasePresenter<IProfileView>() {
 
     var downloadingData: Boolean = false
+    lateinit var lastQuery: String
 
     fun onInit() {
         view.showEmptyData()
@@ -23,6 +24,7 @@ class ProfilePresenter @Inject constructor(
         if (query.isEmpty()) {
             view.showEmptyData()
         } else {
+            lastQuery = query
             adapter.getSongs(query, "", object : IYoutubeAdapterListener {
                 override fun onFailure() {
                     view.showEmptyData()
@@ -48,15 +50,15 @@ class ProfilePresenter @Inject constructor(
     fun onEndOfList(nextPageToken: String) {
         if (!downloadingData) {
             downloadingData = true
-            adapter.getSongs("", nextPageToken, object : IYoutubeAdapterListener {
+            adapter.getSongs(lastQuery, nextPageToken, object : IYoutubeAdapterListener {
                 override fun onFailure() {
                     downloadingData = false
-                    view.showEmptyData()
+                    // view.showEmptyData()
                 }
 
                 override fun onEmptyData() {
                     downloadingData = false
-                    view.showEmptyData()
+                    // view.showEmptyData()
                 }
 
                 override fun onSuccess(response: YoutubeAdapterResponse) {
