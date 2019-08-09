@@ -50,7 +50,7 @@ class YoutubeAdapter @Inject constructor(val context: Context) {
 
                     listener.onSuccess(adapterResponse)
                 } else {
-                    //listener.onEmptyData()
+                    // listener.onEmptyData()
 
                     // TODO: Simulation, QueryRequest from json file (ExpiredKey or limit exceeded)
                     val sampleResponse = getSampleFromAssets()
