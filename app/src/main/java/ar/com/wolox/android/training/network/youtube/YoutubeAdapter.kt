@@ -50,7 +50,15 @@ class YoutubeAdapter @Inject constructor(val context: Context) {
 
                     listener.onSuccess(adapterResponse)
                 } else {
-                    listener.onEmptyData()
+                    //listener.onEmptyData()
+
+                    // TODO: Simulation, QueryRequest from json file (ExpiredKey or limit exceeded)
+                    val sampleResponse = getSampleFromAssets()
+                    if (sampleResponse == null) {
+                        listener.onEmptyData()
+                    } else {
+                        listener.onSuccess(sampleResponse)
+                    }
                 }
             }
 
@@ -58,6 +66,26 @@ class YoutubeAdapter @Inject constructor(val context: Context) {
                 listener.onFailure()
             }
         })
+    }
+
+    private fun getSampleFromAssets(): YoutubeAdapterResponse? {
+        val inputStream = context.assets.open("youtube_sample_extended.json")
+        val size = inputStream.available()
+        val buffer = ByteArray(size)
+        inputStream.read(buffer)
+        inputStream.close()
+        val json = String(buffer)
+
+        val gson = GsonBuilder().create()
+        val result = gson.fromJson(json, YoutubeResponse::class.java)
+        val videoList = mutableListOf<YoutubeListItem>()
+        result.items.forEach {
+            val item = YoutubeListItem(it.id.videoId, it.snippet.title, it.snippet.description,
+                    it.snippet.thumbnails.default.url, it.snippet.thumbnails.medium.url,
+                    it.snippet.thumbnails.high.url)
+            videoList.add(item)
+        }
+        return YoutubeAdapterResponse(result.nextPageToken, result.nextPageToken, videoList)
     }
 
     companion object {

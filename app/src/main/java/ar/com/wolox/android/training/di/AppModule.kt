@@ -12,6 +12,8 @@ import ar.com.wolox.android.training.ui.training.main.tabs.news.NewsFragment
 import ar.com.wolox.android.training.ui.training.main.tabs.profile.ProfileFragment
 import ar.com.wolox.android.training.ui.training.singup.SingUpActivity
 import ar.com.wolox.android.training.ui.training.singup.SingUpFragment
+import ar.com.wolox.android.training.ui.youtube.YoutubeActivity
+import ar.com.wolox.android.training.ui.youtube.YoutubeFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -53,4 +55,10 @@ abstract class AppModule {
 
     @ContributesAndroidInjector
     internal abstract fun detailsFragment(): DetailsFragment
+
+    @ContributesAndroidInjector
+    internal abstract fun youtubeActivity(): YoutubeActivity
+
+    @ContributesAndroidInjector
+    internal abstract fun youtubeFragment(): YoutubeFragment
 }

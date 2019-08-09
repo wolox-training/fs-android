@@ -2,6 +2,7 @@ package ar.com.wolox.android.training.ui.training.main.tabs.profile
 
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import android.view.View
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import ar.com.wolox.android.R
 import ar.com.wolox.android.training.model.youtube.YoutubeAdapterResponse
 import ar.com.wolox.android.training.model.youtube.YoutubeListItem
+import ar.com.wolox.android.training.ui.youtube.YoutubeActivity
 import ar.com.wolox.android.training.utils.onClickListener
 import ar.com.wolox.wolmo.core.fragment.WolmoFragment
 import com.facebook.drawee.backends.pipeline.Fresco
@@ -94,8 +96,11 @@ class ProfileFragment @Inject constructor() : WolmoFragment<ProfilePresenter>(),
     }
 
     override fun reproduceVideo(url: String) {
-        val intent = YouTubeStandalonePlayer.createVideoIntent(activity, API_KEY, url)
-        startActivity(intent)
+        //val intent = YouTubeStandalonePlayer.createVideoIntent(activity, API_KEY, url)
+        //startActivity(intent)
+
+        val sampleIntent = Intent(activity, YoutubeActivity::class.java)
+        startActivity(sampleIntent)
     }
 
     override fun showEmptyData() {
