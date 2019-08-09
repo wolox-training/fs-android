@@ -24,21 +24,25 @@ class ProfilePresenter @Inject constructor(
         if (query.isEmpty()) {
             view.showEmptyData()
         } else {
-            lastQuery = query
-            adapter.getSongs(query, "", object : IYoutubeAdapterListener {
-                override fun onFailure() {
-                    view.showEmptyData()
-                }
+            if (!view.isNetworkAvailable()) {
+                view.showNetworkUnavailableError()
+            } else {
+                lastQuery = query
+                adapter.getSongs(query, "", object : IYoutubeAdapterListener {
+                    override fun onFailure() {
+                        view.showEmptyData()
+                    }
 
-                override fun onEmptyData() {
-                    view.showEmptyData()
-                }
+                    override fun onEmptyData() {
+                        view.showEmptyData()
+                    }
 
-                override fun onSuccess(response: YoutubeAdapterResponse) {
-                    // view.reproduceVideo(response.listItem[0].id)
-                    view.initProfileList(response)
-                }
-            })
+                    override fun onSuccess(response: YoutubeAdapterResponse) {
+                        // view.reproduceVideo(response.listItem[0].id)
+                        view.initProfileList(response)
+                    }
+                })
+            }
         }
     }
 
@@ -49,23 +53,27 @@ class ProfilePresenter @Inject constructor(
 
     fun onEndOfList(nextPageToken: String) {
         if (!downloadingData) {
-            downloadingData = true
-            adapter.getSongs(lastQuery, nextPageToken, object : IYoutubeAdapterListener {
-                override fun onFailure() {
-                    downloadingData = false
-                    // view.showEmptyData()
-                }
+            if (!view.isNetworkAvailable()) {
+                view.showNetworkUnavailableError()
+            } else {
+                downloadingData = true
+                adapter.getSongs(lastQuery, nextPageToken, object : IYoutubeAdapterListener {
+                    override fun onFailure() {
+                        downloadingData = false
+                        view.notifyNetworkCnxError()
+                    }
 
-                override fun onEmptyData() {
-                    downloadingData = false
-                    // view.showEmptyData()
-                }
+                    override fun onEmptyData() {
+                        downloadingData = false
+                        view.notifyNetworkCnxError()
+                    }
 
-                override fun onSuccess(response: YoutubeAdapterResponse) {
-                    downloadingData = false
-                    view.updateProfileList(response)
-                }
-            })
+                    override fun onSuccess(response: YoutubeAdapterResponse) {
+                        downloadingData = false
+                        view.updateProfileList(response)
+                    }
+                })
+            }
         }
     }
 }

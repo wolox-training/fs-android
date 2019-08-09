@@ -6,6 +6,7 @@ import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ar.com.wolox.android.R
@@ -40,6 +41,10 @@ class ProfileFragment @Inject constructor() : WolmoFragment<ProfilePresenter>(),
             val networkInfo: NetworkInfo? = connectivityManager.activeNetworkInfo
             networkInfo?.isConnected ?: false
         } else false
+    }
+
+    override fun showNetworkUnavailableError() {
+        Toast.makeText(context, getString(R.string.error_network_unavailable), Toast.LENGTH_LONG).show()
     }
 
     override fun setListeners() {
@@ -107,6 +112,10 @@ class ProfileFragment @Inject constructor() : WolmoFragment<ProfilePresenter>(),
         }
 
         imm.hideSoftInputFromWindow(focus.windowToken, 0)
+    }
+
+    override fun notifyNetworkCnxError() {
+        Toast.makeText(context, getString(R.string.profile_network_error), Toast.LENGTH_SHORT).show()
     }
 
     companion object {

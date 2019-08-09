@@ -5,13 +5,16 @@ import ar.com.wolox.android.training.model.youtube.YoutubeAdapterResponse
 import ar.com.wolox.android.training.model.youtube.YoutubeListItem
 import ar.com.wolox.android.training.model.youtube.YoutubeResponse
 import com.google.gson.GsonBuilder
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Inject
 
 class YoutubeAdapter @Inject constructor(val context: Context) {
 
-    fun getSongs(query: String, nextPageToken: String, listener: IYoutubeAdapterListener) {
+    fun getSongs(query: String, pageToken: String, listener: IYoutubeAdapterListener) {
         val retrofit: Retrofit = Retrofit.Builder()
                                     .baseUrl(BASE_URL)
                                     .addConverterFactory(GsonConverterFactory.create())
@@ -25,11 +28,9 @@ class YoutubeAdapter @Inject constructor(val context: Context) {
         body[KEY_TYPE] = VALUE_TYPE
         body[KEY_MAX] = VALUE_MAX
 
-        if (nextPageToken.isNotEmpty()) {
-            body[KEY_TOKEN] = nextPageToken
+        if (pageToken.isNotEmpty()) {
+            body[KEY_TOKEN] = pageToken
         }
-
-/* // TODO: Replace YoutubeAPI Call (requests limit exceeded) with json file from assets
 
         val call = api.searchSongs(body)
         call.enqueue(object : Callback<YoutubeResponse> {
@@ -45,12 +46,20 @@ class YoutubeAdapter @Inject constructor(val context: Context) {
                         videoList.add(item)
                     }
 
-                    val adapterResponse = YoutubeAdapterResponse(result.nextPageToken, result.nextPageToken, videoList)
+                    val adapterResponse = YoutubeAdapterResponse(result.prevPageToken, result.nextPageToken, videoList)
 
                     listener.onSuccess(adapterResponse)
                 } else {
                     println(response.errorBody().toString())
-                    listener.onEmptyData()
+                    // listener.onEmptyData()
+
+                    // TODO: Simulation, QueryRequest from json file (ExpiredKey or limit exceeded)
+                    val sampleResponse = getSampleFromAssets()
+                    if (sampleResponse == null) {
+                        listener.onEmptyData()
+                    } else {
+                        listener.onSuccess(sampleResponse)
+                    }
                 }
             }
 
@@ -58,17 +67,10 @@ class YoutubeAdapter @Inject constructor(val context: Context) {
                 listener.onFailure()
             }
         })
-*/
-        val sampleResponse = getSampleFromAssets()
-        if (sampleResponse == null) {
-            listener.onEmptyData()
-        } else {
-            listener.onSuccess(sampleResponse)
-        }
     }
 
     private fun getSampleFromAssets(): YoutubeAdapterResponse? {
-        val inputStream = context.assets.open("youtube_sample.json")
+        val inputStream = context.assets.open("youtube_sample_extended.json")
         val size = inputStream.available()
         val buffer = ByteArray(size)
         inputStream.read(buffer)

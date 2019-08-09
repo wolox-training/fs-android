@@ -5,6 +5,7 @@ import ar.com.wolox.android.training.model.youtube.YoutubeAdapterResponse
 interface IProfileView {
 
     fun isNetworkAvailable(): Boolean
+    fun showNetworkUnavailableError()
 
     fun initProfileList(serviceData: YoutubeAdapterResponse)
     fun updateProfileList(serviceData: YoutubeAdapterResponse)
@@ -14,4 +15,6 @@ interface IProfileView {
     fun showEmptyData()
 
     fun hideSoftKeyboard()
+
+    fun notifyNetworkCnxError()
 }
