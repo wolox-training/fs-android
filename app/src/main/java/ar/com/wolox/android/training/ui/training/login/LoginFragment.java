@@ -10,6 +10,9 @@ import android.widget.Toast;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.common.SignInButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -28,6 +31,7 @@ import pl.droidsonroids.gif.GifImageView;
 public class LoginFragment extends WolmoFragment<LoginPresenter> implements View.OnClickListener, ILoginView {
 
     private static final String URL_TYC = "https://www.wolox.com.ar/";
+    private static final int RC_SIGN_IN = 10;
 
     private View view;
 
@@ -60,6 +64,10 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements View
             view.findViewById(R.id.btn_login).setOnClickListener(this);
             view.findViewById(R.id.btn_singup).setOnClickListener(this);
             view.findViewById(R.id.tyc_txt).setOnClickListener(this);
+
+            SignInButton signInButton = view.findViewById(R.id.btn_google_login);
+            signInButton.setSize(SignInButton.SIZE_STANDARD);
+            signInButton.setOnClickListener(this);
         }
 
         mProgressDialog = new ProgressDialog(getContext());
@@ -86,6 +94,8 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements View
             case R.id.tyc_txt:
                 getPresenter().onTermsAndConditionClicked();
                 break;
+            case R.id.btn_google_login:
+                getPresenter().onGoogleLoginRequest();
             default:
                 break;
         }
@@ -215,5 +225,28 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements View
     @Override
     public void showServiceError(String message) {
         Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void loginWithGoogle(GoogleSignInClient client) {
+        Intent signInIntent = client.getSignInIntent();
+        startActivityForResult(signInIntent, RC_SIGN_IN);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        getPresenter().onActivityResult(requestCode, GoogleSignIn.getSignedInAccountFromIntent(data));
+    }
+
+    @Override
+    public void showLoginWithGoogleError() {
+        Toast.makeText(getContext(), getString(R.string.error_login_google), Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void showCredentialsError() {
+        Toast.makeText(getContext(), getString(R.string.error_credentials_error), Toast.LENGTH_LONG).show();
     }
 }

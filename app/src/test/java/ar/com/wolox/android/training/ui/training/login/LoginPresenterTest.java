@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import ar.com.wolox.android.training.model.User;
+import ar.com.wolox.android.training.ui.training.adapter.LoginGoogleAdapter;
 import ar.com.wolox.android.training.utils.CredentialsSession;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -33,8 +34,9 @@ public class LoginPresenterTest {
         mILoginView = mock(ILoginView.class);
         mCredentials = mock(CredentialsSession.class);
         mAdapter = mock(LoginAdapter.class);
+        LoginGoogleAdapter mGoogleAdapter = mock(LoginGoogleAdapter.class);
 
-        mPresenter = new LoginPresenter(mCredentials, mAdapter);
+        mPresenter = new LoginPresenter(mCredentials, mAdapter, mGoogleAdapter);
         mPresenter.attachView(mILoginView);
     }
 

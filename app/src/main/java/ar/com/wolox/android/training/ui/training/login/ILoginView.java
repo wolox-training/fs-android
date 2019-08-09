@@ -1,5 +1,7 @@
 package ar.com.wolox.android.training.ui.training.login;
 
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+
 import ar.com.wolox.android.training.model.User;
 
 /**
@@ -15,6 +17,7 @@ public interface ILoginView {
     void showValidPass();
 
     void hideAnimations();
+    void showCredentialsError();
 
     void updateCredentials(User user);
 
@@ -33,4 +36,7 @@ public interface ILoginView {
     void hideProgressDialog();
 
     boolean isNetworkAvailable();
+
+    void loginWithGoogle(GoogleSignInClient client);
+    void showLoginWithGoogleError();
 }

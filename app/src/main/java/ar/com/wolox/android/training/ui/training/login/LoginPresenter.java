@@ -1,6 +1,9 @@
 package ar.com.wolox.android.training.ui.training.login;
 
-import android.os.Handler;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.tasks.Task;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -8,6 +11,8 @@ import java.util.regex.Pattern;
 import javax.inject.Inject;
 
 import ar.com.wolox.android.training.model.User;
+import ar.com.wolox.android.training.ui.training.adapter.LoginGoogleAdapter;
+import ar.com.wolox.android.training.ui.training.adapter.LoginGoogleAdapterListener;
 import ar.com.wolox.android.training.utils.CredentialsSession;
 import ar.com.wolox.wolmo.core.presenter.BasePresenter;
 
@@ -16,15 +21,19 @@ import ar.com.wolox.wolmo.core.presenter.BasePresenter;
  */
 public class LoginPresenter extends BasePresenter<ILoginView> {
 
-    private static final long DELAY = 5000L;
+    private static final int RC_SIGN_IN = 10;
 
     private CredentialsSession userCredentials;
     private LoginAdapter loginAdapter;
+    private LoginGoogleAdapter googleAdapter;
 
     @Inject
-    public LoginPresenter(CredentialsSession credentialsSession, LoginAdapter loginAdapter) {
+    public LoginPresenter(CredentialsSession credentialsSession,
+                          LoginAdapter loginAdapter,
+                          LoginGoogleAdapter adapter) {
         this.userCredentials = credentialsSession;
         this.loginAdapter = loginAdapter;
+        this.googleAdapter = adapter;
     }
 
     /**
@@ -37,8 +46,32 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
             getView().updateCredentials(user);
             getView().hideAnimations();
             getView().showMainScreen();
+
         } else {
-            new Handler().postDelayed(() -> getView().hideAnimations(), DELAY);
+            googleAdapter.checkLoggedUser(new LoginGoogleAdapterListener() {
+                @Override
+                public void onNullCredentials() {
+                    getView().hideAnimations();
+                }
+
+                @Override
+                public void onExpiredCredentials() {
+                    getView().hideAnimations();
+                    getView().showCredentialsError();
+                }
+
+                @Override
+                public void onLoggedUser(@NotNull User user) {
+                    getView().updateCredentials(user);
+                    getView().hideAnimations();
+                    getView().showMainScreen();
+                }
+
+                @Override
+                public void onError() {
+                    getView().hideAnimations();
+                }
+            });
         }
     }
 
@@ -125,12 +158,60 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
                 @Override
                 public void onSuccess(User user) {
                     getView().hideProgressDialog();
+                    userCredentials.clearCredentials();
                     userCredentials.setUsername(user.getEmail());
                     userCredentials.setPassword(user.getPassword());
+                    userCredentials.setToken(user.getToken());
                     userCredentials.setId(user.getId());
                     getView().showMainScreen();
                 }
             });
+        }
+    }
+
+    void onGoogleLoginRequest() {
+        if (!getView().isNetworkAvailable()) {
+            getView().showNetworkUnavailableError();
+        } else {
+            getView().loginWithGoogle(googleAdapter.getLoginGoogleIntent());
+        }
+    }
+
+    void onActivityResult(final int requestCode, final Task<GoogleSignInAccount> task) {
+        getView().showProgressDialog();
+        if (requestCode == RC_SIGN_IN) {
+            googleAdapter.loginUser(task, new LoginGoogleAdapterListener() {
+                @Override
+                public void onNullCredentials() {
+                    getView().hideProgressDialog();
+                    getView().showLoginWithGoogleError();
+                }
+
+                @Override
+                public void onExpiredCredentials() {
+                    getView().hideProgressDialog();
+                    getView().showLoginWithGoogleError();
+                }
+
+                @Override
+                public void onLoggedUser(@NotNull User user) {
+                    getView().hideProgressDialog();
+                    userCredentials.clearCredentials();
+                    userCredentials.setUsername(user.getEmail());
+                    userCredentials.setToken(user.getToken());
+                    userCredentials.setId(user.getId());
+                    getView().showMainScreen();
+                }
+
+                @Override
+                public void onError() {
+                    getView().hideProgressDialog();
+                    getView().showLoginWithGoogleError();
+                }
+            });
+        } else {
+            getView().hideProgressDialog();
+            getView().showLoginWithGoogleError();
         }
     }
 }

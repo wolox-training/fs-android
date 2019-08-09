@@ -10,6 +10,8 @@ public class User {
     private String username;
     private int id;
 
+    private String token;
+
     /**
      * @param email email to login
      * @param password password to login
@@ -18,6 +20,12 @@ public class User {
 
         this.email = email;
         this.password = password;
+    }
+
+    public User(String email) {
+        this.email = email;
+        this.password = "";
+        this.token = "";
     }
 
     public String getEmail() {
@@ -50,5 +58,13 @@ public class User {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }
