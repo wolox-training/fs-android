@@ -70,7 +70,7 @@
         tools:text="Description Example \n with 2 lines" />
 
     <TextView
-        android:id="@+id/vSeparator"
+        android:id="@+id/vSeparatorV"
         android:layout_width="0dp"
         android:layout_height="@dimen/news_separator"
         android:background="@color/colorGray"
