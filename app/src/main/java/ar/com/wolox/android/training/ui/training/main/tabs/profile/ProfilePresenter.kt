@@ -48,7 +48,8 @@ class ProfilePresenter @Inject constructor(
 
     fun onItemClickRequest(item: YoutubeListItem) {
         // Ej: URL := "https://www.youtube.com/watch?v=2G5rfPISIwo" => id := "2G5rfPISIwo"
-        view.reproduceVideo(item.id)
+        // view.reproduceVideo(item.id)
+        view.goToDetails(item)
     }
 
     fun onEndOfList(nextPageToken: String) {

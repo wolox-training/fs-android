@@ -1,6 +1,7 @@
 package ar.com.wolox.android.training.ui.training.main.tabs.profile
 
 import ar.com.wolox.android.training.model.youtube.YoutubeAdapterResponse
+import ar.com.wolox.android.training.model.youtube.YoutubeListItem
 
 interface IProfileView {
 
@@ -17,4 +18,6 @@ interface IProfileView {
     fun hideSoftKeyboard()
 
     fun notifyNetworkCnxError()
+
+    fun goToDetails(item: YoutubeListItem)
 }

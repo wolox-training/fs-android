@@ -42,7 +42,7 @@ class YoutubeAdapter @Inject constructor(val context: Context) {
                     result.items.forEach {
                         val item = YoutubeListItem(it.id.videoId, it.snippet.title, it.snippet.description,
                                 it.snippet.thumbnails.default.url, it.snippet.thumbnails.medium.url,
-                                it.snippet.thumbnails.high.url)
+                                it.snippet.thumbnails.high.url, it.snippet.channelTitle, it.snippet.publishedAt)
                         videoList.add(item)
                     }
 
@@ -82,7 +82,7 @@ class YoutubeAdapter @Inject constructor(val context: Context) {
         result.items.forEach {
             val item = YoutubeListItem(it.id.videoId, it.snippet.title, it.snippet.description,
                     it.snippet.thumbnails.default.url, it.snippet.thumbnails.medium.url,
-                    it.snippet.thumbnails.high.url)
+                    it.snippet.thumbnails.high.url, it.snippet.channelTitle, it.snippet.publishedAt)
             videoList.add(item)
         }
         return YoutubeAdapterResponse(result.nextPageToken, result.nextPageToken, videoList)

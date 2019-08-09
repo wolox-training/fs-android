@@ -18,6 +18,6 @@ class YoutubeActivity : WolmoActivity() {
             setBackgroundDrawable(getDrawable(R.drawable.gradient_toolbar))
         }
 
-        replaceFragment(R.id.vActivityBaseContent, YoutubeFragment())
+        replaceFragment(R.id.vActivityBaseContent, YoutubeFragment().apply { this.arguments = intent.extras })
     }
 }
