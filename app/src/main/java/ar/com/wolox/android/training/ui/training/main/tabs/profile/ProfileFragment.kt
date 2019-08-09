@@ -2,7 +2,6 @@ package ar.com.wolox.android.training.ui.training.main.tabs.profile
 
 import android.app.Activity
 import android.content.Context
-import android.graphics.Color
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import android.view.View
@@ -31,12 +30,6 @@ class ProfileFragment @Inject constructor() : WolmoFragment<ProfilePresenter>(),
     override fun init() {
         Fresco.initialize(context)
 
-        vRefreshListProfiles.setColorSchemeColors(Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW)
-        vRefreshEmptyProfiles.setColorSchemeColors(Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW)
-
-        vRefreshListProfiles.isRefreshing = false
-        vRefreshEmptyProfiles.isRefreshing = false
-
         viewManager = LinearLayoutManager(context)
         presenter.onInit()
     }
@@ -54,14 +47,6 @@ class ProfileFragment @Inject constructor() : WolmoFragment<ProfilePresenter>(),
             presenter.onSearchRequest(vSearchQuery.text.toString())
         }
 
-        vRefreshListProfiles.setOnRefreshListener {
-            vRefreshListProfiles.isRefreshing = false
-        }
-
-        vRefreshEmptyProfiles.setOnRefreshListener {
-            vRefreshEmptyProfiles.isRefreshing = false
-        }
-
         vRecyclerViewProfiles.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
@@ -77,8 +62,8 @@ class ProfileFragment @Inject constructor() : WolmoFragment<ProfilePresenter>(),
     }
 
     override fun initProfileList(serviceData: YoutubeAdapterResponse) {
-        vRefreshListProfiles.visibility = View.VISIBLE
-        vRefreshEmptyProfiles.visibility = View.INVISIBLE
+        vRecyclerViewProfiles.visibility = View.VISIBLE
+        vEmptyListIcon.visibility = View.INVISIBLE
 
         nextPageToken = serviceData.nextPageToken
         profileList = mutableListOf()
@@ -109,8 +94,8 @@ class ProfileFragment @Inject constructor() : WolmoFragment<ProfilePresenter>(),
     }
 
     override fun showEmptyData() {
-        vRefreshListProfiles.visibility = View.INVISIBLE
-        vRefreshEmptyProfiles.visibility = View.VISIBLE
+        vRecyclerViewProfiles.visibility = View.INVISIBLE
+        vEmptyListIcon.visibility = View.VISIBLE
     }
 
     override fun hideSoftKeyboard() {
