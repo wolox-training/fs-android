@@ -8,6 +8,6 @@ data class YoutubeSnippet(
     @SerializedName("channelId") val channelId: String,
     @SerializedName("title") val title: String,
     @SerializedName("description") val description: String,
-    @SerializedName("thumbnails") val thumbnails: YoutubeThubnails,
+    @SerializedName("thumbnails") val thumbnails: YoutubeThumbnails,
     @SerializedName("channelTitle") val channelTitle: String
 ) : Serializable

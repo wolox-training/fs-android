@@ -8,4 +8,32 @@ data class YoutubeItem(
     @SerializedName("etag") val etag: String,
     @SerializedName("id") val id: YoutubeItemId,
     @SerializedName("snippet") val snippet: YoutubeSnippet
-) : Serializable
+) : Serializable {
+
+    val title: String
+        get() = snippet.title
+
+    val description: String
+        get() = snippet.description
+
+    val videoId: String
+        get() = id.videoId
+
+    val publishedAt: String
+        get() = snippet.publishedAt
+
+    val channelID: String
+        get() = snippet.channelId
+
+    val channelTitle: String
+        get() = snippet.channelTitle
+
+    val defaultUrlImg: String
+        get() = snippet.thumbnails.default.url
+
+    val mediumUrlImg: String
+        get() = snippet.thumbnails.medium.url
+
+    val highUrlImg: String
+        get() = snippet.thumbnails.high.url
+}

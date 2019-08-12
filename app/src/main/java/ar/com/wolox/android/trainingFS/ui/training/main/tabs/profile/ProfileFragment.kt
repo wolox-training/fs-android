@@ -10,8 +10,8 @@ import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ar.com.wolox.android.R
-import ar.com.wolox.android.trainingFS.model.youtube.YoutubeAdapterResponse
-import ar.com.wolox.android.trainingFS.model.youtube.YoutubeListItem
+import ar.com.wolox.android.trainingFS.model.youtube.YoutubeItem
+import ar.com.wolox.android.trainingFS.model.youtube.YoutubeResponse
 import ar.com.wolox.android.trainingFS.utils.onClickListener
 import ar.com.wolox.wolmo.core.fragment.WolmoFragment
 import com.facebook.drawee.backends.pipeline.Fresco
@@ -23,7 +23,7 @@ class ProfileFragment @Inject constructor() : WolmoFragment<ProfilePresenter>(),
 
     private lateinit var viewAdapter: ProfileListAdapter
     private lateinit var viewManager: RecyclerView.LayoutManager
-    private lateinit var profileList: MutableList<YoutubeListItem>
+    private lateinit var profileList: MutableList<YoutubeItem>
     private lateinit var nextPageToken: String
 
     override fun layout(): Int = R.layout.fragment_profile
@@ -66,13 +66,13 @@ class ProfileFragment @Inject constructor() : WolmoFragment<ProfilePresenter>(),
         })
     }
 
-    override fun initProfileList(serviceData: YoutubeAdapterResponse) {
+    override fun initProfileList(serviceData: YoutubeResponse) {
         vRecyclerViewProfiles.visibility = View.VISIBLE
         vEmptyListIcon.visibility = View.INVISIBLE
 
         nextPageToken = serviceData.nextPageToken
         profileList = mutableListOf()
-        profileList.addAll(serviceData.listItem)
+        profileList.addAll(serviceData.items)
 
         viewAdapter = ProfileListAdapter(profileList) { item -> selectedItem(item) }
 
@@ -84,12 +84,12 @@ class ProfileFragment @Inject constructor() : WolmoFragment<ProfilePresenter>(),
         viewAdapter.notifyDataSetChanged()
     }
 
-    override fun updateProfileList(serviceData: YoutubeAdapterResponse) {
+    override fun updateProfileList(serviceData: YoutubeResponse) {
         nextPageToken = serviceData.nextPageToken
-        viewAdapter.addData(serviceData.listItem)
+        viewAdapter.addData(serviceData.items)
     }
 
-    private fun selectedItem(item: YoutubeListItem) {
+    private fun selectedItem(item: YoutubeItem) {
         presenter.onItemClickRequest(item)
     }
 

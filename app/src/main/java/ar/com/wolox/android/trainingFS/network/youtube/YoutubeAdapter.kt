@@ -1,9 +1,9 @@
 package ar.com.wolox.android.trainingFS.network.youtube
 
 import android.content.Context
-import ar.com.wolox.android.trainingFS.model.youtube.YoutubeAdapterResponse
-import ar.com.wolox.android.trainingFS.model.youtube.YoutubeListItem
+import android.util.Log
 import ar.com.wolox.android.trainingFS.model.youtube.YoutubeResponse
+import com.google.gson.GsonBuilder
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -34,20 +34,27 @@ class YoutubeAdapter @Inject constructor(val context: Context) {
         val call = api.searchSongs(body)
         call.enqueue(object : Callback<YoutubeResponse> {
             override fun onResponse(call: Call<YoutubeResponse>, response: Response<YoutubeResponse>) {
-                if (response.body() != null) {
-                    val result: YoutubeResponse = response.body()!!
 
-                    val videoList = mutableListOf<YoutubeListItem>()
-                    result.items.forEach {
-                        val item = YoutubeListItem(it.id.videoId, it.snippet.title, it.snippet.description,
-                                it.snippet.thumbnails.default.url, it.snippet.thumbnails.medium.url,
-                                it.snippet.thumbnails.high.url, it.snippet.channelTitle, it.snippet.publishedAt)
-                        videoList.add(item)
-                    }
+                var result = response.body()
+                if (!response.isSuccessful) {
+                    // TODO: Simulation Data Response from json assets (KeyExpired or Request Limit Exceeded)
+                    Log.e("FedeLog", "ResponseError: " + response.errorBody()?.string())
+                    result = getSampleFromAssets()
+                }
 
-                    val adapterResponse = YoutubeAdapterResponse(result.prevPageToken, result.nextPageToken, videoList)
+                if (result != null) {
+//
+//                    val videoList = mutableListOf<YoutubeListItem>()
+//                    result.items.forEach {
+//                        val item = YoutubeListItem(it.id.videoId, it.snippet.title, it.snippet.description,
+//                                it.snippet.thumbnails.default.url, it.snippet.thumbnails.medium.url,
+//                                it.snippet.thumbnails.high.url, it.snippet.channelTitle, it.snippet.publishedAt)
+//                        videoList.add(item)
+//                    }
+//
+//                    val adapterResponse = YoutubeAdapterResponse(result.prevPageToken, result.nextPageToken, videoList)
 
-                    listener.onSuccess(adapterResponse)
+                    listener.onSuccess(result)
                 } else {
                     listener.onEmptyData()
                 }
@@ -58,8 +65,8 @@ class YoutubeAdapter @Inject constructor(val context: Context) {
             }
         })
     }
-/*
-    private fun getSampleFromAssets(): YoutubeAdapterResponse? {
+
+    private fun getSampleFromAssets(): YoutubeResponse? {
         val inputStream = context.assets.open("youtube_sample_extended.json")
         val size = inputStream.available()
         val buffer = ByteArray(size)
@@ -68,17 +75,9 @@ class YoutubeAdapter @Inject constructor(val context: Context) {
         val json = String(buffer)
 
         val gson = GsonBuilder().create()
-        val result = gson.fromJson(json, YoutubeResponse::class.java)
-        val videoList = mutableListOf<YoutubeListItem>()
-        result.items.forEach {
-            val item = YoutubeListItem(it.id.videoId, it.snippet.title, it.snippet.description,
-                    it.snippet.thumbnails.default.url, it.snippet.thumbnails.medium.url,
-                    it.snippet.thumbnails.high.url, it.snippet.channelTitle, it.snippet.publishedAt)
-            videoList.add(item)
-        }
-        return YoutubeAdapterResponse(result.nextPageToken, result.nextPageToken, videoList)
+        return gson.fromJson(json, YoutubeResponse::class.java)
     }
-*/
+
     companion object {
         private const val BASE_URL = "https://www.googleapis.com/youtube/v3/"
 

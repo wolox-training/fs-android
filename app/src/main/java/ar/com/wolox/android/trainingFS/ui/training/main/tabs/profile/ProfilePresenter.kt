@@ -1,7 +1,7 @@
 package ar.com.wolox.android.trainingFS.ui.training.main.tabs.profile
 
-import ar.com.wolox.android.trainingFS.model.youtube.YoutubeAdapterResponse
-import ar.com.wolox.android.trainingFS.model.youtube.YoutubeListItem
+import ar.com.wolox.android.trainingFS.model.youtube.YoutubeItem
+import ar.com.wolox.android.trainingFS.model.youtube.YoutubeResponse
 import ar.com.wolox.android.trainingFS.network.youtube.IYoutubeAdapterListener
 import ar.com.wolox.android.trainingFS.network.youtube.YoutubeAdapter
 import ar.com.wolox.wolmo.core.presenter.BasePresenter
@@ -37,8 +37,7 @@ class ProfilePresenter @Inject constructor(
                         view.showEmptyData()
                     }
 
-                    override fun onSuccess(response: YoutubeAdapterResponse) {
-                        // view.reproduceVideo(response.listItem[0].id)
+                    override fun onSuccess(response: YoutubeResponse) {
                         view.initProfileList(response)
                     }
                 })
@@ -46,9 +45,9 @@ class ProfilePresenter @Inject constructor(
         }
     }
 
-    fun onItemClickRequest(item: YoutubeListItem) {
+    fun onItemClickRequest(item: YoutubeItem) {
         // Ej: URL := "https://www.youtube.com/watch?v=2G5rfPISIwo" => id := "2G5rfPISIwo"
-        view.reproduceVideo(item.id)
+        view.reproduceVideo(item.videoId)
     }
 
     fun onEndOfList(nextPageToken: String) {
@@ -68,7 +67,7 @@ class ProfilePresenter @Inject constructor(
                         view.notifyNetworkCnxError()
                     }
 
-                    override fun onSuccess(response: YoutubeAdapterResponse) {
+                    override fun onSuccess(response: YoutubeResponse) {
                         downloadingData = false
                         view.updateProfileList(response)
                     }
