@@ -38,22 +38,11 @@ class YoutubeAdapter @Inject constructor(val context: Context) {
                 var result = response.body()
                 if (!response.isSuccessful) {
                     // TODO: Simulation Data Response from json assets (KeyExpired or Request Limit Exceeded)
-                    Log.e("FedeLog", "ResponseError: " + response.errorBody()?.string())
+                    Log.e("YTSimulation", "ResponseError: " + response.errorBody()?.string())
                     result = getSampleFromAssets()
                 }
 
                 if (result != null) {
-//
-//                    val videoList = mutableListOf<YoutubeListItem>()
-//                    result.items.forEach {
-//                        val item = YoutubeListItem(it.id.videoId, it.snippet.title, it.snippet.description,
-//                                it.snippet.thumbnails.default.url, it.snippet.thumbnails.medium.url,
-//                                it.snippet.thumbnails.high.url, it.snippet.channelTitle, it.snippet.publishedAt)
-//                        videoList.add(item)
-//                    }
-//
-//                    val adapterResponse = YoutubeAdapterResponse(result.prevPageToken, result.nextPageToken, videoList)
-
                     listener.onSuccess(result)
                 } else {
                     listener.onEmptyData()
