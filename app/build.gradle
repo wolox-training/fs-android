@@ -22,7 +22,7 @@ android {
     buildToolsVersion '28.0.3'
 
     defaultConfig {
-        applicationId "ar.com.wolox.android.training"
+        applicationId "ar.com.wolox.android.trainingFS"
         minSdkVersion 21
         targetSdkVersion 28
         versionCode 1
