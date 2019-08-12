@@ -1,4 +1,4 @@
-package ar.com.wolox.android.training
+package ar.com.wolox.android.trainingFS
 
 internal class Configuration : BaseConfiguration() {
     companion object {
