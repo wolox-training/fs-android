@@ -4,16 +4,17 @@
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
 
     <application
-        android:name=".training.BootstrapApplication"
+        android:name=".trainingFS.BootstrapApplication"
         android:allowBackup="true"
         android:icon="@drawable/wolox_logo"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
 
         <activity
-            android:name=".training.ui.training.login.LoginActivity"
+            android:name=".trainingFS.ui.training.login.LoginActivity"
             android:screenOrientation="portrait">
 
             <intent-filter>
@@ -23,17 +24,18 @@
 
         </activity>
 
-        <activity android:name=".training.ui.training.main.MainActivity"
+        <activity android:name=".trainingFS.ui.training.main.MainActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan"/>
+
+        <activity android:name=".trainingFS.ui.training.singup.SingUpActivity"
             android:screenOrientation="portrait" />
 
-        <activity android:name=".training.ui.training.singup.SingUpActivity"
-            android:screenOrientation="portrait" />
-
-        <activity android:name=".training.ui.training.details.DetailsActivity"
+        <activity android:name=".trainingFS.ui.training.details.DetailsActivity"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".training.ui.viewpager.ViewPagerActivity"
+            android:name=".trainingFS.ui.viewpager.ViewPagerActivity"
             android:screenOrientation="portrait" />
 
     </application>

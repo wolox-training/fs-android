@@ -66,4 +66,9 @@
     <string name="news_refresh_list">Refresh</string>
     <string name="news_uploading">Uploading data… please wait</string>
 
+    <!-- ProfileActivity -->
+    <string name="profile_search_btn">Search</string>
+    <string name="profile_search_txt">Song…</string>
+    <string name="profile_network_error">Couldnt download data, Network error</string>
+
 </resources>

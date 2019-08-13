@@ -39,9 +39,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:visibility="visible">
-
-        </androidx.recyclerview.widget.RecyclerView>
+            tools:visibility="visible"
+            tools:listitem="@layout/news_item" />
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 

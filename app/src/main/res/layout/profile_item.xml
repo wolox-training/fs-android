@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/vYoutubeImgPreview"
+        android:layout_width="@dimen/profile_item_img_size"
+        android:layout_height="@dimen/profile_item_img_size"
+        android:layout_marginStart="@dimen/profile_default_margin"
+        android:layout_marginTop="@dimen/profile_default_margin"
+        android:layout_marginBottom="@dimen/profile_default_margin"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/vPlayBtn"
+        android:layout_width="@dimen/profile_btn_play"
+        android:layout_height="@dimen/profile_btn_play"
+        android:scaleType="centerInside"
+        app:srcCompat="@drawable/ic_youtube_btn"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="@id/vYoutubeImgPreview"
+        app:layout_constraintStart_toEndOf="@id/vYoutubeImgPreview"
+        app:layout_constraintEnd_toEndOf="@id/vYoutubeImgPreview"
+        android:layout_margin="@dimen/profile_youtube_btn_margin"/>
+
+    <TextView
+        android:id="@+id/vTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/profile_default_margin"
+        android:layout_marginTop="@dimen/profile_default_margin"
+        android:layout_marginEnd="@dimen/profile_default_margin"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:textSize="@dimen/font_medium_extra"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/vYoutubeImgPreview"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Title Example \nWith 2 Lines" />
+
+    <TextView
+        android:id="@+id/vDescription"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/profile_default_margin"
+        android:layout_marginTop="@dimen/profile_default_margin"
+        android:layout_marginEnd="@dimen/profile_default_margin"
+        android:layout_marginBottom="@dimen/profile_default_margin"
+        android:maxLines="2"
+        android:ellipsize="end"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/vYoutubeImgPreview"
+        app:layout_constraintTop_toBottomOf="@+id/vTitle"
+        tools:text="Description Example \n with 2 lines" />
+
+    <TextView
+        android:id="@+id/vSeparatorV"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/news_separator"
+        android:background="@color/colorGray"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
