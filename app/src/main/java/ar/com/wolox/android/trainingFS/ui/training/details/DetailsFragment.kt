@@ -10,7 +10,6 @@ import ar.com.wolox.android.R
 import ar.com.wolox.android.trainingFS.model.EventMessage
 import ar.com.wolox.android.trainingFS.model.NewsItem
 import ar.com.wolox.wolmo.core.fragment.WolmoFragment
-import com.facebook.drawee.backends.pipeline.Fresco
 import kotlinx.android.synthetic.main.fragment_details.*
 import org.greenrobot.eventbus.EventBus
 import org.ocpsoft.prettytime.PrettyTime
@@ -28,9 +27,6 @@ class DetailsFragment @Inject constructor() : WolmoFragment<DetailsPresenter>(),
     override fun init() {
         val itemExtra = arguments!!.getSerializable(KEY_NEWS_ITEM)!!
         newsDetail = itemExtra as NewsItem
-
-        Fresco.initialize(context)
-
         presenter.onInit(newsDetail)
     }
 

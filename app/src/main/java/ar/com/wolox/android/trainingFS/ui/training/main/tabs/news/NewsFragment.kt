@@ -16,7 +16,6 @@ import ar.com.wolox.android.trainingFS.model.NewsItem
 import ar.com.wolox.android.trainingFS.ui.training.details.DetailsActivity
 import ar.com.wolox.android.trainingFS.utils.onClickListener
 import ar.com.wolox.wolmo.core.fragment.WolmoFragment
-import com.facebook.drawee.backends.pipeline.Fresco
 import kotlinx.android.synthetic.main.fragment_news.vFab
 import kotlinx.android.synthetic.main.fragment_news.vRecyclerView
 import kotlinx.android.synthetic.main.fragment_news.vRefreshEmptyList
@@ -35,8 +34,6 @@ class NewsFragment @Inject constructor() : WolmoFragment<NewsPresenter>(), INews
     override fun layout(): Int = R.layout.fragment_news
 
     override fun init() {
-        Fresco.initialize(context)
-
         vRefreshListLayout.setColorSchemeColors(Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW)
         vRefreshEmptyList.setColorSchemeColors(Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW)
 

@@ -14,7 +14,6 @@ import ar.com.wolox.android.trainingFS.model.youtube.YoutubeItem
 import ar.com.wolox.android.trainingFS.model.youtube.YoutubeResponse
 import ar.com.wolox.android.trainingFS.utils.onClickListener
 import ar.com.wolox.wolmo.core.fragment.WolmoFragment
-import com.facebook.drawee.backends.pipeline.Fresco
 import com.google.android.youtube.player.YouTubeStandalonePlayer
 import kotlinx.android.synthetic.main.fragment_profile.*
 import javax.inject.Inject
@@ -22,16 +21,13 @@ import javax.inject.Inject
 class ProfileFragment @Inject constructor() : WolmoFragment<ProfilePresenter>(), IProfileView {
 
     private lateinit var viewAdapter: ProfileListAdapter
-    private lateinit var viewManager: RecyclerView.LayoutManager
+    private var viewManager: RecyclerView.LayoutManager = LinearLayoutManager(context)
     private lateinit var profileList: MutableList<YoutubeItem>
     private lateinit var nextPageToken: String
 
     override fun layout(): Int = R.layout.fragment_profile
 
     override fun init() {
-        Fresco.initialize(context)
-
-        viewManager = LinearLayoutManager(context)
         presenter.onInit()
     }
 
