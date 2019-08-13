@@ -27,11 +27,11 @@ class YoutubeAdapter @Inject constructor(val context: Context) {
         call.enqueue(object : Callback<YoutubeResponse> {
             override fun onResponse(call: Call<YoutubeResponse>, response: Response<YoutubeResponse>) {
 
-                var result = response.body()
-                if (!response.isSuccessful) {
-                    // TODO: Simulation Data Response from json assets (KeyExpired or Request Limit Exceeded)
+                val result = if (response.isSuccessful) {
+                    response.body()
+                } else {
                     Log.e("YTSimulation", "ResponseError: " + response.errorBody()?.string())
-                    result = getSampleFromAssets()
+                    getSampleFromAssets()
                 }
 
                 if (result != null) {
