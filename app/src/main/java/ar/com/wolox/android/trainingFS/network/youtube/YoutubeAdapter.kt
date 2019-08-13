@@ -20,12 +20,8 @@ class YoutubeAdapter @Inject constructor(val context: Context) {
                                     .build()
 
         val api = retrofit.create(YoutubeService::class.java)
-        val body: HashMap<String, String> = hashMapOf()
-        body[KEY_PART] = VALUE_PART
-        body[KEY_QUERY] = query
-        body[KEY_API] = VALUE_API
-        body[KEY_TYPE] = VALUE_TYPE
-        body[KEY_MAX] = VALUE_MAX
+        val body: HashMap<String, String> = hashMapOf(KEY_PART to VALUE_PART, KEY_QUERY to query,
+                KEY_API to VALUE_API, KEY_TYPE to VALUE_TYPE, KEY_MAX to VALUE_MAX)
 
         if (pageToken.isNotEmpty()) {
             body[KEY_TOKEN] = pageToken
