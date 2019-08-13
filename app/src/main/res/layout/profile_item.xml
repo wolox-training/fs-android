@@ -17,25 +17,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <RelativeLayout
-        android:id="@+id/vLayoutOverPreview"
-        android:layout_width="@dimen/profile_item_img_size"
-        android:layout_height="@dimen/profile_item_img_size"
-        android:layout_marginStart="@dimen/profile_default_margin"
-        android:layout_marginTop="@dimen/profile_default_margin"
-        android:layout_marginBottom="@dimen/profile_default_margin"
+    <ImageView
+        android:id="@+id/vPlayBtn"
+        android:layout_width="@dimen/profile_btn_play"
+        android:layout_height="@dimen/profile_btn_play"
+        android:scaleType="centerInside"
+        app:srcCompat="@drawable/ic_youtube_btn"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <ImageView
-            android:id="@+id/vPlayBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:scaleType="centerInside"
-            app:srcCompat="@drawable/ic_youtube_btn"
-            android:layout_margin="@dimen/profile_youtube_btn_margin"/>
-    </RelativeLayout>
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="@id/vYoutubeImgPreview"
+        app:layout_constraintStart_toEndOf="@id/vYoutubeImgPreview"
+        app:layout_constraintEnd_toEndOf="@id/vYoutubeImgPreview"
+        android:layout_margin="@dimen/profile_youtube_btn_margin"/>
 
     <TextView
         android:id="@+id/vTitle"
