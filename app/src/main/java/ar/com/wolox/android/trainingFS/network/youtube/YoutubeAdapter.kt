@@ -21,11 +21,7 @@ class YoutubeAdapter @Inject constructor(val context: Context) {
 
         val api = retrofit.create(YoutubeService::class.java)
         val body: HashMap<String, String> = hashMapOf(KEY_PART to VALUE_PART, KEY_QUERY to query,
-                KEY_API to VALUE_API, KEY_TYPE to VALUE_TYPE, KEY_MAX to VALUE_MAX)
-
-        if (pageToken.isNotEmpty()) {
-            body[KEY_TOKEN] = pageToken
-        }
+                KEY_API to VALUE_API, KEY_TYPE to VALUE_TYPE, KEY_MAX to VALUE_MAX, KEY_TOKEN to pageToken)
 
         val call = api.searchSongs(body)
         call.enqueue(object : Callback<YoutubeResponse> {
