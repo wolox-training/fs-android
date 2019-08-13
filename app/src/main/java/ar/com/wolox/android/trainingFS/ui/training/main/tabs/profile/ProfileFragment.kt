@@ -53,8 +53,8 @@ class ProfileFragment @Inject constructor() : WolmoFragment<ProfilePresenter>(),
                 super.onScrolled(recyclerView, dx, dy)
 
                 val linearLayoutManager = recyclerView
-                        .layoutManager as LinearLayoutManager?
-                if (linearLayoutManager!!.itemCount <= linearLayoutManager.findLastVisibleItemPosition() +
+                        .layoutManager as LinearLayoutManager
+                if (linearLayoutManager.itemCount <= linearLayoutManager.findLastVisibleItemPosition() +
                         PADDING_TO_REFRESH) {
                     presenter.onEndOfList(nextPageToken)
                 }

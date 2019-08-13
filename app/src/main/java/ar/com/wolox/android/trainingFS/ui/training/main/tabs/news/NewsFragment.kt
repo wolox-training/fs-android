@@ -108,8 +108,8 @@ class NewsFragment @Inject constructor() : WolmoFragment<NewsPresenter>(), INews
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 val linearLayoutManager = recyclerView
-                        .layoutManager as LinearLayoutManager?
-                if (linearLayoutManager!!.itemCount <= linearLayoutManager.findLastVisibleItemPosition() + PADDING_TO_REFRESH) {
+                        .layoutManager as LinearLayoutManager
+                if (linearLayoutManager.itemCount <= linearLayoutManager.findLastVisibleItemPosition() + PADDING_TO_REFRESH) {
                     presenter.onEndOfList(linearLayoutManager.findLastVisibleItemPosition())
                 }
             }
